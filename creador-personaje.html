@@ -600,15 +600,22 @@ function renderSummary(){
     row('Aen por turno', GAMEDATA.rules.aenPerTurn+' <span class="hint">(igual para todas las clases · se llama '+esc(c?c.resource:'Aen')+')</span>')+
     '</div>';
 
-  // ── Todas las habilidades (completas, con bandas d12) ──
-  var nAbil=(ft?1:0)+(c&&c.abilities?c.abilities.length:0)+(k&&k.ability?1:0);
-  h+='<h2 style="margin-top:26px">Todas tus habilidades <span style="font-weight:400;font-size:14px;color:var(--ink3)">('+nAbil+')</span></h2>'+
-    '<p class="lead">Todo lo que '+esc(state.name||'tu héroe')+' puede hacer en combate. Si algo no te convence, cámbialo arriba.</p>';
+  // ── Habilidades de facción y clase ──
+  var nAbil=(ft?1:0)+(c&&c.abilities?c.abilities.length:0);
+  h+='<h2 style="margin-top:26px">Habilidades de facción y clase <span style="font-weight:400;font-size:14px;color:var(--ink3)">('+nAbil+')</span></h2>'+
+    '<p class="lead">Lo que '+esc(state.name||'tu héroe')+' puede hacer en combate. Si algo no te convence, cámbialo arriba.</p>';
   if(ft){
     h+='<div class="abil"><div class="abil-head"><span class="abil-name">✨ '+esc(ft.name)+'</span><span class="abil-tag base">Feat de facción</span><span class="abil-cost">'+esc(ft.attr)+'</span></div><div class="abil-desc">'+esc(ft.desc)+'</div></div>';
   }
   h+=classAbilitiesHtml(c);
-  h+=kitAbilHtml(k);
+
+  // ── Tu kit (imagen grande a todo el ancho + detalle + habilidad) ──
+  if(k){
+    h+='<h2 style="margin-top:26px">🎒 Tu kit</h2>'+
+      '<p class="lead">Tu equipo inicial: <strong>'+esc(k.name)+'</strong>'+(k.fantasy?' · '+esc(k.fantasy):'')+' · +'+(k.hpBonus||0)+' HP.</p>'+
+      kitArt(k)+
+      kitAbilHtml(k);
+  }
 
   h+='<div class="teach">Tu hoja está lista. Toca <strong>Descargar / Imprimir</strong>, guárdala como PDF y mándasela a tu Story Master. Él te ayudará con el resto en la mesa.</div>'+
     '<div class="btn-row"><button class="btn btn-ghost" onclick="go(0)">↺ Empezar de nuevo</button><button class="btn" onclick="printSheet()">📄 Descargar / Imprimir</button></div>';
