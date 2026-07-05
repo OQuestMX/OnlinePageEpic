@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Crea tu Héroe — Epic Quest</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚔️</text></svg>">
+<style>
+:root{
+  --bg:#faf8f4; --surface:#fff; --border:#e0dcd3; --ink:#2a2620; --ink2:#5a5449; --ink3:#8a8478;
+  --accent:#7a5c3e; --accent-light:#f0e9df; --gold:#b8935a; --radius:10px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:var(--bg);color:var(--ink);line-height:1.5;-webkit-text-size-adjust:100%}
+.wrap{max-width:640px;margin:0 auto;padding:20px 16px 60px}
+.progress{height:4px;background:var(--border);border-radius:2px;margin-bottom:24px;overflow:hidden}
+.progress-fill{height:100%;background:var(--gold);transition:width .3s}
+h1{font-size:24px;font-weight:700;margin-bottom:8px}
+h2{font-size:20px;font-weight:700;margin-bottom:6px}
+.step-label{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--ink3);margin-bottom:12px}
+.lead{font-size:15px;color:var(--ink2);margin-bottom:20px}
+.teach{background:var(--accent-light);border-left:3px solid var(--gold);border-radius:6px;padding:14px 16px;margin-bottom:20px;font-size:14px;color:var(--ink2)}
+.teach strong{color:var(--ink)}
+.opt{display:block;width:100%;text-align:left;background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:10px;font-size:16px;color:var(--ink);cursor:pointer;transition:border-color .15s;min-height:52px}
+.opt:hover{border-color:var(--gold)}
+.opt.sel{border-color:var(--gold);background:var(--accent-light)}
+.opt-sub{display:block;font-size:13px;color:var(--ink3);margin-top:4px}
+input[type=text]{width:100%;padding:14px 16px;font-size:17px;border:1.5px solid var(--border);border-radius:var(--radius);background:var(--surface);color:var(--ink)}
+input[type=text]:focus{outline:none;border-color:var(--gold)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;background:var(--accent);color:#fff;border:none;border-radius:var(--radius);padding:14px 24px;font-size:16px;font-weight:600;cursor:pointer;min-height:50px}
+.btn:disabled{opacity:.4;cursor:default}
+.btn-ghost{background:transparent;color:var(--accent);border:1.5px solid var(--border)}
+.btn-row{display:flex;gap:10px;margin-top:24px;flex-wrap:wrap}
+.btn-row .btn{flex:1;min-width:120px}
+.result{background:var(--surface);border:2px solid var(--gold);border-radius:var(--radius);padding:24px;text-align:center;margin-bottom:20px}
+.result-icon{font-size:40px;margin-bottom:8px}
+.result-name{font-size:26px;font-weight:700;margin-bottom:6px}
+.result-desc{font-size:15px;color:var(--ink2);margin-bottom:8px}
+.result-meta{font-size:13px;color:var(--ink3);background:var(--accent-light);border-radius:6px;padding:8px 12px;margin-top:12px;display:inline-block}
+.explore{margin-top:16px}
+.explore summary{cursor:pointer;font-size:14px;color:var(--accent);font-weight:600;padding:8px 0}
+.explore-item{background:var(--surface);border:1.5px solid var(--border);border-radius:8px;padding:14px;margin-bottom:8px;cursor:pointer}
+.explore-item:hover{border-color:var(--gold)}
+.explore-item.current{border-color:var(--gold);background:var(--accent-light)}
+.explore-item-name{font-weight:600;font-size:15px;display:flex;justify-content:space-between;align-items:center}
+.explore-item-desc{font-size:13px;color:var(--ink3);margin-top:4px}
+.tag{display:inline-block;font-size:11px;font-weight:600;padding:2px 8px;border-radius:10px;background:var(--accent-light);color:var(--accent);margin-left:6px}
+.affinity{font-size:11px;color:var(--gold);font-weight:700}
+.feat-box{text-align:left;margin-top:14px}
+.summary-card{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius);padding:20px;margin-bottom:16px}
+.summary-row{display:flex;padding:10px 0;border-bottom:1px solid var(--border);font-size:15px}
+.summary-row:last-child{border-bottom:none}
+.summary-key{font-weight:600;width:110px;color:var(--ink2);flex-shrink:0}
+.summary-val{flex:1}
+.hint{font-size:13px;color:var(--ink3);margin-top:6px}
+/* Habilidades */
+.abil-list{margin-top:14px;text-align:left}
+.abil{background:var(--surface);border:1.5px solid var(--border);border-radius:8px;padding:12px 14px;margin-bottom:10px}
+.abil-head{display:flex;align-items:baseline;flex-wrap:wrap;gap:6px;margin-bottom:4px}
+.abil-name{font-weight:700;font-size:15px}
+.abil-tag{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;padding:2px 7px;border-radius:9px}
+.abil-tag.base{background:#eef2e6;color:#5a6a3a}
+.abil-tag.heroica{background:#f3e6ee;color:#8a3a6a}
+.abil-cost{font-size:12px;color:var(--accent);font-weight:600}
+.abil-desc{font-size:13px;color:var(--ink2);margin-bottom:2px}
+.bands{margin-top:8px;border:1px solid var(--border);border-radius:6px;overflow:hidden}
+.band{display:flex;font-size:12px;border-top:1px solid var(--border)}
+.band:first-child{border-top:none}
+.band-roll{flex-shrink:0;width:44px;text-align:center;font-weight:700;color:var(--ink3);background:var(--accent-light);padding:6px 4px}
+.band-eff{padding:6px 8px;color:var(--ink2)}
+.band.b12 .band-roll{background:var(--gold);color:#fff}
+.band.b12 .band-eff{color:var(--ink);font-weight:600}
+.echo-note{font-size:11px;color:#8a3a6a;margin-top:6px;font-style:italic}
+.concept{background:#f7f4ee;border:1px dashed var(--gold);border-radius:6px;padding:8px 11px;margin:8px 0;font-size:12.5px;color:var(--ink2)}
+.concept strong{color:var(--ink)}
+.abil-mini{font-size:12px;color:var(--ink3);margin-top:3px}
+.edit-btn{font-size:11px;font-weight:600;color:var(--accent);background:var(--accent-light);border:none;border-radius:7px;padding:3px 9px;margin-left:8px;cursor:pointer}
+.edit-btn:hover{filter:brightness(.96)}
+.edit-panel{margin:2px 0 12px;padding:10px;background:var(--surface);border:1.5px solid var(--border);border-radius:10px}
+.summary-val{display:flex;align-items:center;flex-wrap:wrap}
+/* Imágenes */
+.cart{display:inline-block;line-height:0}
+.cart img{display:block;width:auto;border-radius:10px;box-shadow:0 3px 14px rgba(0,0,0,.14)}
+.cart-fallback{align-items:center;justify-content:center;background:var(--accent-light);border-radius:10px;line-height:1}
+.cart-lg img{max-height:340px;max-width:100%;margin:0 auto}
+.cart-lg .cart-fallback{width:160px;height:250px;font-size:84px;margin:0 auto}
+.cart-md img{max-height:160px}
+.cart-md .cart-fallback{width:110px;height:160px;font-size:64px}
+.cart-sm img{height:60px;border-radius:7px;box-shadow:0 1px 6px rgba(0,0,0,.14)}
+.cart-sm .cart-fallback{width:44px;height:60px;font-size:28px;border-radius:7px}
+.kart{margin:16px 0}
+.kart img{display:block;width:100%;height:auto;border-radius:10px;border:1px solid var(--border);box-shadow:0 3px 16px rgba(0,0,0,.14)}
+.ex-head{display:flex;gap:11px;align-items:flex-start}
+.ex-head>.ex-body{flex:1;min-width:0}
+@page{margin:14mm}
+@media print{
+  body{background:#fff}
+  .no-print{display:none!important}
+  .wrap{max-width:100%;padding:0}
+}
+/* Character sheet imprimible */
+.sheet{display:none}
+@media print{
+  .sheet{display:block}
+  .screen{display:none}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="progress no-print"><div class="progress-fill" id="progress"></div></div>
+  <div id="app" class="screen"></div>
+</div>
+<div id="sheet" class="sheet"></div>
+<script>
+var GAMEDATA = {"factions":[{"id":"cheran","name":"Theocracy of Cherán","icon":"🔥","color":"#9b2020","declaration":"Our god is the only one. He will provide. The infidels will be purified.","question":"Is your faith your strength or your chain?","feats":[{"response":"Faith is my strength","name":"Conviction of Engar","attr":"Body","desc":"Advantage when your physical presence as a bearer of the faith must impose itself."},{"response":"Faith is my chain","name":"The Crack in Faith","attr":"Mind","desc":"Advantage when persuading, debating, or influencing those who share or question a faith."},{"response":"Faith is my doubt","name":"Necessary Heresy","attr":"Echo","desc":"Advantage when channeling magic that contradicts established doctrine. Unsanctioned spells gain power."}]},{"id":"vorin","name":"House Vorin","icon":"⚖️","color":"#1a4a7a","declaration":"The game is life. The seekers win. The weak crumble.","question":"Do you play to win or to learn?","feats":[{"response":"To win","name":"Predator's Instinct","attr":"Body","desc":"Advantage on attacks against vulnerable or outnumbered enemies."},{"response":"To learn","name":"Chess Mind","attr":"Mind","desc":"Advantage when predicting enemy moves or planning group strategy."},{"response":"To play","name":"Gambler's Luck","attr":"Echo","desc":"Once per session, you can reroll any die you've rolled."}]},{"id":"escarlata","name":"The Scarlet Order","icon":"🛡️","color":"#8b1a1a","declaration":"Justice is our responsibility. To act is honor.","question":"Is vengeance justice?","feats":[{"response":"Yes","name":"Sacred Vendetta","attr":"Body","desc":"Advantage on attacks against those who have harmed your own."},{"response":"No, but protection is","name":"Shield of the Innocent","attr":"Mind","desc":"Advantage when defending civilians or allies in danger. They reduce negative conditions."},{"response":"Vengeance is cycles","name":"Impossible Redemption","attr":"Echo","desc":"Advantage when you try to calm conflicts or turn enemies. Once per scene."}]},{"id":"aetharion","name":"Aetharion","icon":"🦅","color":"#c9a84c","declaration":"Knowledge is eternal life. The ignorant are doomed.","question":"Is knowledge shared or possessed?","feats":[{"response":"It is possessed","name":"Guarded Secrets","attr":"Mind","desc":"Advantage when keeping information. You can lie while detecting lies in others."},{"response":"It is shared","name":"Open Wisdom","attr":"Mind","desc":"Advantage when you teach or pass on knowledge. Allies learn abilities faster."},{"response":"It is consumed","name":"Magic of Oblivion","attr":"Echo","desc":"Advantage on Control spells. You can erase specific memories once per session."}]},{"id":"urushan","name":"Urushan","icon":"⚓","color":"#2a6a6a","declaration":"Nature is the law. Balance and cycle are sacred.","question":"Do you sacrifice the individual for the tribe?","feats":[{"response":"Always","name":"Tribal Duty","attr":"Body","desc":"Advantage on actions that benefit the group even if they harm you."},{"response":"Only when necessary","name":"Balance of Forces","attr":"Mind","desc":"Advantage when you reconcile opposing factions or mediate conflicts."},{"response":"Never, I am free","name":"Wild Spirit","attr":"Echo","desc":"Advantage on attacks when no allies are adjacent. The lone wolf is strong."}]},{"id":"pueblos","name":"The Roofless Peoples","icon":"🏕️","color":"#6a4a2a","declaration":"We don't need a kingdom. We need community.","question":"What do you love more: freedom or family?","feats":[{"response":"Freedom","name":"Nomad of the Wind","attr":"Body","desc":"Advantage on movement and exploration. You ignore difficult terrain once per combat."},{"response":"Family","name":"Blood Bond","attr":"Mind","desc":"Advantage when you fight alongside your tribe-kin. You share resistances."},{"response":"I need both","name":"Rebel at Heart","attr":"Echo","desc":"Advantage on actions that defy unjust authority. Once per session, ignore a failure."}]}],"classes":[{"id":"fury","name":"Fury","type":"Might","resource":"FURY","abilities":[{"name":"Unstoppable","type":"Base","cost":"2 Aen","tabla":true,"echoDC":false,"bandas":{"b1":"4 damage on impact","b2":"7 damage, knocks down the target","b3":"9-11 damage, knocks down","b12":"12 damage to EVERYONE you touch in the line, all knocked down, and you become unstoppable (immune to knockdown) until your next turn"},"desc":"Charge in a straight line crushing everything. Pierces 3 tiles, knocks down on impact."},{"name":"Come At Me","type":"Base","cost":"2 Aen","desc":"Taunt all enemies within radius 2. You gain +1 Aen per attack received."},{"name":"Still Standing","type":"Heroica","cost":"3 Aen","desc":"You refuse to fall. Recover 8 Vitality and a free counterattack. Drawback: -1d8 Vitality when it ends."}]},{"id":"knight","name":"Knight","type":"Might","resource":"DEVOTION","abilities":[{"name":"Oathstrike","type":"Base","cost":"2 Aen","tabla":true,"echoDC":false,"bandas":{"b1":"4 damage","b2":"7 damage, disarms the target","b3":"9-11 damage, disarms","b12":"12 damage, disarms, and the target is marked: the next ally to attack it deals double damage"},"desc":"Precise strike guided by your oath. Ignores armor."},{"name":"Hold the Line","type":"Base","cost":"2 Aen","desc":"You plant your position. Block enemy movement within radius 2, halve damage taken."},{"name":"Sworn Duty","type":"Heroica","cost":"4 Aen","tabla":true,"echoDC":true,"bandas":{"b1":"8 damage (one strike)","b2":"13 damage (two strikes)","b3":"15-17 damage (two strikes), ignores armor","b12":"18 damage, both strikes critical, and you swear protection to 1 companion: halve the damage they take until your next turn"},"desc":"Guaranteed double attack."}]},{"id":"monk","name":"Monk","type":"Might","resource":"CLARITY","abilities":[{"name":"Flowing Strike","type":"Base","cost":"2 Aen","tabla":true,"echoDC":false,"bandas":{"b1":"4 damage","b2":"7 damage, you move 2 tiles","b3":"9-11 damage, you move 2 tiles","b12":"12 damage, you move 4 tiles, and your next attack this turn is free (no Aen)"},"desc":"You strike and move 2 tiles without provoking reactions."},{"name":"Deflect","type":"Base","cost":"2 Aen","desc":"You nullify an attack and return half the damage."},{"name":"Inner Flow","type":"Heroica","cost":"3 Aen","desc":"Extra action each round for 2 rounds, you dodge the first attack. Drawback: -1d8 Aen when it ends."}]},{"id":"shadow","name":"Shadow","type":"Might","resource":"AEN","abilities":[{"name":"Backstab","type":"Base","cost":"2 Aen","tabla":true,"echoDC":false,"bandas":{"b1":"4 damage (7 if it doesn't see you)","b2":"7 damage (double if it doesn't see you)","b3":"9-11 damage (double if it doesn't see you)","b12":"12 damage, and you make a misty step (short teleport to a nearby tile)"},"desc":"Double damage if the target doesn't see you."},{"name":"Vanish","type":"Base","cost":"2 Aen","desc":"You become invisible 1 round, move 4 tiles."},{"name":"Death Mark","type":"Heroica","cost":"4 Aen","tabla":true,"echoDC":true,"bandas":{"b1":"8 damage","b2":"13 damage","b3":"15-17 damage","b12":"18 guaranteed damage; if the target drops below 50% HP, instant death (if not a boss)"},"desc":"You teleport to the target + guaranteed strike."}]},{"id":"archer","name":"Archer","type":"Might","resource":"FOCUS","abilities":[{"name":"Piercing Shot","type":"Base","cost":"2 Aen","tabla":true,"echoDC":false,"bandas":{"b1":"4 damage to each in the line","b2":"7 damage to each","b3":"9-11 damage to each","b12":"12 damage to each, and the arrow ricochets hitting one more enemy outside the line"},"desc":"Pierces all enemies in a straight line."},{"name":"Suppressing Fire","type":"Base","cost":"2 Aen","desc":"Radius 2 zone becomes difficult terrain, slows anyone who enters."},{"name":"Arrow Storm","type":"Heroica","cost":"4 Aen","tabla":true,"echoDC":true,"bandas":{"b1":"2 damage to all","b2":"5 damage to all","b3":"8 damage to all","b12":"10 damage to all visible enemies, and the arrows stick like thorns: the terrain becomes a great trap dealing 1d6 damage to anyone stepping on it (rest of combat)"},"desc":"Rain of arrows over all visible enemies."}]},{"id":"wizard","name":"Wizard","type":"Magic","resource":"RESONANCE","abilities":[{"name":"Arcane Bolt","type":"Base","cost":"2 Aen","tabla":true,"echoDC":false,"bandas":{"b1":"4 damage","b2":"7 damage","b3":"9-11 damage","b12":"12 damage, and the projectile splits hitting a second enemy for 6 damage"},"desc":"Projectile of pure energy. Ignores armor."},{"name":"Rune Trap","type":"Base","cost":"2 Aen","tabla":true,"echoDC":false,"bandas":{"b1":"2 damage to all in the radius","b2":"5 damage to all","b3":"8 damage to all","b12":"10 damage to all, knocked down, and the rune leaves difficult terrain permanently"},"desc":"Rune that explodes in radius 2 when stepped on."},{"name":"Rewrite","type":"Heroica","cost":"3 Aen","desc":"Undo the last action of any creature, repeat your turn. Drawback: -1d8 Aen when it ends."}]},{"id":"druid","name":"Druid","type":"Magic","resource":"ESSENCE","abilities":[{"name":"Healing Bloom","type":"Base","cost":"2 Aen","desc":"Ally recovers 6 Vitality."},{"name":"Entangle","type":"Base","cost":"2 Aen","tabla":true,"echoDC":false,"bandas":{"b1":"1 enemy immobilized 1 round, 3 damage","b2":"2 enemies immobilized 2 rounds, 3 damage","b3":"3 enemies immobilized 2 rounds","b12":"ALL within radius 2 immobilized 2 rounds, and the roots drain 3 damage/round while they're trapped"},"desc":"Roots sprout from the ground. Radius 2."},{"name":"Wild Shape","type":"Heroica","cost":"3 Aen","desc":"Beast form: +10 Vitality, increased melee damage for 3 rounds. Drawback: -1d8 Aen when it ends."}]},{"id":"warlock","name":"Warlock","type":"Magic","resource":"PACT","abilities":[{"name":"Chaos Bolt","type":"Base","cost":"2 Aen","tabla":true,"echoDC":false,"bandas":{"b1":"4 damage","b2":"7 damage, bounces to another enemy for 3","b3":"9-11 damage, bounces for 5","b12":"12 damage and chaos overflows: bounces among ALL nearby enemies for 4 each"},"desc":"Chaotic damage that can bounce."},{"name":"Hex","type":"Base","cost":"2 Aen","tabla":true,"echoDC":false,"bandas":{"b1":"1 enemy: +2 damage taken 1 round","b2":"2 enemies: +4 damage taken, fail their next action","b3":"3 enemies: +4 damage taken, fail their next action","b12":"ALL within radius 3 (except the boss): +6 damage taken, fail their next action and become Frightened"},"desc":"The curse spreads based on the roll."},{"name":"Unleash the Pact","type":"Heroica","cost":"4 Aen","tabla":true,"echoDC":true,"bandas":{"b1":"4 damage to all","b2":"7 damage to all, Frightened","b3":"9 damage to all, Frightened","b12":"12 damage to all, Frightened 2 rounds, and the pact rewards you: recover Vitality equal to total damage dealt"},"desc":"You release the power of the pact. Radius 3, chaotic effects."}]},{"id":"inventor","name":"Inventor","type":"Might","resource":"INGENUITY","abilities":[{"name":"Turret","type":"Base","cost":"2 Aen","tabla":true,"echoDC":false,"bandas":{"b1":"Turret: 4 damage/round, lasts 2 rounds","b2":"Turret: 4 damage/round, lasts 3 rounds","b3":"Turret: 6 damage/round, lasts 3 rounds","b12":"Overcharged turret: 6 damage/round, lasts 3 rounds, fires at 2 enemies at once"},"desc":"You deploy a turret that fires on its own."},{"name":"Upgrade","type":"Base","cost":"2 Aen","desc":"Ally gains +3 damage and +5 Vitality for 3 rounds."},{"name":"Masterwork","type":"Heroica","cost":"4 Aen","tabla":true,"echoDC":true,"bandas":{"b1":"8 line damage","b2":"13 line damage, 1 ally +2 damage 1 round","b3":"15-17 line damage, 1 ally +3 damage","b12":"18 line damage, 2 allies gain +5 damage and +1 action on their next turn"},"desc":"Ultimate artifact: line damage + buff."}]},{"id":"bard","name":"Bard","type":"Might","resource":"INSPIRATION","abilities":[{"name":"Inspire","type":"Base","cost":"2 Aen","desc":"Ally gains +1d6 to next action and +3 damage."},{"name":"Charm","type":"Base","cost":"2 Aen","desc":"Enemy can't attack you for 2 rounds. You break their focus."},{"name":"Grand Finale","type":"Heroica","cost":"3 Aen","desc":"Allies gain an extra action, enemies terrified. Drawback: -1d8 Aen when it ends."}]}],"kits":[{"id":"asalto","name":"Assault","fantasy":"Viking","archetype":"Aggressive tank","hpBonus":8,"ability":{"name":"Charge","cost":"3 Aen","desc":"You run 6 tiles in a straight line. 1d6 damage to each enemy in the path.","drawback":"The next attack against you has advantage."}},{"id":"filo","name":"Edge","fantasy":"Samurai","archetype":"Balanced damage","hpBonus":5,"ability":{"name":"Triple Cut","cost":"3 Aen","desc":"Three 1d6 attacks against three different enemies.","drawback":"You lose all movement this turn."}},{"id":"dagas","name":"Daggers","fantasy":"Ninja","archetype":"Stealth damage","hpBonus":2,"ability":{"name":"Strike from the Shadows","cost":"3 Aen","desc":"Only from outside line of sight. Advantage and double damage.","drawback":"You lose Echo for 1 turn."}},{"id":"corsario","name":"Corsair","fantasy":"Pirate","archetype":"Balanced damage","hpBonus":5,"ability":{"name":"Opportunistic Shot","cost":"3 Aen","desc":"You interrupt enemy movement with a 1d6 ranged attack. They lose the rest of their movement.","drawback":"You can't attack at range next turn."}},{"id":"bastion","name":"Bastion","fantasy":"Knight","archetype":"Extreme tank","hpBonus":10,"ability":{"name":"Shield Wall","cost":"3 Aen","desc":"You absorb all damage aimed at an adjacent ally for 1 round.","drawback":"You can't move. If forced, it's canceled."}},{"id":"gladiador","name":"Gladiator","fantasy":"Gladiator","archetype":"Balanced damage","hpBonus":5,"ability":{"name":"Double Strike","cost":"3 Aen","desc":"Two 1d6 attacks against the same target or two adjacent ones.","drawback":"The second attack always has disadvantage."}},{"id":"halcon","name":"Falcon","fantasy":"Hunter","archetype":"Field control","hpBonus":4,"ability":{"name":"Trap","cost":"3 Aen","desc":"Invisible trap on a visible tile. 1d6 damage + immobilizes 1 turn.","drawback":"You lose your full movement this turn."}},{"id":"raiz","name":"Root","fantasy":"Druid","archetype":"Healing support","hpBonus":3,"ability":{"name":"Natural Healing","cost":"3 Aen","desc":"Restores d8 Vitality to an ally (d12 if below half HP).","drawback":"You take 1d4 damage while channeling."}},{"id":"colmillo","name":"Fang","fantasy":"Werewolf","archetype":"Transformed tank","hpBonus":7,"ability":{"name":"Bestial Fury","cost":"3 Aen","desc":"1d6 to all adjacent. Each one takes Bleeding (1/turn, 2 turns).","drawback":"You can't use class abilities next turn."}},{"id":"conducto","name":"Conduit","fantasy":"Arcane Mage","archetype":"Magic amplification","hpBonus":0,"ability":{"name":"Amplified Channeling","cost":"3 Aen","desc":"Your next ability rises one plane tier at no cost. You must use it this turn.","drawback":"Echo -1 for 2 turns."}},{"id":"crisol","name":"Crucible","fantasy":"Alchemist","archetype":"Versatile support","hpBonus":2,"ability":{"name":"Potion","cost":"3 Aen","desc":"Choose: Heal (d6), Harm (d6), or Afflict (slowed/frightened/weakened 1 turn).","drawback":"Only works on adjacent targets."}},{"id":"juramento","name":"Oath","fantasy":"Paladin","archetype":"Support tank","hpBonus":7,"ability":{"name":"Laying On Hands","cost":"3 Aen","desc":"Restores d6 Vitality + removes a negative condition. If at 0 HP, raises them with 1.","drawback":"You take half the damage of the condition removed."}},{"id":"berserker_kit","name":"Berserker","fantasy":"Berserker","archetype":"Damage tank","hpBonus":6,"ability":{"name":"Frenzy","cost":"3 Aen","desc":"+2 damage per hit taken this round. With 3+ hits, your next attack knocks down.","drawback":"You can't use class abilities during the frenzy."}},{"id":"cuervo","name":"Raven","fantasy":"Assassin","archetype":"Control/poison","hpBonus":2,"ability":{"name":"Poison","cost":"3 Aen","desc":"Target Poisoned: loses 1 Aen/turn for 2 turns. With no Aen, 1 damage/turn.","drawback":"You lose movement this turn."}},{"id":"zen","name":"Zen","fantasy":"Monk","archetype":"Precise control","hpBonus":4,"ability":{"name":"Paralyzing Strike","cost":"3 Aen","desc":"Target loses 1 of 2 actions next turn. On 17+ on the d20, loses both.","drawback":"Only works with no weapons equipped."}}]};
+</script>
+<script>
+/* ══════════ ESTADO ══════════ */
+// Reglas de economía traídas del Hub (fuente de verdad; no hardcodear en el texto)
+GAMEDATA.rules = { hpBase:10, aenPerTurn:2, actionsPerTurn:2, movementPerTurn:1 };
+
+var state = {
+  step: 0,
+  name: '',
+  factionScores: {}, factionId: null, factionFeatIdx: null,
+  classScores: {}, classId: null,
+  kitScores: {}, kitId: null,
+  _edit: null
+};
+
+/* ══════════ DEFINICIÓN DEL TEST ══════════ */
+// F1: qué guía a tu personaje → apunta a facción
+var Q_FACTION1 = {
+  q: '¿Qué guía a tu personaje?',
+  opts: [
+    {t:'La fe', f:'cheran'},
+    {t:'El poder', f:'vorin'},
+    {t:'La justicia', f:'escarlata'},
+    {t:'El legado y el conocimiento', f:'aetharion'},
+    {t:'El equilibrio y la naturaleza', f:'urushan'},
+    {t:'La libertad', f:'pueblos'}
+  ]
+};
+
+// Clase: 4 preguntas, sistema de puntos
+var Q_CLASS = [
+  {q:'¿Cómo te imaginas peleando?', opts:[
+    {t:'Cuerpo a cuerpo, de frente, sin miedo', s:{fury:2,knight:1,monk:1}},
+    {t:'Desde las sombras, sin que me vean', s:{shadow:2,archer:1}},
+    {t:'A distancia, con precisión', s:{archer:2,wizard:1}},
+    {t:'Canalizando poder mágico', s:{wizard:2,warlock:1,druid:1}},
+    {t:'Apoyando y potenciando a mi equipo', s:{bard:2,druid:1,knight:1}},
+    {t:'Con inventos y trucos', s:{inventor:2,bard:1}}
+  ]},
+  {q:'¿Qué papel te llama más en el grupo?', opts:[
+    {t:'Ser el que aguanta los golpes (tanque)', s:{knight:2,fury:1}},
+    {t:'Ser el que hace más daño', s:{fury:2,shadow:1,archer:1}},
+    {t:'Ser el que cura y protege', s:{druid:2,knight:1}},
+    {t:'Ser el astuto que controla la situación', s:{monk:1,inventor:1,warlock:1,bard:1}},
+    {t:'Ser el misterioso con poder oculto', s:{warlock:2,shadow:1}}
+  ]},
+  {q:'¿Qué te emociona más de un héroe?', opts:[
+    {t:'Su fuerza bruta y presencia', s:{fury:2,knight:1}},
+    {t:'Su elegancia y técnica', s:{monk:2,bard:1}},
+    {t:'Su conexión con fuerzas más grandes', s:{wizard:1,druid:1,warlock:1}},
+    {t:'Su ingenio y creatividad', s:{inventor:2,wizard:1}},
+    {t:'Su frialdad y letalidad', s:{shadow:2,archer:1}}
+  ]},
+  {q:'¿Qué frase te representa?', opts:[
+    {t:'"El mejor ataque es aplastar primero"', s:{fury:2}},
+    {t:'"Un solo golpe certero basta"', s:{archer:1,shadow:1,monk:1}},
+    {t:'"El conocimiento es poder"', s:{wizard:2,warlock:1}},
+    {t:'"La naturaleza siempre encuentra el camino"', s:{druid:2}},
+    {t:'"Nadie protege a mi gente más que yo"', s:{knight:2}},
+    {t:'"Con la herramienta correcta, todo es posible"', s:{inventor:2}},
+    {t:'"Una buena historia mueve al mundo"', s:{bard:2}}
+  ]}
+];
+
+// Descripciones de clase en español para jugador nuevo
+var CLASS_DESC = {
+  fury:'Guerrero de rabia pura. Mientras más daño recibe, más peligroso se vuelve.',
+  knight:'Guerrero devoto y protector. Da su cuerpo por los demás.',
+  monk:'Artista marcial. Técnica perfecta, golpes en combo, control interior.',
+  shadow:'Asesino sigiloso. Marca a su presa y la elimina sin ser visto.',
+  archer:'Maestro del arco. Paciencia letal a distancia.',
+  wizard:'Mago arcano. Domina elementos, tiempo o combate mágico.',
+  druid:'Guardián de la naturaleza. Sana, purifica y llama a las bestias.',
+  warlock:'Pactó con fuerzas prohibidas. Maldiciones, muertos, caos.',
+  inventor:'Genio de artefactos. Explosivos, trampas, mejoras a su cuerpo.',
+  bard:'Guerrero-artista. Inspira con su canto o engaña con disfraces.'
+};
+// 5 etiquetas de estilo
+var CLASS_STYLE = {
+  fury:'⚔️ Cuerpo a cuerpo', knight:'⚔️ Cuerpo a cuerpo', monk:'⚔️ Cuerpo a cuerpo',
+  archer:'🏹 A distancia', shadow:'🏹 A distancia',
+  wizard:'✨ Magia arcana', warlock:'✨ Magia arcana',
+  druid:'🌿 Magia natural',
+  bard:'🎭 Ingenio y apoyo', inventor:'🎭 Ingenio y apoyo'
+};
+
+// Kit: 3 preguntas, sistema de puntos
+var Q_KIT = [
+  {q:'¿Qué fantasía visual te llama más?', opts:[
+    {t:'Vikingo / bárbaro brutal', s:{asalto:3,berserker_kit:1}},
+    {t:'Caballero / paladín blindado', s:{bastion:3,juramento:1}},
+    {t:'Samurái disciplinado', s:{filo:3}},
+    {t:'Ninja de las sombras', s:{dagas:3,cuervo:1}},
+    {t:'Pirata / corsario', s:{corsario:3}},
+    {t:'Gladiador de arena', s:{gladiador:3}},
+    {t:'Cazador del bosque', s:{halcon:3}},
+    {t:'Hombre lobo / bestia', s:{colmillo:3}},
+    {t:'Mago arcano', s:{conducto:3}},
+    {t:'Alquimista', s:{crisol:3}},
+    {t:'Druida / chamán', s:{raiz:3}},
+    {t:'Monje sereno', s:{zen:3}},
+    {t:'Asesino letal', s:{cuervo:3,dagas:1}}
+  ]},
+  {q:'¿Cuál es tu rol ideal en combate?', opts:[
+    {t:'Tanque: aguanto todo por el equipo', s:{bastion:2,asalto:2,colmillo:2,juramento:2}},
+    {t:'Daño: soy la ofensiva del grupo', s:{berserker_kit:2,filo:2,corsario:2,gladiador:2,dagas:2}},
+    {t:'Apoyo: curo y potencio a los demás', s:{raiz:3,crisol:2,conducto:2,juramento:1}},
+    {t:'Control: domino el campo de batalla', s:{halcon:3,zen:2,cuervo:2}}
+  ]},
+  {q:'¿Cuánto riesgo te gusta correr?', opts:[
+    {t:'Todo o nada, al frente y sin freno', s:{berserker_kit:3,asalto:2}},
+    {t:'Equilibrado: ni temerario ni cobarde', s:{filo:2,corsario:2,gladiador:2}},
+    {t:'Seguro: aguante y defensa primero', s:{bastion:3,juramento:2,colmillo:1}},
+    {t:'Astuto: la mente sobre la fuerza', s:{cuervo:2,dagas:2,halcon:2,zen:2,crisol:1}}
+  ]},
+  {q:'¿Cómo prefieres ganar una pelea?', opts:[
+    {t:'Aplastando con fuerza pura', s:{asalto:2,berserker_kit:2,gladiador:1}},
+    {t:'Con precisión y técnica perfecta', s:{filo:2,zen:2,halcon:1}},
+    {t:'Con veneno, trampas y engaños', s:{cuervo:3,dagas:2,crisol:1}},
+    {t:'Resistiendo hasta que el rival caiga', s:{bastion:2,colmillo:2,juramento:1}},
+    {t:'Con magia y poder arcano', s:{conducto:3,crisol:1}},
+    {t:'Sanando y sobreviviendo como grupo', s:{raiz:3}}
+  ]},
+  {q:'Una última: ¿qué te define mejor?', opts:[
+    {t:'Furia imparable', s:{berserker_kit:2,asalto:1,colmillo:1}},
+    {t:'Honor y disciplina', s:{filo:2,juramento:2,zen:1}},
+    {t:'Libertad y aventura', s:{corsario:2,halcon:1}},
+    {t:'Espectáculo y gloria', s:{gladiador:3}},
+    {t:'Conocimiento y misterio', s:{conducto:2,crisol:2,cuervo:1}},
+    {t:'Conexión con la naturaleza', s:{raiz:2,colmillo:1,halcon:1}},
+    {t:'Sombra y silencio', s:{dagas:2,cuervo:2}},
+    {t:'Protección de los débiles', s:{bastion:1,juramento:2}}
+  ]}
+]
+
+/* ══════════ HELPERS ══════════ */
+function esc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
+function byId(id){return GAMEDATA.factions.concat(GAMEDATA.classes,GAMEDATA.kits).filter(function(x){return x.id===id})[0]}
+function getFaction(id){return GAMEDATA.factions.filter(function(f){return f.id===id})[0]}
+function getClass(id){return GAMEDATA.classes.filter(function(c){return c.id===id})[0]}
+function getKit(id){return GAMEDATA.kits.filter(function(k){return k.id===id})[0]}
+function topScored(scores, getList){
+  var best=null,bestv=-1;
+  Object.keys(scores).forEach(function(k){if(scores[k]>bestv){bestv=scores[k];best=k}});
+  return best;
+}
+function sortByScore(list, scores, idKey){
+  return list.slice().sort(function(a,b){return (scores[b[idKey]]||0)-(scores[a[idKey]]||0)});
+}
+function addScores(target, s){Object.keys(s).forEach(function(k){target[k]=(target[k]||0)+s[k]})}
+
+/* ── Imágenes (clases y kits) ── */
+var IMG_BASE="assets", IMG_EXT="jpg";
+var DEMO_IMAGES={};  // overrides embebidos (vacío en la versión de repo)
+function imgSrc(folder,name){var key=folder+"/"+name; return DEMO_IMAGES[key]||(IMG_BASE+"/"+folder+"/"+name+"."+IMG_EXT);}
+function classEmoji(c){return (CLASS_STYLE[c.id]||'').split(' ')[0]||'🎭';}
+// Retrato de clase (vertical) con respaldo a emoji si la imagen falta
+function classArt(c,size){
+  if(!c)return '';
+  return '<div class="cart '+size+'"><img src="'+imgSrc("clases",c.name)+'" alt="'+esc(c.name)+'" '+
+    'onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'flex\'">'+
+    '<span class="cart-fallback" style="display:none">'+classEmoji(c)+'</span></div>';
+}
+// Hoja de kit (ancha); si falta la imagen, se oculta el contenedor
+function kitArt(k){
+  if(!k)return '';
+  return '<div class="kart"><img src="'+imgSrc("kits",k.name)+'" alt="'+esc(k.name)+'" '+
+    'onerror="this.parentElement.style.display=\'none\'"></div>';
+}
+
+/* ── Render de habilidades ── */
+var BAND_ROLL={b1:'1–4',b2:'5–8',b3:'9–11',b12:'12'};
+function bandsHtml(a){
+  var h='<div class="bands">';
+  ['b1','b2','b3','b12'].forEach(function(k){
+    if(!a.bandas||!a.bandas[k])return;
+    h+='<div class="band'+(k==='b12'?' b12':'')+'"><div class="band-roll">'+BAND_ROLL[k]+'</div><div class="band-eff">'+esc(a.bandas[k])+'</div></div>';
+  });
+  h+='</div>';
+  if(a.echoDC)h+='<div class="echo-note">El resultado del 12 solo se activa si superas un chequeo de Echo (d20 + Echo ≥ 15). Si fallas, cuentas como banda 9–11.</div>';
+  return h;
+}
+// Tarjeta completa de una habilidad (con bandas d12 si aplica)
+function abilHtml(a){
+  var tag='<span class="abil-tag '+(a.type==='Heroica'?'heroica':'base')+'">'+esc(a.type)+'</span>';
+  var h='<div class="abil"><div class="abil-head"><span class="abil-name">'+esc(a.name)+'</span>'+tag+'<span class="abil-cost">'+esc(a.cost||'')+'</span></div>'+
+    '<div class="abil-desc">'+esc(a.desc||'')+'</div>';
+  if(a.tabla)h+=bandsHtml(a);
+  else h+='<div class="abil-mini">Efecto fijo (no usa dado).</div>';
+  return h+'</div>';
+}
+// Habilidad de un kit (efecto + desventaja)
+function kitAbilHtml(k){
+  if(!k||!k.ability)return '';
+  var a=k.ability;
+  return '<div class="abil"><div class="abil-head"><span class="abil-name">'+esc(a.name)+'</span><span class="abil-cost">'+esc(a.cost||'')+'</span></div>'+
+    '<div class="abil-desc">'+esc(a.desc||'')+'</div>'+
+    (a.drawback?'<div class="echo-note" style="color:#a33">Desventaja: '+esc(a.drawback)+'</div>':'')+'</div>';
+}
+// Lista de habilidades de una clase
+function classAbilitiesHtml(c){
+  if(!c.abilities||!c.abilities.length)return '';
+  var h='<div class="abil-list">';
+  c.abilities.forEach(function(a){h+=abilHtml(a);});
+  return h+'</div>';
+}
+
+/* ══════════ FLUJO DE PASOS ══════════ */
+// Pasos: 0=bienvenida 1=nombre 2=facción-q1 3=facción-feat 4=facción-result
+//        5..8=clase-q(4) 9=clase-result 10..12=kit-q(3) 13=kit-result 14=resumen
+var TOTAL_STEPS = 17;
+
+function render(){
+  var el=document.getElementById('app');
+  var s=state.step;
+  if(s!==16)state._edit=null;
+  var pct=Math.round((s/(TOTAL_STEPS-1))*100);
+  document.getElementById('progress').style.width=pct+'%';
+  var h='';
+  if(s===0) h=renderWelcome();
+  else if(s===1) h=renderName();
+  else if(s===2) h=renderFactionQ1();
+  else if(s===3) h=renderFactionFeat();
+  else if(s===4) h=renderFactionResult();
+  else if(s>=5&&s<=8) h=renderClassQ(s-5);
+  else if(s===9) h=renderClassResult();
+  else if(s>=10&&s<=14) h=renderKitQ(s-10);
+  else if(s===15) h=renderKitResult();
+  else if(s===16) h=renderSummary();
+  el.innerHTML=h;
+  window.scrollTo(0,0);
+}
+
+function go(step){state.step=step;render()}
+function next(){go(state.step+1)}
+function back(){if(state.step>0)go(state.step-1)}
+
+/* ══════════ RENDER DE PASOS ══════════ */
+function renderWelcome(){
+  return '<h1>⚔️ Descubre tu héroe</h1>'+
+    '<p class="lead">Bienvenido a <strong>Avelir</strong>. No vas a elegir de una lista aburrida — vas a <strong>descubrir</strong> quién eres respondiendo unas preguntas. No necesitas saber nada del juego todavía.</p>'+
+    '<div class="teach">Al final vas a descargar tu <strong>hoja de personaje</strong> para llevar a la mesa y mandársela a tu Story Master. Toma unos 5 minutos.</div>'+
+    '<div class="btn-row"><button class="btn" onclick="next()">Empecemos →</button></div>';
+}
+
+function renderName(){
+  return '<div class="step-label">Paso 1</div><h2>¿Cómo se llama tu héroe?</h2>'+
+    '<p class="lead">Puede ser épico, gracioso, lo que quieras. Es tuyo.</p>'+
+    '<input type="text" id="nameInput" placeholder="Ej. Kaelen, Draco Puñofuerte..." value="'+esc(state.name)+'" oninput="state.name=this.value" onkeydown="if(event.key===\'Enter\'&&this.value.trim()){next()}">'+
+    '<div class="btn-row"><button class="btn btn-ghost" onclick="back()">← Atrás</button><button class="btn" onclick="if(state.name.trim())next()">Continuar →</button></div>';
+}
+
+function renderFactionQ1(){
+  var h='<div class="step-label">Paso 2 · Tu facción</div><h2>'+esc(Q_FACTION1.q)+'</h2>'+
+    '<p class="lead">Tu facción es el grupo o causa a la que perteneces. Define quién eres y en qué crees.</p>';
+  Q_FACTION1.opts.forEach(function(o,i){
+    var sel=state._f1===i?' sel':'';
+    h+='<button class="opt'+sel+'" onclick="pickFaction1('+i+')">'+esc(o.t)+'</button>';
+  });
+  h+='<div class="btn-row"><button class="btn btn-ghost" onclick="back()">← Atrás</button></div>';
+  return h;
+}
+function pickFaction1(i){
+  state._f1=i;
+  state.factionId=Q_FACTION1.opts[i].f;
+  state.factionFeatIdx=null;
+  next();
+}
+
+function renderFactionFeat(){
+  var fac=getFaction(state.factionId);
+  if(!fac)return '<p>Error: facción no encontrada</p>';
+  var h='<div class="step-label">Paso 2 · Tu facción</div>'+
+    '<h2>'+esc(fac.icon)+' '+esc(fac.name)+'</h2>'+
+    '<div class="teach"><strong>'+esc(fac.declaration)+'</strong></div>'+
+    '<p class="lead">Tu facción te hace una pregunta. Tu respuesta define tu <strong>feat</strong> (un rasgo especial). Elige la que sientas más tuya:</p>'+
+    '<p class="lead" style="font-style:italic;color:var(--ink)">"'+esc(fac.question)+'"</p>';
+  fac.feats.forEach(function(ft,i){
+    var sel=state.factionFeatIdx===i?' sel':'';
+    h+='<button class="opt'+sel+'" onclick="pickFeat('+i+')">'+esc(ft.response)+
+      '<span class="opt-sub">'+esc(ft.name)+' ('+esc(ft.attr)+') — '+esc(ft.desc)+'</span></button>';
+  });
+  h+='<div class="btn-row"><button class="btn btn-ghost" onclick="go(2)">← Cambiar facción</button></div>';
+  return h;
+}
+function pickFeat(i){state.factionFeatIdx=i;next()}
+
+function renderFactionResult(){
+  var fac=getFaction(state.factionId);
+  var ft=fac.feats[state.factionFeatIdx];
+  var h='<div class="step-label">Paso 2 · ¡Listo!</div>'+
+    '<div class="result"><div class="result-icon">'+esc(fac.icon)+'</div>'+
+    '<div class="result-name">'+esc(fac.name)+'</div>'+
+    '<div class="result-desc">'+esc(fac.declaration)+'</div>'+
+    '<div class="feat-box"><div class="result-meta" style="display:block">✨ <strong>'+esc(ft.name)+'</strong> ('+esc(ft.attr)+')<br>'+esc(ft.desc)+'</div></div>'+
+    '</div>'+
+    '<details class="explore"><summary>Ver las otras facciones antes de seguir</summary>';
+  GAMEDATA.factions.forEach(function(f){
+    var cur=f.id===state.factionId?' current':'';
+    h+='<div class="explore-item'+cur+'" onclick="switchFaction(\''+f.id+'\')"><div class="explore-item-name">'+esc(f.icon)+' '+esc(f.name)+(f.id===state.factionId?'<span class="tag">tu elección</span>':'')+'</div><div class="explore-item-desc">'+esc(f.declaration)+'</div></div>';
+  });
+  h+='</details>'+
+    '<div class="btn-row"><button class="btn btn-ghost" onclick="go(2)">← Rehacer</button><button class="btn" onclick="go(5)">Ahora tu clase →</button></div>';
+  return h;
+}
+function switchFaction(id){
+  if(id===state.factionId){return}
+  state.factionId=id;state.factionFeatIdx=null;
+  go(3); // reelegir feat de la nueva facción
+}
+
+/* ══════════ CLASE ══════════ */
+function renderClassQ(qi){
+  var Q=Q_CLASS[qi];
+  var teach='';
+  if(qi===0){
+    teach='<div class="teach">Antes de empezar: en una pelea, tu <strong>turno</strong> es 1 movimiento + 2 acciones. Cada acción puede ser un ataque o una <strong>habilidad</strong> (tu movida especial). Tu clase decide qué habilidades geniales tienes. Elige según el estilo que te llame.</div>';
+  }
+  var h='<div class="step-label">Paso 3 · Tu clase ('+(qi+1)+' de 4)</div><h2>'+esc(Q.q)+'</h2>'+teach;
+  Q.opts.forEach(function(o,i){
+    var sel=(state._classAns&&state._classAns[qi]===i)?' sel':'';
+    h+='<button class="opt'+sel+'" onclick="pickClass('+qi+','+i+')">'+esc(o.t)+'</button>';
+  });
+  var backStep=qi===0?4:(5+qi-1);
+  h+='<div class="btn-row"><button class="btn btn-ghost" onclick="go('+backStep+')">← Atrás</button></div>';
+  return h;
+}
+function pickClass(qi,oi){
+  if(!state._classAns)state._classAns={};
+  state._classAns[qi]=oi;
+  // recomputar scores desde todas las respuestas
+  state.classScores={};
+  Object.keys(state._classAns).forEach(function(k){
+    var q=Q_CLASS[k];var ans=state._classAns[k];
+    if(q&&q.opts[ans])addScores(state.classScores,q.opts[ans].s);
+  });
+  if(qi<3){go(5+qi+1)}
+  else{
+    // determinar clase ganadora
+    state.classId=topScored(state.classScores);
+    go(9);
+  }
+}
+function renderClassResult(){
+  var c=getClass(state.classId);
+  var h='<div class="step-label">Paso 3 · ¡Tu clase!</div>'+
+    '<div class="result">'+classArt(c,'cart-lg')+
+    '<div class="result-name" style="margin-top:12px">'+esc(c.name)+'</div>'+
+    '<div class="result-desc">'+esc(CLASS_DESC[c.id]||'')+'</div>'+
+    '<div class="result-meta">Tu energía de combate se llama <strong>'+esc(c.resource)+'</strong></div>'+
+    '</div>'+
+    '<div class="teach">Todas las clases usan <strong>Aen</strong> (energía de combate). Al inicio de cada turno recuperas <strong>'+GAMEDATA.rules.aenPerTurn+' Aen</strong>. Cada clase le da su propio nombre — la tuya la llama <strong>'+esc(c.resource)+'</strong>, pero funciona igual.</div>';
+  // Notas pedagógicas — primera vez que aparecen las habilidades
+  h+='<h2 style="margin-top:24px">Tus habilidades</h2>'+
+    '<div class="concept">Cada habilidad cuesta <strong>Aen</strong>. Las <strong>Base</strong> son tu día a día; la <strong>Heroica</strong> es tu golpe grande y cuesta más.</div>'+
+    '<div class="concept">Muchas habilidades de daño se resuelven tirando <strong>1d12</strong>: según el número caes en una <strong>banda</strong> (1–4 flojo · 5–8 medio · 9–11 fuerte · <strong>12</strong> el efecto máximo). Otras tienen un <strong>efecto fijo</strong> y no usan dado.</div>'+
+    classAbilitiesHtml(c)+
+    '<details class="explore"><summary>Ver las otras clases (ordenadas por afinidad contigo)</summary>';
+  var sorted=sortByScore(GAMEDATA.classes,state.classScores,'id');
+  sorted.forEach(function(cl){
+    var cur=cl.id===state.classId?' current':'';
+    var sc=state.classScores[cl.id]||0;
+    h+='<div class="explore-item'+cur+'"><div class="ex-head">'+classArt(cl,'cart-sm')+'<div class="ex-body"><div class="explore-item-name">'+esc(cl.name)+' <span style="font-weight:400;font-size:12px">'+(CLASS_STYLE[cl.id]||'')+' · energía: '+esc(cl.resource)+'</span>'+(cl.id===state.classId?'<span class="tag">tu resultado</span>':(sc>0?'<span class="affinity">'+sc+' pts</span>':''))+'</div><div class="explore-item-desc">'+esc(CLASS_DESC[cl.id]||'')+'</div></div></div>'+
+      classAbilitiesHtml(cl)+
+      (cl.id===state.classId?'':'<button class="btn btn-ghost" style="margin-top:8px;width:100%" onclick="switchClass(\''+cl.id+'\')">Elegir '+esc(cl.name)+'</button>')+
+      '</div>';
+  });
+  h+='</details>'+
+    '<div class="btn-row"><button class="btn btn-ghost" onclick="go(5)">← Rehacer test</button><button class="btn" onclick="go(10)">Ahora tu kit →</button></div>';
+  return h;
+}
+function switchClass(id){state.classId=id;render()}
+
+/* ══════════ KIT ══════════ */
+function renderKitQ(qi){
+  var Q=Q_KIT[qi];
+  var teach='';
+  if(qi===0){
+    teach='<div class="teach">Tu <strong>Kit</strong> es tu paquete de equipo y estilo. Te da <strong>vida extra (HP)</strong> y una habilidad propia. Piensa en él como tu fantasía visual: ¿vikingo? ¿ninja? ¿pirata? No tiene que combinar con tu clase — ¡experimenta!</div>';
+  }
+  var h='<div class="step-label">Paso 4 · Tu kit ('+(qi+1)+' de 5)</div><h2>'+esc(Q.q)+'</h2>'+teach;
+  Q.opts.forEach(function(o,i){
+    var sel=(state._kitAns&&state._kitAns[qi]===i)?' sel':'';
+    h+='<button class="opt'+sel+'" onclick="pickKit('+qi+','+i+')">'+esc(o.t)+'</button>';
+  });
+  var backStep=qi===0?9:(10+qi-1);
+  h+='<div class="btn-row"><button class="btn btn-ghost" onclick="go('+backStep+')">← Atrás</button></div>';
+  return h;
+}
+function pickKit(qi,oi){
+  if(!state._kitAns)state._kitAns={};
+  state._kitAns[qi]=oi;
+  state.kitScores={};
+  Object.keys(state._kitAns).forEach(function(k){
+    var q=Q_KIT[k];var ans=state._kitAns[k];
+    if(q&&q.opts[ans])addScores(state.kitScores,q.opts[ans].s);
+  });
+  if(qi<4){go(10+qi+1)}
+  else{state.kitId=topScored(state.kitScores);go(15)}
+}
+function renderKitResult(){
+  var k=getKit(state.kitId);
+  var h='<div class="step-label">Paso 4 · ¡Tu kit!</div>'+
+    '<div class="result"><div class="result-icon">🎒</div>'+
+    '<div class="result-name">'+esc(k.name)+'</div>'+
+    '<div class="result-desc">'+esc(k.fantasy||'')+' · '+esc(k.archetype||'')+'</div>'+
+    '<div class="result-meta">+'+(k.hpBonus||0)+' HP</div>'+
+    '</div>'+
+    kitArt(k)+
+    '<div class="concept">Además de vida extra, tu kit te da <strong>una habilidad propia</strong> con una <strong>desventaja</strong> (un costo o riesgo que la hace una decisión, no un regalo gratis).</div>'+
+    kitAbilHtml(k)+
+    '<details class="explore"><summary>Ver los otros kits (ordenados por afinidad)</summary>';
+  var sorted=sortByScore(GAMEDATA.kits,state.kitScores,'id');
+  sorted.forEach(function(kt){
+    var cur=kt.id===state.kitId?' current':'';
+    var sc=state.kitScores[kt.id]||0;
+    h+='<div class="explore-item'+cur+'"><div class="explore-item-name">'+esc(kt.name)+' <span style="font-weight:400;font-size:12px">'+esc(kt.fantasy||'')+' · +'+(kt.hpBonus||0)+'HP</span>'+(kt.id===state.kitId?'<span class="tag">tu resultado</span>':(sc>0?'<span class="affinity">'+sc+' pts</span>':''))+'</div><div class="explore-item-desc">'+esc(kt.archetype||'')+'</div>'+
+      kitAbilHtml(kt)+
+      (kt.id===state.kitId?'':'<button class="btn btn-ghost" style="margin-top:8px;width:100%" onclick="switchKit(\''+kt.id+'\')">Elegir '+esc(kt.name)+'</button>')+
+      '</div>';
+  });
+  h+='</details>'+
+    '<div class="btn-row"><button class="btn btn-ghost" onclick="go(10)">← Rehacer test</button><button class="btn" onclick="go(16)">Ver mi héroe →</button></div>';
+  return h;
+}
+function switchKit(id){state.kitId=id;render()}
+
+/* ══════════ RESUMEN ══════════ */
+function renderSummary(){
+  var fac=getFaction(state.factionId), c=getClass(state.classId), k=getKit(state.kitId);
+  var ft=fac?fac.feats[state.factionFeatIdx]:null;
+  var totalHP=10+(k?(k.hpBonus||0):0);
+  var ed=state._edit||null;
+  var h='<div class="step-label">¡Terminaste!</div><h1>🎉 '+esc(state.name||'Tu héroe')+'</h1>'+
+    (c?'<div style="text-align:center;margin:6px 0 4px">'+classArt(c,'cart-md')+'</div>':'')+
+    '<p class="lead">Revisa a tu héroe. Puedes <strong>cambiar cualquier parte aquí mismo</strong> antes de imprimir.</p>'+
+    '<div class="summary-card">';
+
+  // ── Facción (editable) ──
+  h+=editRow('Facción', (fac?esc(fac.icon)+' '+esc(fac.name):'—'), 'faction');
+  if(ed==='faction'){
+    h+='<div class="edit-panel">';
+    GAMEDATA.factions.forEach(function(f){
+      var cur=f.id===state.factionId?' current':'';
+      h+='<div class="explore-item'+cur+'" onclick="summaryPickFaction(\''+f.id+'\')"><div class="explore-item-name">'+esc(f.icon)+' '+esc(f.name)+(f.id===state.factionId?'<span class="tag">actual</span>':'')+'</div><div class="explore-item-desc">'+esc(f.declaration)+'</div></div>';
+    });
+    h+='<button class="btn btn-ghost" style="width:100%;margin-top:8px" onclick="toggleEdit(\'faction\')">Listo</button></div>';
+  }
+
+  // ── Feat (editable) ──
+  h+=editRow('Feat', ft?esc(ft.name)+' <span class="hint">'+esc(ft.attr)+'</span>':'—', 'feat');
+  if(ed==='feat'&&fac){
+    h+='<div class="edit-panel">';
+    fac.feats.forEach(function(f,i){
+      var cur=state.factionFeatIdx===i?' current':'';
+      h+='<div class="explore-item'+cur+'" onclick="summaryPickFeat('+i+')"><div class="explore-item-name">'+esc(f.name)+' <span class="hint">'+esc(f.attr)+'</span>'+(state.factionFeatIdx===i?'<span class="tag">actual</span>':'')+'</div><div class="explore-item-desc">'+esc(f.desc)+'</div></div>';
+    });
+    h+='<button class="btn btn-ghost" style="width:100%;margin-top:8px" onclick="toggleEdit(\'feat\')">Listo</button></div>';
+  }
+
+  // ── Clase (editable) ──
+  h+=editRow('Clase', c?esc(c.name)+' <span class="hint">energía: '+esc(c.resource)+'</span>':'—', 'class');
+  if(ed==='class'){
+    h+='<div class="edit-panel">';
+    sortByScore(GAMEDATA.classes,state.classScores,'id').forEach(function(cl){
+      var cur=cl.id===state.classId?' current':'';
+      h+='<div class="explore-item'+cur+'" onclick="switchClass(\''+cl.id+'\')"><div class="ex-head">'+classArt(cl,'cart-sm')+'<div class="ex-body"><div class="explore-item-name">'+esc(cl.name)+' <span class="hint">'+(CLASS_STYLE[cl.id]||'')+' · '+esc(cl.resource)+'</span>'+(cl.id===state.classId?'<span class="tag">actual</span>':'')+'</div><div class="explore-item-desc">'+esc(CLASS_DESC[cl.id]||'')+'</div></div></div></div>';
+    });
+    h+='<button class="btn btn-ghost" style="width:100%;margin-top:8px" onclick="toggleEdit(\'class\')">Listo</button></div>';
+  }
+
+  // ── Kit (editable) ──
+  h+=editRow('Kit', k?esc(k.name)+' <span class="hint">'+esc(k.fantasy||'')+'</span>':'—', 'kit');
+  if(ed==='kit'){
+    h+='<div class="edit-panel">';
+    sortByScore(GAMEDATA.kits,state.kitScores,'id').forEach(function(kt){
+      var cur=kt.id===state.kitId?' current':'';
+      h+='<div class="explore-item'+cur+'" onclick="switchKit(\''+kt.id+'\')"><div class="explore-item-name">'+esc(kt.name)+' <span class="hint">'+esc(kt.fantasy||'')+' · +'+(kt.hpBonus||0)+'HP</span>'+(kt.id===state.kitId?'<span class="tag">actual</span>':'')+'</div><div class="explore-item-desc">'+esc(kt.archetype||'')+'</div></div>';
+    });
+    h+='<button class="btn btn-ghost" style="width:100%;margin-top:8px" onclick="toggleEdit(\'kit\')">Listo</button></div>';
+  }
+
+  h+=row('HP total', totalHP+' <span class="hint">(10 base + '+(k?k.hpBonus||0:0)+' del kit)</span>')+
+    row('Aen por turno', GAMEDATA.rules.aenPerTurn+' <span class="hint">(igual para todas las clases · se llama '+esc(c?c.resource:'Aen')+')</span>')+
+    '</div>';
+
+  // ── Todas las habilidades (completas, con bandas d12) ──
+  var nAbil=(ft?1:0)+(c&&c.abilities?c.abilities.length:0)+(k&&k.ability?1:0);
+  h+='<h2 style="margin-top:26px">Todas tus habilidades <span style="font-weight:400;font-size:14px;color:var(--ink3)">('+nAbil+')</span></h2>'+
+    '<p class="lead">Todo lo que '+esc(state.name||'tu héroe')+' puede hacer en combate. Si algo no te convence, cámbialo arriba.</p>';
+  if(ft){
+    h+='<div class="abil"><div class="abil-head"><span class="abil-name">✨ '+esc(ft.name)+'</span><span class="abil-tag base">Feat de facción</span><span class="abil-cost">'+esc(ft.attr)+'</span></div><div class="abil-desc">'+esc(ft.desc)+'</div></div>';
+  }
+  h+=classAbilitiesHtml(c);
+  h+=kitAbilHtml(k);
+
+  h+='<div class="teach">Tu hoja está lista. Toca <strong>Descargar / Imprimir</strong>, guárdala como PDF y mándasela a tu Story Master. Él te ayudará con el resto en la mesa.</div>'+
+    '<div class="btn-row"><button class="btn btn-ghost" onclick="go(0)">↺ Empezar de nuevo</button><button class="btn" onclick="printSheet()">📄 Descargar / Imprimir</button></div>';
+  return h;
+}
+function row(k,v){return '<div class="summary-row"><div class="summary-key">'+k+'</div><div class="summary-val">'+v+'</div></div>'}
+function editRow(k,v,section){var open=state._edit===section;return '<div class="summary-row"><div class="summary-key">'+k+'</div><div class="summary-val">'+v+'<button class="edit-btn" onclick="toggleEdit(\''+section+'\')">'+(open?'Cerrar':'Cambiar')+'</button></div></div>'}
+function toggleEdit(section){state._edit=(state._edit===section?null:section);render()}
+function summaryPickFaction(id){if(id!==state.factionId){state.factionId=id;state.factionFeatIdx=0}render()}
+function summaryPickFeat(i){state.factionFeatIdx=i;render()}
+
+/* ══════════ CHARACTER SHEET IMPRIMIBLE ══════════ */
+function printSheet(){
+  buildSheet();
+  window.print();
+}
+/* Habilidad para la hoja imprimible (compacta, legible, sin cortes de página) */
+var PBAND={b1:'1–4',b2:'5–8',b3:'9–11',b12:'12'};
+function sheetBands(a){
+  var s='<table style="width:100%;border-collapse:collapse;margin-top:6px;font-size:11px">';
+  ['b1','b2','b3','b12'].forEach(function(kk){
+    if(!a.bandas||!a.bandas[kk])return;
+    var hi=kk==='b12';
+    s+='<tr><td style="width:38px;text-align:center;font-weight:bold;border:1px solid #ccc;padding:3px 4px;'+(hi?'background:#333;color:#fff':'background:#f0f0f0;color:#555')+'">'+PBAND[kk]+'</td><td style="border:1px solid #ccc;padding:3px 6px'+(hi?';font-weight:bold':'')+'">'+esc(a.bandas[kk])+'</td></tr>';
+  });
+  s+='</table>';
+  if(a.echoDC)s+='<div style="font-size:10px;font-style:italic;color:#8a3a6a;margin-top:3px">El 12 requiere chequeo de Echo (d20 + Echo ≥ 15); si fallas, cuenta como 9–11.</div>';
+  return s;
+}
+function sheetAbil(a){
+  var badge=a.type==='Heroica'?'#8a3a6a':'#5a6a3a';
+  var h='<div style="border:1px solid #ccc;border-radius:6px;padding:10px 12px;margin-bottom:10px;page-break-inside:avoid;break-inside:avoid">';
+  h+='<div style="font-weight:bold;font-size:14px">'+esc(a.name)+' <span style="font-size:10px;font-weight:bold;color:#fff;background:'+badge+';padding:1px 6px;border-radius:8px;vertical-align:middle">'+esc((a.type||'').toUpperCase())+'</span> <span style="font-weight:normal;font-size:11px;color:#666">'+esc(a.cost||'')+'</span></div>';
+  h+='<div style="font-size:12.5px;color:#333;margin-top:3px">'+esc(a.desc||'')+'</div>';
+  if(a.tabla)h+=sheetBands(a);
+  return h+'</div>';
+}
+function buildSheet(){
+  var fac=getFaction(state.factionId), c=getClass(state.classId), k=getKit(state.kitId);
+  var ft=fac?fac.feats[state.factionFeatIdx]:null;
+  var totalHP=10+(k?(k.hpBonus||0):0);
+  var blank='<span style="display:inline-block;border-bottom:1px solid #999;min-width:120px">&nbsp;</span>';
+  var h='<div style="font-family:Georgia,serif;color:#111;max-width:720px;margin:0 auto;padding:24px">';
+  h+='<div style="text-align:center;border-bottom:3px double #333;padding-bottom:12px;margin-bottom:20px"><div style="font-size:13px;letter-spacing:3px;color:#666">EPIC QUEST · AVELIR</div><div style="font-size:30px;font-weight:bold;margin-top:4px">'+esc(state.name||'________________')+'</div></div>';
+  // Retrato de clase (respaldo a emoji si falta)
+  if(c){h+='<div style="text-align:center;margin-bottom:18px;page-break-inside:avoid;break-inside:avoid">'+classArt(c,'cart-md')+'</div>';}
+  // Bloque de identidad
+  h+='<table style="width:100%;border-collapse:collapse;margin-bottom:20px;font-size:15px">';
+  h+='<tr><td style="padding:8px;border:1px solid #ccc;background:#f5f5f5;font-weight:bold;width:130px">Facción</td><td style="padding:8px;border:1px solid #ccc">'+(fac?esc(fac.icon)+' '+esc(fac.name):'')+'</td></tr>';
+  h+='<tr><td style="padding:8px;border:1px solid #ccc;background:#f5f5f5;font-weight:bold">Clase</td><td style="padding:8px;border:1px solid #ccc">'+(c?esc(c.name):'')+'</td></tr>';
+  h+='<tr><td style="padding:8px;border:1px solid #ccc;background:#f5f5f5;font-weight:bold">Kit</td><td style="padding:8px;border:1px solid #ccc">'+(k?esc(k.name)+' ('+esc(k.fantasy||'')+')':'')+'</td></tr>';
+  h+='</table>';
+  // Stats principales
+  h+='<div style="display:flex;gap:12px;margin-bottom:20px;text-align:center">';
+  h+='<div style="flex:1;border:2px solid #333;border-radius:8px;padding:12px"><div style="font-size:11px;color:#666;letter-spacing:1px">HP TOTAL</div><div style="font-size:32px;font-weight:bold">'+totalHP+'</div></div>';
+  h+='<div style="flex:1;border:2px solid #333;border-radius:8px;padding:12px"><div style="font-size:11px;color:#666;letter-spacing:1px">AEN / TURNO</div><div style="font-size:32px;font-weight:bold">+'+GAMEDATA.rules.aenPerTurn+'</div>'+(c?'<div style="font-size:9px;color:#999;margin-top:2px">tu clase lo llama '+esc(c.resource)+'</div>':'')+'</div>';
+  h+='<div style="flex:1;border:2px solid #333;border-radius:8px;padding:12px"><div style="font-size:11px;color:#666;letter-spacing:1px">ECHO</div><div style="font-size:32px;font-weight:bold">___</div></div>';
+  h+='</div>';
+  function sheetHead(t){return '<div style="font-weight:bold;font-size:12px;letter-spacing:1px;color:#555;border-bottom:2px solid #333;padding-bottom:3px;margin:0 0 10px">'+t+'</div>';}
+  // Feat de facción
+  if(ft){
+    h+='<div style="margin-bottom:18px;page-break-inside:avoid;break-inside:avoid">'+sheetHead('FEAT DE FACCIÓN')+
+      '<div style="border:1px solid #ccc;border-radius:6px;padding:10px 12px"><div style="font-weight:bold;font-size:14px">✨ '+esc(ft.name)+' <span style="font-weight:normal;font-size:11px;color:#666">('+esc(ft.attr)+')</span></div><div style="font-size:12.5px;color:#333;margin-top:3px">'+esc(ft.desc)+'</div></div></div>';
+  }
+  // Habilidades de clase (las 3)
+  if(c&&c.abilities&&c.abilities.length){
+    h+='<div style="margin-bottom:18px">'+sheetHead('HABILIDADES DE CLASE — '+esc(c.name).toUpperCase()+' · ENERGÍA: '+esc(c.resource))+
+      '<div style="font-size:10.5px;color:#777;margin:-6px 0 10px">Las habilidades con tabla se resuelven tirando 1d12: banda 1–4 · 5–8 · 9–11 · 12 (efecto máximo).</div>';
+    c.abilities.forEach(function(a){h+=sheetAbil(a);});
+    h+='</div>';
+  }
+  // Kit: arte (concept, ~65%) + habilidad
+  if(k){
+    h+='<div style="margin-bottom:18px;page-break-inside:avoid;break-inside:avoid">'+sheetHead('KIT — '+esc(k.name).toUpperCase()+(k.fantasy?' · '+esc(k.fantasy):''))+
+      '<div style="width:65%;margin:2px auto 12px">'+kitArt(k)+'</div>'+
+      (k.ability?'<div style="border:1px solid #ccc;border-radius:6px;padding:10px 12px"><div style="font-weight:bold;font-size:14px">🎒 '+esc(k.ability.name)+' <span style="font-weight:normal;font-size:11px;color:#666">'+esc(k.ability.cost||'')+'</span></div><div style="font-size:12.5px;color:#333;margin-top:3px">'+esc(k.ability.desc||'')+(k.ability.drawback?'<br><em style="color:#a33">Desventaja: '+esc(k.ability.drawback)+'</em>':'')+'</div></div>':'')+
+      '</div>';
+  }
+  // Secciones en blanco para escribir
+  function blankSection(title,lines){
+    var s='<div style="margin-bottom:18px;page-break-inside:avoid;break-inside:avoid"><div style="font-weight:bold;font-size:13px;letter-spacing:1px;color:#555;border-bottom:2px solid #333;padding-bottom:3px;margin-bottom:8px">'+title+'</div>';
+    for(var i=0;i<lines;i++)s+='<div style="border-bottom:1px solid #ddd;height:26px"></div>';
+    return s+'</div>';
+  }
+  h+=blankSection('APARIENCIA Y PERSONALIDAD',4);
+  h+=blankSection('TRASFONDO / HISTORIA',5);
+  h+=blankSection('INVENTARIO',5);
+  h+=blankSection('NOTAS',5);
+  h+='<div style="text-align:center;font-size:11px;color:#999;margin-top:24px;border-top:1px solid #ccc;padding-top:8px">Creado con el Generador de Héroes · Epic Quest</div>';
+  h+='</div>';
+  document.getElementById('sheet').innerHTML=h;
+}
+
+/* ══════════ ARRANQUE + LINK DIRECTO ══════════ */
+function init(){
+  // El link directo abre el creador. Si hay ?crear o #crear, arranca en bienvenida (paso 0).
+  // (En el futuro, integrado al index, este parámetro saltará directo al creador.)
+  state.step=0;
+  render();
+}
+init();
+
+</script>
+</body>
+</html>
