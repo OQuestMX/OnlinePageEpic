@@ -3081,6 +3081,7 @@ function allLinkables(){
   dbGetAll('scenes').forEach(function(s){out.push({kind:'scene',id:s.id,title:s.name,icon:'🎬'})});
   allCreatures().forEach(function(c){out.push({kind:'creature',id:c.id,title:c.name,icon:'🐾'})});
   dbGetAll('players').forEach(function(p){out.push({kind:'player',id:p.id,title:p.name,icon:'🧙'})});
+  dbGetAll('sessions').forEach(function(s){out.push({kind:'session',id:s.id,title:(s.sessionTitle||('Sesion '+(s.sessionNum||''))||'Sesion'),icon:'📔'})});
   return out;
 }
 // Open the link picker modal (used by wiki editor "Enlazar" button)
@@ -3186,6 +3187,7 @@ function openConnection(kind,id,title){
   else if(kind==='scene'){selectedSceneId=id;nav('scenes');renderSceneBuilder(id)}
   else if(kind==='creature'){selectedLibTab='bestiary';selectedLibItem=id;nav('library')}
   else if(kind==='player'){nav('players')}
+  else if(kind==='session'){nav('journal')}
 }
 function connIcon(kind){return{wiki:'📄',scene:'🎬',creature:'🐾',player:'🧙'}[kind]||'🔗'}
 
@@ -4011,6 +4013,23 @@ button{font-family:inherit;cursor:pointer}
 .swatches button.on{box-shadow:0 0 0 2px var(--accent)}
 
 @media (max-width:900px){#bar .brand{font-size:16px}}
+
+/* ---- Conexiones ---- */
+.links-list{display:flex;flex-direction:column;gap:5px}
+.links-none{font-size:12.5px;color:var(--ink3);font-style:italic}
+.link-chip{display:flex;align-items:center;gap:7px;background:var(--accent-light);border:1px solid var(--border);border-radius:7px;padding:5px 8px;font-size:13px;color:var(--ink)}
+.link-chip .lk-title{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.link-chip .lk-x{background:none;border:0;color:var(--ink3);font-size:16px;cursor:pointer;padding:0 2px;line-height:1}
+.link-chip .lk-x:hover{color:#a3402c}
+.link-results{max-height:300px;overflow:auto;margin-top:10px;display:flex;flex-direction:column;gap:3px}
+.link-res{display:flex;align-items:center;gap:8px;padding:8px 9px;border-radius:7px;background:#fff;border:1px solid var(--border);cursor:pointer;font-size:13.5px;text-align:left;color:var(--ink)}
+.link-res:hover{background:var(--accent-light);border-color:var(--accent)}
+.link-res .lk-kind{font-size:10px;color:var(--ink3);text-transform:uppercase;letter-spacing:.5px}
+.link-res.added{opacity:.45}
+.lore-conns{padding:0 24px 34px}
+.lore-conns .lc-ttl{font-family:var(--sans);font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--accent);margin:6px 0 8px}
+.lore-conn{display:flex;align-items:center;gap:8px;background:#fff;border:1px solid var(--border);border-radius:8px;padding:9px 11px;margin-bottom:6px;cursor:pointer;font-size:14px;color:var(--ink)}
+.lore-conn:hover{border-color:var(--accent);background:var(--accent-light)}
 </style>
 
 <div id="viewport"><div id="world"><img id="map" alt="Mapa"><svg id="overlay" xmlns="http://www.w3.org/2000/svg"><g id="svgAreas"></g><g id="svgRoutes"></g><g id="svgDraft"></g></svg><div id="pins"></div></div></div>
@@ -4060,6 +4079,7 @@ button{font-family:inherit;cursor:pointer}
   <div class="lhead"><div class="leyebrow">Crónica de Avelir</div><h2 id="loreTitle">—</h2></div>
   <img id="loreImg" class="limg" alt="" style="display:none">
   <div class="lbody" id="loreBody"></div>
+  <div class="lore-conns" id="loreConns"></div>
 </aside>
 
 <div class="scrim" id="editScrim"><div class="sheet">
@@ -4071,7 +4091,7 @@ button{font-family:inherit;cursor:pointer}
     <div class="field" id="fImgWrap"><label>Imagen del popup (URL, opcional)</label><input id="fImg" placeholder="https://…"></div>
     <div class="field" id="fShortWrap"><label>Resumen (popup)</label><textarea id="fShort" rows="2" placeholder="Una o dos líneas."></textarea></div>
     <div class="field" id="fLoreWrap"><label>Lore completo (ver más)</label><textarea id="fLore" rows="5" placeholder="Texto largo."></textarea></div>
-    <div class="field" id="fWikiWrap"><label>Ficha del wiki (opcional)</label><select id="fWiki"><option value="">— ninguna —</option></select><div class="tip">"Ver más" abrirá esta entrada del wiki del Hub.</div></div>
+    <div class="field" id="fLinksWrap"><label>Conexiones</label><div id="fLinksList" class="links-list"></div><button type="button" class="btn ghost" id="fLinkAdd" style="margin-top:6px;padding:7px 12px">+ Enlazar…</button><div class="tip">Liga este lugar a wiki, sesiones, escenas, criaturas o personajes.</div></div>
     <div class="field" id="fSubWrap"><label>Mapa del submapa</label>
       <select id="fSubMap"><option value="">— elige un mapa —</option></select>
       <div class="tip">Elige a qué mapa lleva este pin. Al tocarlo (en modo Ver), entrarás a él.</div>
@@ -4112,7 +4132,16 @@ button{font-family:inherit;cursor:pointer}
   </div>
 </div></div>
 
-</template>
+
+<div class="scrim" id="linkScrim"><div class="sheet">
+  <h3>Enlazar a…</h3>
+  <div class="sub">Elige qué quieres conectar a este lugar. Puedes agregar varios.</div>
+  <div class="form">
+    <input id="linkSearch" placeholder="Buscar wiki, sesión, escena, criatura, personaje…" style="width:100%;background:#fff;border:1px solid var(--border);border-radius:8px;padding:9px 11px;font-family:var(--sans);font-size:15px;color:var(--ink)">
+    <div id="linkResults" class="link-results"></div>
+  </div>
+  <div class="actions"><button class="btn ghost" id="linkClose">Cerrar</button></div>
+</div></div></template>
 <script>window.EpicMapInit=function(root){
 
 "use strict";
@@ -4159,6 +4188,29 @@ var state={zoom:1,panX:0,panY:0,mode:"view",active:"places",visible:{places:true
 var MAPS_LIST=[];
 function loadMapsList(){try{fetch("assets/maps/maps.json").then(function(r){return r.json();}).then(function(a){if(Array.isArray(a))MAPS_LIST=a;}).catch(function(){});}catch(e){}}
 loadMapsList();
+var editLinks=[];
+var CONN_ICON={wiki:"📄",session:"📔",scene:"🎬",creature:"🐾",player:"🧙"};
+function connLabel(k){return {wiki:"Wiki",session:"Sesión",scene:"Escena",creature:"Criatura",player:"Personaje"}[k]||k;}
+function openConn(kind,id,title){
+  if(kind==="wiki"){window.currentWikiId=id;window.wikiEditing=false;if(window.nav)nav("wiki");}
+  else if(kind==="session"){if(window.nav)nav("journal");}
+  else if(window.openConnection){openConnection(kind,id,title);}
+}
+function renderLinksList(){
+  var el=root.getElementById("fLinksList");
+  if(!editLinks.length){el.innerHTML='<div class="links-none">Sin conexiones aún.</div>';return;}
+  el.innerHTML=editLinks.map(function(l,i){return '<div class="link-chip"><span>'+(CONN_ICON[l.kind]||"🔗")+'</span><span class="lk-title">'+esc(l.title||l.id)+'</span><button type="button" class="lk-x" data-rmlink="'+i+'">×</button></div>';}).join("");
+}
+function renderLinkResults(q){
+  var all=(window.allLinkables?allLinkables():[]);
+  q=(q||"").trim().toLowerCase();
+  if(q)all=all.filter(function(x){return (x.title||"").toLowerCase().indexOf(q)>-1;});
+  all=all.slice(0,60);
+  var have={};editLinks.forEach(function(l){have[l.kind+":"+l.id]=1;});
+  var el=root.getElementById("linkResults");
+  if(!all.length){el.innerHTML='<div class="links-none">Nada encontrado. ¿Ya creaste fichas/sesiones en el Hub?</div>';return;}
+  el.innerHTML=all.map(function(x){var added=have[x.kind+":"+x.id];return '<button type="button" class="link-res'+(added?" added":"")+'" data-add="'+esc(JSON.stringify({kind:x.kind,id:x.id,title:x.title}))+'"><span>'+(x.icon||CONN_ICON[x.kind]||"🔗")+'</span><span style="flex:1">'+esc(x.title||x.id)+'</span><span class="lk-kind">'+connLabel(x.kind)+'</span></button>';}).join("");
+}
 
 var LAYERS=[
   {key:"places",icon:"📍",label:"Lugares"},
@@ -4309,7 +4361,7 @@ function renderOverlay(){
 }
 
 pinsEl.addEventListener("click",function(e){
-  var more=e.target.closest("[data-more]"); if(more){e.preventDefault();var _pid=+more.dataset.more;var _pp=cur().pins.find(function(z){return z.id===_pid;});if(_pp&&_pp.wikiId){window.currentWikiId=_pp.wikiId;window.wikiEditing=false;if(window.nav)nav("wiki");}else{openLore(_pid);}return;}
+  var more=e.target.closest("[data-more]"); if(more){e.preventDefault();openLore(+more.dataset.more);return;}
   var ed=e.target.closest("[data-edit]"); if(ed){e.preventDefault();openEdit(+ed.dataset.edit);return;}
   var pinEl=e.target.closest(".pin"); if(!pinEl)return;
   var id=+pinEl.dataset.id;
@@ -4405,7 +4457,10 @@ function openLore(id){var p=cur().pins.find(function(x){return x.id===id;});if(!
   root.getElementById("loreTitle").textContent=p.title||"Sin nombre";
   var img=root.getElementById("loreImg");
   if(p.img){img.src=p.img;img.style.display="block";img.onerror=function(){img.style.display="none";};}else img.style.display="none";
-  root.getElementById("loreBody").textContent=p.lore||"(Sin lore todavía.)"; loreEl.classList.add("open");}
+  root.getElementById("loreBody").textContent=p.lore||"(Sin lore todavía.)";
+  var _lc=root.getElementById("loreConns");var _ls=(p.links||[]);
+  _lc.innerHTML=_ls.length?('<div class="lc-ttl">Conexiones</div>'+_ls.map(function(l){return '<div class="lore-conn" data-openconn="'+esc(JSON.stringify({kind:l.kind,id:l.id,title:l.title}))+'"><span>'+(CONN_ICON[l.kind]||"🔗")+'</span><span style="flex:1">'+esc(l.title||l.id)+'</span><span style="opacity:.45">→</span></div>';}).join("")):"";
+  loreEl.classList.add("open");}
 root.getElementById("loreClose").onclick=function(){loreEl.classList.remove("open");};
 
 /* ---------- Editar ---------- */
@@ -4420,7 +4475,7 @@ function updateEditFields(type){
   root.getElementById("fImgWrap").style.display=isSub?"none":"";
   root.getElementById("fShortWrap").style.display=isSub?"none":"";
   root.getElementById("fLoreWrap").style.display=isSub?"none":"";
-  root.getElementById("fWikiWrap").style.display=isSub?"none":"";
+  root.getElementById("fLinksWrap").style.display=isSub?"none":"";
   root.getElementById("fSubWrap").style.display=isSub?"":"none";
 }
 root.getElementById("fType").addEventListener("click",function(e){
@@ -4435,7 +4490,9 @@ function openEdit(id,x,y){
   root.getElementById("fShort").value=p?(p.short||""):"";
   root.getElementById("fLore").value=p?(p.lore||""):"";
   (function(){var _sm=root.getElementById("fSubMap");if(_sm){var _cur=(p&&p.sub&&p.sub.src)?p.sub.src:"";_sm.innerHTML='<option value="">— elige un mapa —</option>'+MAPS_LIST.map(function(mp){var _v="assets/maps/"+mp.file;return '<option value="'+esc(_v)+'">'+esc(mp.name)+'</option>';}).join("");_sm.value=_cur;}})();
-  (function(){var _sel=root.getElementById("fWiki");if(_sel){var _ws=(window.allWikiPages?allWikiPages():[]);_sel.innerHTML='<option value="">— ninguna —</option>'+_ws.map(function(w){return '<option value="'+esc(w.id)+'">'+esc(w.title||w.id)+'</option>';}).join("");_sel.value=(p&&p.wikiId)?p.wikiId:"";}})();
+  editLinks=(p&&p.links)?p.links.map(function(l){return {kind:l.kind,id:l.id,title:l.title};}):[];
+  if(p&&p.wikiId&&!editLinks.some(function(l){return l.kind==="wiki"&&l.id===p.wikiId;})){var _wt=(window.wikiGetPage&&wikiGetPage(p.wikiId))?wikiGetPage(p.wikiId).title:p.wikiId;editLinks.push({kind:"wiki",id:p.wikiId,title:_wt});}
+  renderLinksList();
   root.getElementById("fDelete").style.display=p?"":"none";
   editScrim.classList.add("open");
   setTimeout(function(){root.getElementById("fTitle").focus();},60);
@@ -4444,11 +4501,11 @@ function closeEdit(){editScrim.classList.remove("open");state.editingId=null;new
 root.getElementById("fCancel").onclick=closeEdit;
 root.getElementById("fSave").onclick=function(){
   var title=root.getElementById("fTitle").value.trim()||"Sin nombre";
-  var _wsel=root.getElementById("fWiki");var data={type:pickType,title:title,img:root.getElementById("fImg").value.trim(),
-    short:root.getElementById("fShort").value.trim(),lore:root.getElementById("fLore").value.trim(),wikiId:(_wsel?_wsel.value:"")};
+  var data={type:pickType,title:title,img:root.getElementById("fImg").value.trim(),
+    short:root.getElementById("fShort").value.trim(),lore:root.getElementById("fLore").value.trim(),links:editLinks.slice()};
   var p;
   if(state.editingId!=null){p=cur().pins.find(function(z){return z.id===state.editingId;});if(p)Object.assign(p,data);}
-  else{p=Object.assign(P(newXY.x,newXY.y,pickType,title,data.short,data.lore),{img:data.img});cur().pins.push(p);}
+  else{p=Object.assign(P(newXY.x,newXY.y,pickType,title,data.short,data.lore),{img:data.img,links:data.links});cur().pins.push(p);}
   if(p){
     if(pickType==="submap"){
       var _mv=root.getElementById("fSubMap")?root.getElementById("fSubMap").value:"";
@@ -4591,6 +4648,14 @@ root.getElementById("shapeDelete").onclick=function(){
   else cur().routes=cur().routes.filter(function(z){return z.id!==state.shape.id;});
   shapeScrim.classList.remove("open");state.shape=null;renderPins();
 };
+
+/* ---------- Conexiones: handlers ---------- */
+root.getElementById("fLinksList").addEventListener("click",function(e){var b=e.target.closest("[data-rmlink]");if(!b)return;editLinks.splice(+b.dataset.rmlink,1);renderLinksList();});
+root.getElementById("fLinkAdd").onclick=function(){root.getElementById("linkSearch").value="";renderLinkResults("");root.getElementById("linkScrim").classList.add("open");setTimeout(function(){root.getElementById("linkSearch").focus();},60);};
+root.getElementById("linkClose").onclick=function(){root.getElementById("linkScrim").classList.remove("open");};
+root.getElementById("linkSearch").addEventListener("input",function(){renderLinkResults(this.value);});
+root.getElementById("linkResults").addEventListener("click",function(e){var b=e.target.closest("[data-add]");if(!b)return;var o;try{o=JSON.parse(b.dataset.add);}catch(_){return;}if(!editLinks.some(function(l){return l.kind===o.kind&&l.id===o.id;}))editLinks.push(o);renderLinksList();renderLinkResults(root.getElementById("linkSearch").value);});
+root.getElementById("loreConns").addEventListener("click",function(e){var b=e.target.closest("[data-openconn]");if(!b)return;var o;try{o=JSON.parse(b.dataset.openconn);}catch(_){return;}loreEl.classList.remove("open");openConn(o.kind,o.id,o.title);});
 
 /* ---------- Init ---------- */
 var _shown=false;
