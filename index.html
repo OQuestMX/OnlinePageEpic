@@ -3894,6 +3894,12 @@ button{font-family:inherit;cursor:pointer}
 .popup .pbtn:hover{filter:brightness(1.04)}
 .popup .pedit{display:block;width:100%;margin-top:8px;background:transparent;border:1px dashed var(--border);
   color:var(--ink3);border-radius:6px;padding:5px;font-size:12px}
+.popup .pclose{position:absolute;top:6px;right:6px;z-index:6;width:28px;height:28px;
+  display:grid;place-items:center;border:0;border-radius:50%;cursor:pointer;
+  font-size:20px;line-height:1;color:var(--ink2);
+  background:rgba(255,255,255,.92);box-shadow:0 1px 4px rgba(0,0,0,.18)}
+.popup .pclose:hover{color:var(--ink);background:#fff}
+.popup .pclose:active{transform:scale(.92)}
 
 /* ---- Barra superior + breadcrumb ---- */
 #bar{position:absolute;top:0;left:0;right:0;z-index:20;display:flex;align-items:center;gap:10px;flex-wrap:wrap;
@@ -3966,7 +3972,8 @@ button{font-family:inherit;cursor:pointer}
 #lore h2{font-family:var(--serif);font-weight:700;font-size:26px;color:var(--ink);margin:6px 40px 0 0;line-height:1.15}
 #lore .limg{width:100%;height:170px;object-fit:cover;background:#efe9df}
 #lore .lbody{padding:20px 24px 40px;overflow:auto;font-size:16px;line-height:1.7;color:var(--ink2);white-space:pre-wrap}
-#lore .lclose{position:absolute;top:18px;right:18px;background:none;border:0;font-size:24px;color:var(--ink3);line-height:1}
+#lore .lclose{position:absolute;top:12px;right:12px;background:none;border:0;font-size:26px;color:var(--ink3);line-height:1;z-index:5;padding:6px 12px;cursor:pointer;pointer-events:auto;border-radius:8px}
+#lore .lclose:hover{color:var(--ink);background:rgba(0,0,0,.05)}
 #lore .lclose:hover{color:var(--ink)}
 
 /* ---- Modales ---- */
@@ -4091,6 +4098,7 @@ button{font-family:inherit;cursor:pointer}
     <div class="field" id="fImgWrap"><label>Imagen del popup (URL, opcional)</label><input id="fImg" placeholder="https://…"></div>
     <div class="field" id="fShortWrap"><label>Resumen (popup)</label><textarea id="fShort" rows="2" placeholder="Una o dos líneas."></textarea></div>
     <div class="field" id="fLoreWrap"><label>Lore completo (ver más)</label><textarea id="fLore" rows="5" placeholder="Texto largo."></textarea></div>
+    <div class="field" id="fWikiWrap"><label style="display:flex;align-items:center;gap:9px;cursor:pointer;font-weight:600"><input type="checkbox" id="fWiki" checked style="width:20px;height:20px;flex:0 0 auto"><span>📄 Crear ficha ligada en el Wiki</span></label><div class="tip">Al guardar, crea (o reutiliza) una página de Wiki con este nombre y la enlaza al pin.</div></div>
     <div class="field" id="fLinksWrap"><label>Conexiones</label><div id="fLinksList" class="links-list"></div><button type="button" class="btn ghost" id="fLinkAdd" style="margin-top:6px;padding:7px 12px">+ Enlazar…</button><div class="tip">Liga este lugar a wiki, sesiones, escenas, criaturas o personajes.</div></div>
     <div class="field" id="fSubWrap"><label>Mapa del submapa</label>
       <select id="fSubMap"><option value="">— elige un mapa —</option></select>
@@ -4307,6 +4315,7 @@ function renderPins(){
     if(p.type==="submap"){ el.innerHTML=marker; }
     else { el.innerHTML=marker+
       '<div class="popup">'+
+      '<button class="pclose" data-close="'+p.id+'" aria-label="Cerrar" title="Cerrar">×</button>'+
       (p.img?'<img class="pimg" src="'+esc(p.img)+'" onerror="this.style.display=\'none\'">':'')+
       '<div class="pbody"><span class="ptype">'+t.icon+' '+esc(t.label)+'</span>'+
       '<div class="ptitle">'+esc(p.title||"Sin nombre")+'</div>'+
@@ -4361,6 +4370,7 @@ function renderOverlay(){
 }
 
 pinsEl.addEventListener("click",function(e){
+  var cls=e.target.closest("[data-close]"); if(cls){e.preventDefault();e.stopPropagation();state.openId=null;renderPins();return;}
   var more=e.target.closest("[data-more]"); if(more){e.preventDefault();openLore(+more.dataset.more);return;}
   var ed=e.target.closest("[data-edit]"); if(ed){e.preventDefault();openEdit(+ed.dataset.edit);return;}
   var pinEl=e.target.closest(".pin"); if(!pinEl)return;
@@ -4399,6 +4409,11 @@ function endPtr(e){
   ptrs.delete(e.pointerId); vp.classList.remove("grabbing");
   if(ptrs.size<2)pinch=null;
   if(ptrs.size===1){var only=ptrs.values().next().value;lastPan={x:only.x,y:only.y};}else lastPan=null;
+  if(wasTap&&loreEl.classList.contains("open")&&!e.target.closest(".pin")){
+    loreEl.classList.remove("open");
+    if(state.mode==="view"&&state.openId){state.openId=null;renderPins();}
+    return;
+  }
   if(wasTap&&state.mode==="edit"&&!e.target.closest(".pin,#bar,#zoom,.scrim,#lore,#filters,#draftbar")){
     var r=vp.getBoundingClientRect(),m=cur();
     var wx=(e.clientX-r.left-state.panX)/state.zoom, wy=(e.clientY-r.top-state.panY)/state.zoom;
@@ -4411,7 +4426,7 @@ function endPtr(e){
       else if(!state.draft&&cfg&&cfg.group==="route"&&routeEl){ editShapeById("route",+routeEl.dataset.route); }
       else if(cfg){ if(!state.draft)state.draft={group:cfg.group,kind:cfg.kind,pts:[]}; state.draft.pts.push({x:nx,y:ny}); renderPins(); }
     }
-  } else if(wasTap&&state.mode==="view"&&state.openId&&!e.target.closest(".pin")){state.openId=null;renderPins();}
+  } else if(wasTap&&state.mode==="view"&&!e.target.closest(".pin")){if(loreEl.classList.contains("open"))loreEl.classList.remove("open");if(state.openId){state.openId=null;renderPins();}}
 }
 vp.addEventListener("pointerup",endPtr); vp.addEventListener("pointercancel",endPtr);
 function twoPts(){return Array.from(ptrs.values()).slice(0,2);}
@@ -4461,7 +4476,13 @@ function openLore(id){var p=cur().pins.find(function(x){return x.id===id;});if(!
   var _lc=root.getElementById("loreConns");var _ls=(p.links||[]);
   _lc.innerHTML=_ls.length?('<div class="lc-ttl">Conexiones</div>'+_ls.map(function(l){return '<div class="lore-conn" data-openconn="'+esc(JSON.stringify({kind:l.kind,id:l.id,title:l.title}))+'"><span>'+(CONN_ICON[l.kind]||"🔗")+'</span><span style="flex:1">'+esc(l.title||l.id)+'</span><span style="opacity:.45">→</span></div>';}).join("")):"";
   loreEl.classList.add("open");}
-root.getElementById("loreClose").onclick=function(){loreEl.classList.remove("open");};
+(function(){
+  var _lc=root.getElementById("loreClose");
+  function _closeLore(ev){if(ev){ev.preventDefault();ev.stopPropagation();}loreEl.classList.remove("open");}
+  _lc.addEventListener("click",_closeLore);
+  _lc.addEventListener("pointerup",_closeLore);
+})();
+window.addEventListener("keydown",function(e){if(e.key==="Escape"){loreEl.classList.remove("open");var _l=root.getElementById("linkScrim");if(_l)_l.classList.remove("open");}});
 
 /* ---------- Editar ---------- */
 var editScrim=root.getElementById("editScrim"),newXY=null,pickType="city";
@@ -4494,6 +4515,7 @@ function openEdit(id,x,y){
   if(p&&p.wikiId&&!editLinks.some(function(l){return l.kind==="wiki"&&l.id===p.wikiId;})){var _wt=(window.wikiGetPage&&wikiGetPage(p.wikiId))?wikiGetPage(p.wikiId).title:p.wikiId;editLinks.push({kind:"wiki",id:p.wikiId,title:_wt});}
   renderLinksList();
   root.getElementById("fDelete").style.display=p?"":"none";
+  (function(){var _fw=root.getElementById("fWiki");if(_fw){_fw.checked=(id==null)?true:!!(p&&(p.wikiId||(p.links||[]).some(function(l){return l.kind==="wiki";})));}})();
   editScrim.classList.add("open");
   setTimeout(function(){root.getElementById("fTitle").focus();},60);
 }
@@ -4512,6 +4534,24 @@ root.getElementById("fSave").onclick=function(){
       if(_mv){ if(p.sub){p.sub.src=_mv;p.sub.name=title;} else {p.sub=makeMap(title,_mv,[]);} }
       else if(p.sub){ p.sub.name=title; }
     } else { p.sub=null; }
+  }
+  var _wantWiki=root.getElementById("fWiki")?root.getElementById("fWiki").checked:false;
+  if(p&&_wantWiki&&window.dbCreate){
+    try{
+      var _page=(window.wikiFindByTitle?window.wikiFindByTitle(title):null);
+      if(!_page){
+        var _seed=((data.short?data.short+"\n\n":"")+(data.lore||"")).trim();
+        _page=window.dbCreate("wiki",{title:title,content:_seed,type:"place"});
+      }
+      if(_page&&_page.id){
+        p.wikiId=_page.id;
+        p.links=p.links||[];
+        if(!p.links.some(function(l){return l.kind==="wiki"&&l.id===_page.id;})){
+          p.links.push({kind:"wiki",id:_page.id,title:_page.title});
+        }
+        showHint("Ficha de Wiki lista y ligada: "+title);
+      }
+    }catch(_e){}
   }
   closeEdit(); renderPins();
 };
