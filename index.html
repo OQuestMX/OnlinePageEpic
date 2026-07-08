@@ -994,6 +994,7 @@ textarea.form-input{min-height:70px;line-height:1.5}
     <div class="sb-item" data-action="nav" data-type="wiki"><div class="sb-item-icon">📚</div><div class="sb-item-name">Wiki / Lore</div></div>
     <div class="sb-item" data-action="nav" data-type="journal"><div class="sb-item-icon">📔</div><div class="sb-item-name">Journal</div></div>
     <div class="sb-item" data-action="nav" data-type="session"><div class="sb-item-icon">⚡</div><div class="sb-item-name">Sesión en Vivo</div></div>
+    <div class="sb-item" data-action="nav" data-type="map"><div class="sb-item-icon">🗺️</div><div class="sb-item-name">Mapa</div></div>
   </nav>
   <hr class="sb-divider">
   <div class="sb-players" id="sb-players-bar"></div>
@@ -1002,6 +1003,7 @@ textarea.form-input{min-height:70px;line-height:1.5}
 <div class="main">
   <div class="topbar"><div class="breadcrumb" id="breadcrumb"></div><div class="topbar-spacer"></div></div>
   <div class="content">
+      <div class="view" id="view-map"></div>
     <div class="view active" id="view-campaign"><div id="campaign-content"></div></div>
     <div class="view" id="view-scenes"><div id="scenes-content"></div></div>
     <div class="view" id="view-writer"><div id="writer-content"></div></div>
@@ -2598,7 +2600,7 @@ function filterLib(q){var items=libItems(selectedLibTab);if(q)items=items.filter
 function toggleMove(vid,text){var v=dbGetById('villains',vid);if(!v)return;v.moves.forEach(function(m){if(m.text===text)m.done=!m.done});dbUpdate('villains',vid,{moves:v.moves});renderLibrary()}
 
 /* PLAYERS */
-function renderPlayers(){var el=document.getElementById('players-content');if(!el)return;var pls=dbGetAll('players');if(!pls.length){el.innerHTML='<div class="empty-state"><div class="empty-state-title">No hay jugadores</div><div class="empty-state-desc">Agrega a los héroes de tu mesa.</div><button class="btn btn-primary" data-action="open-modal" data-type="players">+ Agregar jugador</button><!--BOTON_CREADOR--><a class="btn" href="creador-personaje.html" target="_blank" rel="noopener" style="text-decoration:none;margin-left:8px;display:inline-flex;align-items:center">🧙 Crear personaje</a></div>';return}var h='<div class="section-label">PERSONAJES</div><div style="margin-bottom:12px"><button class="btn btn-primary" data-action="open-modal" data-type="players">+ Agregar jugador</button><!--BOTON_CREADOR--><a class="btn" href="creador-personaje.html" target="_blank" rel="noopener" style="text-decoration:none;margin-left:8px;display:inline-flex;align-items:center">🧙 Crear personaje</a></div><div class="player-grid">';pls.forEach(function(p){var r=resolvePlayer(p);h+='<div class="player-card" style="border-color:'+r.factionColor+'"><div class="player-card-header">'+avatarHtml(r,'width:52px;height:52px;font-size:20px;')+'<div><div class="player-card-name">'+esc(r.name)+'</div><div class="player-card-class">'+esc(r.cls)+(r.sub?' · '+esc(r.sub):'')+(r.kit?' · Kit '+esc(r.kit):'')+' · Plano '+r.plano+'</div></div></div>';h+='<div class="player-meta"><span class="player-tag faction">'+esc(r.faction)+'</span><span class="player-tag">HP '+r.hp+'</span><span class="player-tag">Aen +'+r.aenRegen+'/turno</span>'+(r.chosenFeat?'<span class="player-tag" style="background:var(--gold-pale);color:var(--gold)">'+esc(r.chosenFeat.name)+'</span>':'')+'</div>';if(r.backstory)h+='<div style="font-size:13px;color:var(--ink3);margin-top:8px;line-height:1.5">'+esc(r.backstory)+'</div>';h+='<div class="echo-tracker"><div class="echo-tracker-label">ECHO</div><div class="echo-dots">';for(var i=0;i<5;i++)h+='<div class="echo-dot'+(i<r.echo?' filled':'')+'">✦</div>';h+='</div><button class="echo-btn" data-action="sub-echo" data-id="'+p.id+'" style="padding:4px 8px;font-size:12px;min-height:32px">−</button><button class="echo-btn" data-action="add-echo" data-id="'+p.id+'" style="padding:4px 8px;font-size:12px;min-height:32px">+</button></div>';
+function renderPlayers(){var el=document.getElementById('players-content');if(!el)return;var pls=dbGetAll('players');if(!pls.length){el.innerHTML='<div class="empty-state"><div class="empty-state-title">No hay jugadores</div><div class="empty-state-desc">Agrega a los héroes de tu mesa.</div><button class="btn btn-primary" data-action="open-modal" data-type="players">+ Agregar jugador</button></div>';return}var h='<div class="section-label">PERSONAJES</div><div style="margin-bottom:12px"><button class="btn btn-primary" data-action="open-modal" data-type="players">+ Agregar jugador</button></div><div class="player-grid">';pls.forEach(function(p){var r=resolvePlayer(p);h+='<div class="player-card" style="border-color:'+r.factionColor+'"><div class="player-card-header">'+avatarHtml(r,'width:52px;height:52px;font-size:20px;')+'<div><div class="player-card-name">'+esc(r.name)+'</div><div class="player-card-class">'+esc(r.cls)+(r.sub?' · '+esc(r.sub):'')+(r.kit?' · Kit '+esc(r.kit):'')+' · Plano '+r.plano+'</div></div></div>';h+='<div class="player-meta"><span class="player-tag faction">'+esc(r.faction)+'</span><span class="player-tag">HP '+r.hp+'</span><span class="player-tag">Aen +'+r.aenRegen+'/turno</span>'+(r.chosenFeat?'<span class="player-tag" style="background:var(--gold-pale);color:var(--gold)">'+esc(r.chosenFeat.name)+'</span>':'')+'</div>';if(r.backstory)h+='<div style="font-size:13px;color:var(--ink3);margin-top:8px;line-height:1.5">'+esc(r.backstory)+'</div>';h+='<div class="echo-tracker"><div class="echo-tracker-label">ECHO</div><div class="echo-dots">';for(var i=0;i<5;i++)h+='<div class="echo-dot'+(i<r.echo?' filled':'')+'">✦</div>';h+='</div><button class="echo-btn" data-action="sub-echo" data-id="'+p.id+'" style="padding:4px 8px;font-size:12px;min-height:32px">−</button><button class="echo-btn" data-action="add-echo" data-id="'+p.id+'" style="padding:4px 8px;font-size:12px;min-height:32px">+</button></div>';
     // Expanded abilities section
     var exp=expandedPlayers[p.id];
     if(exp){
@@ -3824,5 +3826,782 @@ function wizardOpenBuilder(){
 nav('campaign');
 
 </script>
+<style>.content{position:relative}#view-map.active{position:absolute;inset:0;padding:0}</style>
+<template id="map-template"><style>
+:host{
+  --bg:#faf8f4; --surface:#fff; --ink:#2a2620; --ink2:#5a5449; --ink3:#8a8478;
+  --accent:#7a5c3e; --accent-light:#f0e9df; --gold:#b8935a; --gold-deep:#a07d47; --border:#e0dcd3;
+  --shadow:0 12px 34px rgba(60,50,35,.18);
+  --sans:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
+  --serif:Georgia,'Times New Roman',serif;
+}
+*{box-sizing:border-box}
+:host{display:block;width:100%;height:100%;overflow:hidden;background:var(--bg);font-family:var(--sans);color:var(--ink);-webkit-tap-highlight-color:transparent}
+button{font-family:inherit;cursor:pointer}
+
+#viewport{position:absolute;inset:0;overflow:hidden;
+  background:radial-gradient(130% 130% at 50% 0%, #fffdf9 0%, #f4f0e8 65%, #eae4d8 100%);
+  touch-action:none;cursor:grab}
+#viewport.grabbing{cursor:grabbing}
+#viewport.edit{cursor:crosshair}
+#world{position:absolute;top:0;left:0;transform-origin:0 0;will-change:transform}
+#map{display:block;border-radius:6px;
+  box-shadow:0 0 0 1px var(--border), 0 22px 55px rgba(60,50,35,.28);
+  -webkit-user-drag:none;user-select:none;pointer-events:none}
+
+/* ---- Pines por tipo ---- */
+.pin{position:absolute;transform:translate(-50%,-100%) scale(var(--inv,1));
+  transform-origin:50% 100%;cursor:pointer;z-index:2}
+.pin .beacon{position:relative;width:30px;height:30px;display:grid;place-items:center}
+.pin .beacon::before{content:"";position:absolute;width:30px;height:30px;border-radius:50%;
+  background:radial-gradient(circle, var(--pc,#b8935a) 0%, color-mix(in srgb,var(--pc,#b8935a) 40%, transparent) 45%, transparent 70%);
+  opacity:.6;animation:pulse 2.8s ease-in-out infinite}
+.pin .disc{position:relative;width:24px;height:24px;border-radius:50%;display:grid;place-items:center;
+  font-size:13px;line-height:1;background:var(--surface);border:2px solid var(--pc,#b8935a);
+  box-shadow:0 2px 6px rgba(60,50,35,.3)}
+.pin .stem{position:absolute;top:27px;left:50%;transform:translateX(-50%);width:2px;height:8px;
+  background:linear-gradient(var(--pc,#b8935a),transparent)}
+.pin:hover .disc{transform:scale(1.15)}
+.pin.sel .disc{box-shadow:0 0 12px 3px color-mix(in srgb,var(--pc,#b8935a) 60%, transparent)}
+.pin.portal .disc{width:29px;height:29px;font-size:15px;border-style:double;border-width:4px;box-shadow:0 2px 9px rgba(60,50,35,.42)}
+.pin.portal .beacon{width:36px;height:36px}
+.pin.portal .beacon::before{width:36px;height:36px}
+.pin.portal .stem{top:31px}
+@keyframes pulse{0%,100%{transform:scale(1);opacity:.6}50%{transform:scale(1.85);opacity:.08}}
+
+/* ---- Popup ---- */
+.popup{position:absolute;bottom:38px;left:50%;transform:translateX(-50%);width:236px;
+  background:var(--surface);color:var(--ink);border-radius:10px;
+  box-shadow:var(--shadow),0 0 0 1px var(--border);opacity:0;pointer-events:none;
+  transition:opacity .16s ease, transform .16s ease;z-index:5}
+.pin.open .popup{opacity:1;pointer-events:auto;transform:translateX(-50%) translateY(-4px)}
+.popup::after{content:"";position:absolute;bottom:-8px;left:50%;transform:translateX(-50%) rotate(45deg);
+  width:14px;height:14px;background:var(--surface);border-right:1px solid var(--border);border-bottom:1px solid var(--border)}
+.popup .pimg{width:100%;height:96px;object-fit:cover;border-radius:10px 10px 0 0;display:block;border-bottom:1px solid var(--border);background:#efe9df}
+.popup .pbody{padding:12px 13px 13px}
+.popup .ptype{display:inline-flex;align-items:center;gap:5px;font-family:var(--sans);font-size:10px;font-weight:700;
+  letter-spacing:1px;text-transform:uppercase;padding:2px 8px;border-radius:999px;margin-bottom:7px;
+  background:color-mix(in srgb,var(--pc,#b8935a) 16%, #fff);color:var(--accent);border:1px solid color-mix(in srgb,var(--pc,#b8935a) 42%, #fff)}
+.popup .ptitle{font-family:var(--serif);font-weight:700;font-size:16px;color:var(--ink);margin:0 0 4px;line-height:1.2}
+.popup .pshort{font-size:14px;line-height:1.45;color:var(--ink2);margin:0 0 10px}
+.popup .prow{display:flex;gap:6px;flex-wrap:wrap}
+.popup a.pbtn,.popup button.pbtn{display:inline-flex;align-items:center;gap:6px;background:var(--accent-light);color:var(--accent);
+  border:1px solid var(--border);border-radius:999px;padding:6px 12px;font-size:12.5px;font-weight:600;
+  letter-spacing:.2px;text-decoration:none}
+.popup .pbtn.enter{background:linear-gradient(180deg,var(--gold),var(--gold-deep));color:#fff;border:0}
+.popup .pbtn:hover{filter:brightness(1.04)}
+.popup .pedit{display:block;width:100%;margin-top:8px;background:transparent;border:1px dashed var(--border);
+  color:var(--ink3);border-radius:6px;padding:5px;font-size:12px}
+
+/* ---- Barra superior + breadcrumb ---- */
+#bar{position:absolute;top:0;left:0;right:0;z-index:20;display:flex;align-items:center;gap:10px;flex-wrap:wrap;
+  padding:10px 14px;background:linear-gradient(180deg,rgba(250,248,244,.97),rgba(250,248,244,.62) 72%,transparent);pointer-events:none}
+#bar>*{pointer-events:auto}
+.brandwrap{margin-right:auto;min-width:0}
+.brand{font-family:var(--serif);font-weight:700;letter-spacing:2px;font-size:18px;color:var(--accent)}
+#crumbs{font-family:var(--sans);font-size:11px;font-weight:600;letter-spacing:.6px;color:var(--ink3);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#crumbs .cb{color:var(--ink3);cursor:pointer;text-decoration:underline}
+#crumbs .cb:hover{color:var(--accent)}
+#crumbs .cb.here{color:var(--accent);cursor:default;text-decoration:none}
+#crumbs .sep{opacity:.55;margin:0 5px}
+.seg{display:flex;background:var(--surface);border:1px solid var(--border);border-radius:9px;overflow:hidden;box-shadow:0 2px 8px rgba(60,50,35,.08)}
+.seg button{background:transparent;border:0;color:var(--ink3);padding:8px 13px;font-size:12.5px;font-weight:600;letter-spacing:.4px;display:inline-flex;align-items:center;gap:6px}
+.seg button.on{background:linear-gradient(180deg,var(--gold),var(--gold-deep));color:#fff}
+.tool{background:var(--surface);border:1px solid var(--border);color:var(--ink2);border-radius:9px;
+  padding:8px 12px;font-size:13px;display:inline-flex;align-items:center;gap:7px;box-shadow:0 2px 8px rgba(60,50,35,.08)}
+.tool:hover{border-color:var(--accent);color:var(--accent)}
+.tool.icon{padding:8px 10px;font-size:15px;min-width:38px;justify-content:center}
+.tool.on{border-color:var(--gold);color:var(--accent)}
+@media (max-width:680px){.brand{font-size:16px}.tool .lbl{display:none}.tool{padding:8px 10px}}
+
+/* ---- Panel de capas ---- */
+#layers{position:absolute;top:64px;left:14px;z-index:19;background:var(--surface);border:1px solid var(--border);
+  border-radius:12px;padding:12px;width:240px;box-shadow:var(--shadow);display:none}
+#layers.open{display:block}
+#layers .lyhead{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px}
+#layers .ftitle{font-family:var(--sans);font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--accent)}
+#layers .lylegend{font-size:10px;color:var(--ink3)}
+.lyrow{display:flex;align-items:center;gap:4px;border-radius:8px;padding:1px}
+.lyrow.active{background:var(--accent-light)}
+.lyeye{width:30px;height:30px;border-radius:7px;border:0;background:transparent;font-size:14px;opacity:.35}
+.lyeye.on{opacity:1}
+.lyeye:hover{background:rgba(0,0,0,.05)}
+.lyname{flex:1;display:flex;align-items:center;gap:8px;background:transparent;border:0;color:var(--ink);font-size:14px;text-align:left;padding:7px 4px;border-radius:7px}
+.lyname:hover{background:rgba(0,0,0,.05)}
+.lyname .lyico{font-size:15px}
+.lyactive{width:20px;text-align:center;color:var(--accent);font-size:13px;font-weight:700}
+#typeSub{margin-top:10px;border-top:1px solid var(--border);padding-top:9px}
+#typeSub .subttl{font-family:var(--sans);font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--ink3);margin-bottom:6px}
+#layers .fall{font-size:11px;color:var(--ink3);background:none;border:0;text-decoration:underline;margin-top:6px;padding-left:4px}
+.fchip{display:flex;align-items:center;gap:9px;width:100%;background:transparent;border:0;color:var(--ink);
+  padding:6px 6px;border-radius:7px;font-size:14px;text-align:left}
+.fchip:hover{background:var(--accent-light)}
+.fchip .fico{width:22px;height:22px;border-radius:50%;display:grid;place-items:center;font-size:12px;
+  background:var(--surface);border:2px solid var(--pc);flex:none}
+.fchip .flabel{flex:1}
+.fchip .fdot{width:9px;height:9px;border-radius:50%;border:1px solid var(--pc);flex:none;background:var(--pc)}
+.fchip.off{opacity:.42}
+.fchip.off .fdot{background:transparent}
+
+/* ---- Zoom ---- */
+#zoom{position:absolute;right:14px;bottom:16px;z-index:20;display:flex;flex-direction:column;gap:6px}
+#zoom button{width:42px;height:42px;font-size:20px;border-radius:11px}
+
+/* ---- Hint ---- */
+#hint{position:absolute;left:50%;bottom:18px;transform:translateX(-50%);z-index:15;background:var(--surface);
+  border:1px solid var(--border);color:var(--accent);padding:8px 16px;border-radius:999px;font-size:13px;font-weight:600;
+  box-shadow:var(--shadow);opacity:0;transition:opacity .25s;pointer-events:none;max-width:90vw;text-align:center}
+#hint.show{opacity:1}
+
+/* ---- Panel de lore ---- */
+#lore{position:absolute;top:0;right:0;height:100%;width:min(420px,92vw);z-index:30;
+  background:linear-gradient(180deg,#fffdf9,var(--bg));color:var(--ink);
+  box-shadow:-14px 0 44px rgba(60,50,35,.22);transform:translateX(100%);transition:transform .32s cubic-bezier(.4,0,.1,1);
+  display:flex;flex-direction:column;border-left:3px solid var(--gold)}
+#lore.open{transform:translateX(0)}
+#lore .lhead{padding:22px 24px 14px;border-bottom:1px solid var(--border);position:relative}
+#lore .leyebrow{font-family:var(--sans);font-size:10px;font-weight:700;letter-spacing:2px;color:var(--accent);text-transform:uppercase}
+#lore h2{font-family:var(--serif);font-weight:700;font-size:26px;color:var(--ink);margin:6px 40px 0 0;line-height:1.15}
+#lore .limg{width:100%;height:170px;object-fit:cover;background:#efe9df}
+#lore .lbody{padding:20px 24px 40px;overflow:auto;font-size:16px;line-height:1.7;color:var(--ink2);white-space:pre-wrap}
+#lore .lclose{position:absolute;top:18px;right:18px;background:none;border:0;font-size:24px;color:var(--ink3);line-height:1}
+#lore .lclose:hover{color:var(--ink)}
+
+/* ---- Modales ---- */
+.scrim{position:absolute;inset:0;z-index:40;background:rgba(42,38,32,.5);backdrop-filter:blur(3px);display:none;align-items:center;justify-content:center;padding:18px}
+.scrim.open{display:flex}
+.sheet{background:var(--surface);color:var(--ink);width:min(460px,100%);border-radius:14px;box-shadow:var(--shadow);border:1px solid var(--border);overflow:hidden;max-height:92vh;display:flex;flex-direction:column}
+.sheet h3{font-family:var(--serif);font-weight:700;font-size:19px;color:var(--ink);margin:0;padding:18px 20px 4px}
+.sheet .sub{padding:0 20px 14px;color:var(--ink3);font-size:13px}
+.sheet .form{padding:4px 20px 8px;overflow:auto}
+.field{margin-bottom:13px}
+.field label{display:block;font-family:var(--sans);font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--accent);margin-bottom:5px}
+.field input,.field textarea{width:100%;background:#fff;border:1px solid var(--border);border-radius:8px;padding:9px 11px;font-family:var(--sans);font-size:15px;color:var(--ink)}
+.field input:focus,.field textarea:focus{outline:none;border-color:var(--accent)}
+.field textarea{resize:vertical;line-height:1.5}
+.field .tip{font-size:12px;color:var(--ink3);margin-top:4px}
+.typepick{display:flex;flex-wrap:wrap;gap:6px}
+.typepick button{display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid var(--border);border-radius:999px;padding:5px 10px;font-size:12.5px;color:var(--ink2)}
+.typepick button .ti{width:18px;height:18px;border-radius:50%;display:grid;place-items:center;font-size:11px;background:var(--surface);border:2px solid var(--pc)}
+.typepick button.on{border-color:var(--pc);background:color-mix(in srgb,var(--pc) 14%,#fff);color:var(--ink);font-weight:600}
+.sheet .actions{display:flex;gap:8px;padding:12px 20px 18px;border-top:1px solid var(--border);flex-wrap:wrap}
+.btn{border:0;border-radius:9px;padding:10px 16px;font-size:14px;font-weight:600;letter-spacing:.2px}
+.btn.primary{background:linear-gradient(180deg,var(--gold),var(--gold-deep));color:#fff;flex:1}
+.btn.ghost{background:transparent;border:1px solid var(--border);color:var(--ink2)}
+.btn.danger{background:transparent;border:1px solid #b5533f;color:#a3402c;margin-left:auto}
+.mono{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12px;line-height:1.5;white-space:pre;width:100%;height:200px;background:#f4f0e8;color:#4a4335;border:1px solid var(--border);border-radius:8px;padding:12px;resize:none}
+
+@media (prefers-reduced-motion: reduce){.pin .beacon::before{animation:none}#lore,.popup{transition:none}}
+/* ---- Overlay SVG (áreas y rutas) ---- */
+#overlay{position:absolute;top:0;left:0;overflow:visible;pointer-events:none}
+#overlay polygon,#overlay polyline,#overlay circle{pointer-events:auto}
+#overlay text{pointer-events:none;user-select:none}
+
+/* ---- Barra de dibujo ---- */
+#draftbar{position:absolute;left:50%;bottom:18px;transform:translateX(-50%);z-index:22;display:none;
+  align-items:center;gap:8px;background:var(--surface);border:1px solid var(--border);
+  border-radius:12px;padding:8px 10px;box-shadow:var(--shadow);max-width:94vw;flex-wrap:wrap;justify-content:center}
+#draftbar.show{display:flex}
+#draftbar #draftInfo{font-size:13px;color:var(--ink2);padding:0 6px;font-weight:600}
+#draftbar .tool{box-shadow:none;padding:7px 11px}
+
+/* ---- Swatches de color ---- */
+.swatches{display:flex;gap:6px;flex-wrap:wrap}
+.swatches button{width:26px;height:26px;border-radius:50%;border:2px solid #fff;box-shadow:0 0 0 1px var(--border);cursor:pointer}
+.swatches button.on{box-shadow:0 0 0 2px var(--accent)}
+
+@media (max-width:900px){#bar .brand{font-size:16px}}
+</style>
+
+<div id="viewport"><div id="world"><img id="map" alt="Mapa"><svg id="overlay" xmlns="http://www.w3.org/2000/svg"><g id="svgAreas"></g><g id="svgRoutes"></g><g id="svgDraft"></g></svg><div id="pins"></div></div></div>
+
+<div id="bar">
+  <button class="tool" id="btnBack" title="Volver al mapa anterior" style="display:none">← <span class="lbl">Volver</span></button>
+  <div class="brandwrap">
+    <div class="brand">AVELIR</div>
+    <div id="crumbs"></div>
+  </div>
+  <div class="seg" id="modeSeg">
+    <button data-mode="view" class="on">◉ Ver</button>
+    <button data-mode="edit">✎ Editar</button>
+  </div>
+  <button class="tool icon" id="btnLayers" title="Capas">📚</button>
+  <button class="tool icon" id="btnExport" title="Exportar / Importar">⇅</button>
+  <button class="tool icon" id="btnHelp" title="Ayuda">?</button>
+</div>
+
+<div id="layers">
+  <div class="lyhead"><span class="ftitle">CAPAS</span><span class="lylegend">👁 ver · ✎ activa</span></div>
+  <div id="layerList"></div>
+  <div id="typeSub">
+    <div class="subttl">Tipos de lugar</div>
+    <div id="filterList"></div>
+    <button class="fall" id="fAll">mostrar todos</button>
+  </div>
+</div>
+
+<div id="zoom">
+  <button class="tool icon" id="zIn">+</button>
+  <button class="tool icon" id="zOut">−</button>
+  <button class="tool icon" id="zFit" title="Encajar mapa">⤢</button>
+</div>
+
+<div id="hint"></div>
+
+<div id="draftbar">
+  <span id="draftInfo"></span>
+  <button class="tool" id="dUndo">↶ Deshacer</button>
+  <button class="tool" id="dDone">✓ <span id="dDoneLbl">Cerrar</span></button>
+  <button class="tool" id="dCancel">✕ Cancelar</button>
+</div>
+
+<aside id="lore">
+  <button class="lclose" id="loreClose">×</button>
+  <div class="lhead"><div class="leyebrow">Crónica de Avelir</div><h2 id="loreTitle">—</h2></div>
+  <img id="loreImg" class="limg" alt="" style="display:none">
+  <div class="lbody" id="loreBody"></div>
+</aside>
+
+<div class="scrim" id="editScrim"><div class="sheet">
+  <h3 id="editHeading">Nuevo lugar</h3>
+  <div class="sub">Los textos son de ejemplo — reemplázalos con tu lore.</div>
+  <div class="form">
+    <div class="field"><label>Tipo</label><div class="typepick" id="fType"></div></div>
+    <div class="field"><label>Nombre del lugar</label><input id="fTitle" placeholder="Ej. Bastión de la Corona"></div>
+    <div class="field" id="fImgWrap"><label>Imagen del popup (URL, opcional)</label><input id="fImg" placeholder="https://…"></div>
+    <div class="field" id="fShortWrap"><label>Resumen (popup)</label><textarea id="fShort" rows="2" placeholder="Una o dos líneas."></textarea></div>
+    <div class="field" id="fLoreWrap"><label>Lore completo (ver más)</label><textarea id="fLore" rows="5" placeholder="Texto largo."></textarea></div>
+    <div class="field" id="fWikiWrap"><label>Ficha del wiki (opcional)</label><select id="fWiki"><option value="">— ninguna —</option></select><div class="tip">"Ver más" abrirá esta entrada del wiki del Hub.</div></div>
+    <div class="field" id="fSubWrap"><label>Imagen del submapa</label>
+      <input type="file" id="fSubFile" accept="image/*">
+      <div class="tip">Sube el mapa de este submapa. Al tocar este pin (en modo Ver), entrarás a él.</div>
+      <div class="tip" id="fSubState" style="color:#3a7a3a"></div>
+    </div>
+  </div>
+  <div class="actions">
+    <button class="btn primary" id="fSave">Guardar</button>
+    <button class="btn ghost" id="fCancel">Cancelar</button>
+    <button class="btn danger" id="fDelete">Eliminar</button>
+  </div>
+</div></div>
+
+<div class="scrim" id="shapeScrim"><div class="sheet">
+  <h3 id="shapeHeading">Nueva área</h3>
+  <div class="sub" id="shapeSub">Ponle nombre y color.</div>
+  <div class="form">
+    <div class="field"><label id="shapeNameLbl">Nombre de la facción</label><input id="shapeName" placeholder="Ej. Reino del Alba"></div>
+    <div class="field" id="shapeColorWrap"><label>Color</label>
+      <div style="display:flex;align-items:center;gap:10px">
+        <input type="color" id="shapeColor" value="#7a5c3e" style="width:48px;height:38px;padding:2px;border-radius:8px">
+        <div class="swatches" id="shapeSwatches"></div>
+      </div>
+    </div>
+  </div>
+  <div class="actions">
+    <button class="btn primary" id="shapeSave">Guardar</button>
+    <button class="btn ghost" id="shapeCancel">Cancelar</button>
+    <button class="btn danger" id="shapeDelete">Eliminar</button>
+  </div>
+</div></div><div class="sheet">
+  <h3>Exportar / Importar</h3>
+  <div class="sub">Copia para guardar los lugares de <b id="expMapName">este mapa</b>, o pega uno para cargarlo. (Los submapas no se incluyen en el texto.)</div>
+  <div class="form"><textarea class="mono" id="expText" spellcheck="false"></textarea></div>
+  <div class="actions">
+    <button class="btn primary" id="expLoad">Cargar lo pegado</button>
+    <button class="btn ghost" id="expCopy">Copiar</button>
+    <button class="btn ghost" id="expClose">Cerrar</button>
+  </div>
+</div></div>
+
+</template>
+<script>window.EpicMapInit=function(root){
+
+"use strict";
+
+/* ---------- Tipos ---------- */
+var TYPES={
+  city:{label:"Ciudad",icon:"🏰",color:"#e2b452"},
+  fort:{label:"Fortaleza",icon:"🛡️",color:"#c98a3c"},
+  artifact:{label:"Artefacto",icon:"💎",color:"#5fb3d9"},
+  lore:{label:"Lore drop",icon:"📜",color:"#cbb24e"},
+  ruin:{label:"Ruina",icon:"🏚️",color:"#9a8f7a"},
+  danger:{label:"Peligro",icon:"☠️",color:"#c94f3d"},
+  region:{label:"Región",icon:"🚩",color:"#7ba05b"},
+  port:{label:"Puerto/mar",icon:"⚓",color:"#4f93a8"},
+  submap:{label:"Submapa",icon:"🗺️",color:"#7a6cae"}
+};
+var TYPE_KEYS=Object.keys(TYPES);
+
+/* ---------- Mapas ---------- */
+var uid=0;
+function makeMap(name,src,pins){return {name:name,src:src,w:1040,h:992,pins:pins||[],areas:[],routes:[]};}
+function P(x,y,type,title,short,lore,extra){return Object.assign({id:++uid,x:x,y:y,type:type,title:title,short:short,lore:lore,img:"",sub:null},extra||{});}
+
+
+var ROOT=makeMap("Avelir","assets/maps/avelir-main.jpg",[
+  P(0.685,0.40,"city","Bastión de la Corona","La gran ciudad amurallada, corazón político de Avelir.","Bastión de la Corona se alza junto al lago del este, sus murallas coronadas de estandartes. Aquí gobierna el consejo y parten las caravanas.\n\n(Texto de ejemplo.)"),
+  P(0.905,0.215,"danger","El Coloso Ardiente","Volcán vivo que humea sobre el este.","El Coloso nunca duerme del todo; su lava alimenta las forjas de la montaña.\n\n(Texto de ejemplo.)"),
+  P(0.415,0.365,"port","El Gran Lago","El corazón de agua dulce de Avelir.","Sus aguas quietas reflejan el cielo como un espejo de plata.\n\n(Texto de ejemplo.)"),
+  P(0.12,0.30,"fort","Atalaya del Oeste","Fortaleza que vigila la costa.","(Texto de ejemplo.)"),
+  P(0.55,0.30,"artifact","El Fragmento","Reliquia de origen desconocido.","(Texto de ejemplo.)"),
+  P(0.50,0.55,"lore","Estela Rúnica","Una piedra cubierta de símbolos.","(Texto de ejemplo.)"),
+  P(0.62,0.64,"ruin","Ruinas de Vael","Vestigios de una ciudad perdida.","(Texto de ejemplo.)")
+]);
+
+/* ---------- Estado ---------- */
+try{var _saved=(window.dbLoad?dbLoad('mapdata'):null); if(_saved&&_saved.pins){ROOT=_saved;}}catch(e){}
+ROOT.src="assets/maps/avelir-main.jpg";
+var stack=[ROOT];
+function _maxId(mp,mx){(mp.pins||[]).forEach(function(p){if(p.id>mx)mx=p.id;if(p.sub)mx=_maxId(p.sub,mx);});(mp.areas||[]).forEach(function(a){if(a.id>mx)mx=a.id;});(mp.routes||[]).forEach(function(r){if(r.id>mx)mx=r.id;});return mx;}
+uid=_maxId(ROOT,0);
+function persist(){try{if(window.dbSave)dbSave('mapdata',stack[0]);}catch(e){}}
+function cur(){return stack[stack.length-1];}
+var state={zoom:1,panX:0,panY:0,mode:"view",active:"places",visible:{places:true,faction:false,religion:false,trade:false,transport:false},openId:null,editingId:null,hidden:{},subFileData:null,draft:null,shape:null};
+
+var LAYERS=[
+  {key:"places",icon:"📍",label:"Lugares"},
+  {key:"faction",icon:"🏳️",label:"Facción"},
+  {key:"religion",icon:"🕯️",label:"Religión"},
+  {key:"trade",icon:"🪙",label:"Comercio"},
+  {key:"transport",icon:"🐎",label:"Transporte"}
+];
+
+var LENS_CFG={
+  faction:{group:"area",kind:"faction"},
+  religion:{group:"area",kind:"religion"},
+  trade:{group:"route",kind:"trade"},
+  transport:{group:"route",kind:"transport"}
+};
+var KIND_LABEL={faction:"área de facción",religion:"área de religión",trade:"ruta de comercio",transport:"ruta de transporte"};
+var KIND_NAMELBL={faction:"Nombre de la facción",religion:"Nombre de la religión",trade:"Nombre de la ruta",transport:"Nombre de la ruta"};
+var KIND_COLOR={faction:"#7a5c3e",religion:"#7a4a7a",trade:"#b8935a",transport:"#4f6a7a"};
+
+var vp=root.getElementById("viewport"),world=root.getElementById("world"),
+    mapImg=root.getElementById("map"),pinsEl=root.getElementById("pins"),hintEl=root.getElementById("hint");
+
+/* ---------- Hint ---------- */
+var hintT;
+function showHint(msg){hintEl.textContent=msg;hintEl.classList.add("show");clearTimeout(hintT);hintT=setTimeout(function(){hintEl.classList.remove("show");},4600);}
+
+/* ---------- Transform ---------- */
+function clamp(v,a,b){return Math.max(a,Math.min(b,v));}
+function apply(){
+  state.zoom=clamp(state.zoom,0.25,6);
+  world.style.transform="translate("+state.panX+"px,"+state.panY+"px) scale("+state.zoom+")";
+  world.style.setProperty("--inv",(1/state.zoom));
+}
+function fit(){
+  var m=cur(), w=vp.clientWidth,h=vp.clientHeight,pad=48;
+  var z=Math.min((w-pad)/m.w,(h-pad)/m.h);
+  state.zoom=z;state.panX=(w-m.w*z)/2;state.panY=(h-m.h*z)/2;apply();
+}
+function zoomAt(cx,cy,factor){
+  var nz=clamp(state.zoom*factor,0.25,6);
+  var wx=(cx-state.panX)/state.zoom,wy=(cy-state.panY)/state.zoom;
+  state.zoom=nz;state.panX=cx-wx*nz;state.panY=cy-wy*nz;apply();
+}
+
+/* ---------- Cargar mapa actual ---------- */
+function _applyMapSize(m){
+  mapImg.src=m.src; mapImg.style.width=m.w+"px"; mapImg.style.height=m.h+"px";
+  world.style.width=m.w+"px"; world.style.height=m.h+"px";
+  renderPins(); fit();
+}
+function loadMap(){
+  var m=cur();
+  state.openId=null; state.draft=null;
+  if(stack.length>1)state.active="places";
+  renderCrumbs(); updateBack(); renderLayers();
+  var _im=new Image();
+  _im.onload=function(){ if(_im.naturalWidth){m.w=_im.naturalWidth;m.h=_im.naturalHeight;} _applyMapSize(m); };
+  _im.onerror=function(){ _applyMapSize(m); };
+  _im.src=m.src;
+}
+
+/* ---------- Breadcrumb ---------- */
+function renderCrumbs(){
+  var c=root.getElementById("crumbs");
+  if(stack.length<=1){ c.innerHTML='<span class="cb here">'+esc(cur().name)+'</span>'; return; }
+  c.innerHTML=stack.map(function(m,i){
+    var here=i===stack.length-1;
+    return '<span class="cb'+(here?' here':'')+'" data-crumb="'+i+'">'+esc(m.name)+'</span>';
+  }).join('<span class="sep">›</span>');
+}
+root.getElementById("crumbs").addEventListener("click",function(e){
+  var b=e.target.closest("[data-crumb]"); if(!b)return;
+  var i=+b.dataset.crumb; if(i>=stack.length-1)return;
+  stack=stack.slice(0,i+1); loadMap();
+});
+function updateBack(){ root.getElementById("btnBack").style.display=(stack.length>1)?"":"none"; }
+root.getElementById("btnBack").onclick=function(){ if(stack.length>1){ stack.pop(); loadMap(); } };
+
+/* ---------- Render de pines ---------- */
+function esc(s){return String(s==null?"":s).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c];});}
+function renderPins(){
+  var m=cur();
+  pinsEl.innerHTML="";
+  pinsEl.style.pointerEvents=(state.mode==="view"||state.active==="places")?"auto":"none";
+  if(state.visible.places) m.pins.forEach(function(p){
+    if(state.hidden[p.type])return;
+    var t=TYPES[p.type]||TYPES.city;
+    var el=document.createElement("div");
+    el.className="pin"+(state.openId===p.id?" open sel":"")+(p.type==="submap"?" portal":"");
+    el.style.setProperty("--pc",t.color);
+    el.style.left=(p.x*m.w)+"px"; el.style.top=(p.y*m.h)+"px";
+    el.dataset.id=p.id;
+    var marker='<div class="beacon"><span class="disc">'+t.icon+'</span></div><div class="stem"></div>';
+    if(p.type==="submap"){ el.innerHTML=marker; }
+    else { el.innerHTML=marker+
+      '<div class="popup">'+
+      (p.img?'<img class="pimg" src="'+esc(p.img)+'" onerror="this.style.display=\'none\'">':'')+
+      '<div class="pbody"><span class="ptype">'+t.icon+' '+esc(t.label)+'</span>'+
+      '<div class="ptitle">'+esc(p.title||"Sin nombre")+'</div>'+
+      '<div class="pshort">'+esc(p.short||"")+'</div>'+
+      '<div class="prow"><a class="pbtn" href="#" data-more="'+p.id+'">Ver más →</a></div>'+
+      '<button class="pedit" data-edit="'+p.id+'">✎ editar</button>'+
+      '</div>';
+    }
+    pinsEl.appendChild(el);
+  });
+  renderOverlay(); updateDraftBar(); persist();
+}
+
+/* ---------- Overlay: áreas y rutas ---------- */
+function pts2str(pts,m){return pts.map(function(p){return (p.x*m.w)+","+(p.y*m.h);}).join(" ");}
+function centroid(pts,m){var sx=0,sy=0;pts.forEach(function(p){sx+=p.x;sy+=p.y;});return {x:(sx/pts.length)*m.w,y:(sy/pts.length)*m.h};}
+function escSvg(s){return String(s==null?"":s).replace(/[&<>]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;"}[c];});}
+function labelSVG(pt,text,color){if(!text)return"";
+  return '<text x="'+pt.x+'" y="'+pt.y+'" font-family="Georgia,serif" font-weight="700" font-size="15" fill="'+color+'" stroke="#fff" stroke-width="3.5" paint-order="stroke" text-anchor="middle">'+escSvg(text)+'</text>';}
+function areaSVG(a){var m=cur(),pts=pts2str(a.pts,m),k=a.kind||"faction";
+  var ed=(state.mode==="edit"&&k===state.active), pe="pointer-events:"+(ed?"auto":"none")+";cursor:"+(ed?"pointer":"default");
+  if(k==="religion"){
+    var pid="hatch-"+a.id;
+    var pat='<defs><pattern id="'+pid+'" patternUnits="userSpaceOnUse" width="13" height="13" patternTransform="rotate(45)">'+
+      '<rect width="13" height="13" fill="'+a.color+'" fill-opacity="0.10"/>'+
+      '<line x1="0" y1="0" x2="0" y2="13" stroke="'+a.color+'" stroke-width="4" stroke-opacity="0.5"/></pattern></defs>';
+    return pat+'<polygon data-area="'+a.id+'" points="'+pts+'" fill="url(#'+pid+')" stroke="'+a.color+'" stroke-width="2.5" stroke-dasharray="3 3" vector-effect="non-scaling-stroke" style="'+pe+'"/>'+
+      labelSVG(centroid(a.pts,m),a.name,a.color);
+  }
+  return '<polygon data-area="'+a.id+'" points="'+pts+'" fill="'+a.color+'" fill-opacity="0.30" stroke="'+a.color+'" stroke-width="2.5" vector-effect="non-scaling-stroke" style="'+pe+'"/>'+
+    labelSVG(centroid(a.pts,m),a.name,a.color);}
+function routeSVG(r){var m=cur(),k=r.kind||"trade",col=r.color||(k==="transport"?"#4f6a7a":"#b8935a"),s="";
+  var ed=(state.mode==="edit"&&k===state.active), pe="pointer-events:"+(ed?"auto":"none")+";cursor:"+(ed?"pointer":"default");
+  var dash=(k==="transport")?"":'stroke-dasharray="8 7" ';
+  s+='<polyline data-route="'+r.id+'" points="'+pts2str(r.pts,m)+'" fill="none" stroke="'+col+'" stroke-width="3.5" '+dash+'stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke" style="'+pe+'"/>';
+  r.pts.forEach(function(p){s+='<circle data-route="'+r.id+'" cx="'+(p.x*m.w)+'" cy="'+(p.y*m.h)+'" r="5" fill="#fff" stroke="'+col+'" stroke-width="2.5" vector-effect="non-scaling-stroke" style="'+pe+'"/>';});
+  if(r.pts.length)s+=labelSVG({x:r.pts[0].x*m.w,y:r.pts[0].y*m.h-10},r.name,col);
+  return s;}
+function draftSVG(d){var m=cur();if(!d.pts.length)return"";
+  var s='<polyline points="'+pts2str(d.pts,m)+'" fill="none" stroke="#7a5c3e" stroke-width="2.5" stroke-dasharray="5 5" vector-effect="non-scaling-stroke"/>';
+  d.pts.forEach(function(p){s+='<circle cx="'+(p.x*m.w)+'" cy="'+(p.y*m.h)+'" r="5" fill="#fff" stroke="#7a5c3e" stroke-width="2.5" vector-effect="non-scaling-stroke"/>';});
+  return s;}
+function renderOverlay(){
+  var m=cur();
+  var svg=root.getElementById("overlay");
+  svg.setAttribute("viewBox","0 0 "+m.w+" "+m.h); svg.style.width=m.w+"px"; svg.style.height=m.h+"px";
+  var A=root.getElementById("svgAreas"),R=root.getElementById("svgRoutes"),D=root.getElementById("svgDraft");
+  A.innerHTML=""; R.innerHTML=""; D.innerHTML="";
+  ["faction","religion"].forEach(function(k){ if(state.visible[k]) m.areas.filter(function(a){return (a.kind||"faction")===k;}).forEach(function(a){A.insertAdjacentHTML("beforeend",areaSVG(a));}); });
+  ["trade","transport"].forEach(function(k){ if(state.visible[k]) m.routes.filter(function(r){return (r.kind||"trade")===k;}).forEach(function(r){R.insertAdjacentHTML("beforeend",routeSVG(r));}); });
+  if(state.draft) D.insertAdjacentHTML("beforeend",draftSVG(state.draft));
+}
+
+pinsEl.addEventListener("click",function(e){
+  var more=e.target.closest("[data-more]"); if(more){e.preventDefault();var _pid=+more.dataset.more;var _pp=cur().pins.find(function(z){return z.id===_pid;});if(_pp&&_pp.wikiId){window.currentWikiId=_pp.wikiId;window.wikiEditing=false;if(window.nav)nav("wiki");}else{openLore(_pid);}return;}
+  var ed=e.target.closest("[data-edit]"); if(ed){e.preventDefault();openEdit(+ed.dataset.edit);return;}
+  var pinEl=e.target.closest(".pin"); if(!pinEl)return;
+  var id=+pinEl.dataset.id;
+  if(state.mode==="edit"){openEdit(id);return;}
+  var p=cur().pins.find(function(z){return z.id===id;});
+  if(p&&p.type==="submap"){ if(p.sub)enterSub(id); else showHint("Este submapa aún no tiene imagen. Cambia a ✎ Editar y súbela."); return; }
+  state.openId=(state.openId===id?null:id); renderPins();
+});
+
+function enterSub(id){
+  var p=cur().pins.find(function(z){return z.id===id;});
+  if(!p||!p.sub)return;
+  stack.push(p.sub); state.active="places"; state.visible.places=true; loadMap();
+  showHint("Entraste a "+p.sub.name+". Aquí solo agregas pines. Usa las migajas de arriba para regresar.");
+}
+
+/* ---------- Pan + pinch ---------- */
+var ptrs=new Map(),moved=0,lastPan=null,pinch=null;
+vp.addEventListener("pointerdown",function(e){
+  if(e.target.closest("#bar,#zoom,#lore,.scrim,.pin,#filters,#draftbar"))return;
+  vp.setPointerCapture(e.pointerId); ptrs.set(e.pointerId,{x:e.clientX,y:e.clientY}); moved=0;
+  if(ptrs.size===1){lastPan={x:e.clientX,y:e.clientY};vp.classList.add("grabbing");}
+  else if(ptrs.size===2){startPinch();lastPan=null;}
+});
+vp.addEventListener("pointermove",function(e){
+  if(!ptrs.has(e.pointerId))return;
+  ptrs.set(e.pointerId,{x:e.clientX,y:e.clientY});
+  if(ptrs.size===2&&pinch){doPinch();return;}
+  if(lastPan){var dx=e.clientX-lastPan.x,dy=e.clientY-lastPan.y;moved+=Math.abs(dx)+Math.abs(dy);
+    state.panX+=dx;state.panY+=dy;lastPan={x:e.clientX,y:e.clientY};apply();}
+});
+function endPtr(e){
+  if(!ptrs.has(e.pointerId))return;
+  var wasTap=(moved<6&&ptrs.size===1);
+  ptrs.delete(e.pointerId); vp.classList.remove("grabbing");
+  if(ptrs.size<2)pinch=null;
+  if(ptrs.size===1){var only=ptrs.values().next().value;lastPan={x:only.x,y:only.y};}else lastPan=null;
+  if(wasTap&&state.mode==="edit"&&!e.target.closest(".pin,#bar,#zoom,.scrim,#lore,#filters,#draftbar")){
+    var r=vp.getBoundingClientRect(),m=cur();
+    var wx=(e.clientX-r.left-state.panX)/state.zoom, wy=(e.clientY-r.top-state.panY)/state.zoom;
+    var nx=clamp(wx/m.w,0,1), ny=clamp(wy/m.h,0,1);
+    if(state.active==="places"){ openEdit(null,nx,ny); }
+    else {
+      var cfg=LENS_CFG[state.active];
+      var areaEl=e.target.closest("[data-area]"), routeEl=e.target.closest("[data-route]");
+      if(!state.draft&&cfg&&cfg.group==="area"&&areaEl){ editShapeById("area",+areaEl.dataset.area); }
+      else if(!state.draft&&cfg&&cfg.group==="route"&&routeEl){ editShapeById("route",+routeEl.dataset.route); }
+      else if(cfg){ if(!state.draft)state.draft={group:cfg.group,kind:cfg.kind,pts:[]}; state.draft.pts.push({x:nx,y:ny}); renderPins(); }
+    }
+  } else if(wasTap&&state.mode==="view"&&state.openId&&!e.target.closest(".pin")){state.openId=null;renderPins();}
+}
+vp.addEventListener("pointerup",endPtr); vp.addEventListener("pointercancel",endPtr);
+function twoPts(){return Array.from(ptrs.values()).slice(0,2);}
+function startPinch(){var p=twoPts();if(p.length<2)return;var dx=p[1].x-p[0].x,dy=p[1].y-p[0].y;
+  pinch={dist:Math.hypot(dx,dy),zoom:state.zoom,cx:(p[0].x+p[1].x)/2,cy:(p[0].y+p[1].y)/2};}
+function doPinch(){var p=twoPts();if(p.length<2||!pinch)return;var dx=p[1].x-p[0].x,dy=p[1].y-p[0].y;
+  var dist=Math.hypot(dx,dy),r=vp.getBoundingClientRect();
+  zoomAt(pinch.cx-r.left,pinch.cy-r.top,(dist/pinch.dist)*(pinch.zoom/state.zoom));}
+vp.addEventListener("wheel",function(e){e.preventDefault();var r=vp.getBoundingClientRect();
+  zoomAt(e.clientX-r.left,e.clientY-r.top,e.deltaY<0?1.12:1/1.12);},{passive:false});
+root.getElementById("zIn").onclick=function(){zoomAt(vp.clientWidth/2,vp.clientHeight/2,1.25);};
+root.getElementById("zOut").onclick=function(){zoomAt(vp.clientWidth/2,vp.clientHeight/2,1/1.25);};
+root.getElementById("zFit").onclick=fit;
+
+/* ---------- Modo ---------- */
+root.getElementById("modeSeg").addEventListener("click",function(e){
+  var b=e.target.closest("button[data-mode]");if(!b)return;
+  state.mode=b.dataset.mode;
+  root.querySelectorAll("#modeSeg button").forEach(function(x){x.classList.toggle("on",x===b);});
+  vp.classList.toggle("edit",state.mode==="edit"); state.openId=null;
+  if(state.mode!=="edit")state.draft=null;
+  renderPins(); layerHint();
+});
+
+/* ---------- Filtros ---------- */
+function renderFilters(){
+  var list=root.getElementById("filterList");
+  list.innerHTML=TYPE_KEYS.map(function(k){
+    var t=TYPES[k],off=state.hidden[k];
+    return '<button class="fchip'+(off?' off':'')+'" data-t="'+k+'" style="--pc:'+t.color+'">'+
+      '<span class="fico">'+t.icon+'</span><span class="flabel">'+esc(t.label)+'</span><span class="fdot"></span></button>';
+  }).join("");
+}
+root.getElementById("filterList").addEventListener("click",function(e){
+  var b=e.target.closest("[data-t]");if(!b)return;
+  var k=b.dataset.t; state.hidden[k]=!state.hidden[k]; renderFilters(); renderPins();
+});
+root.getElementById("fAll").onclick=function(){state.hidden={};renderFilters();renderPins();};
+
+/* ---------- Lore ---------- */
+var loreEl=root.getElementById("lore");
+function openLore(id){var p=cur().pins.find(function(x){return x.id===id;});if(!p)return;
+  root.getElementById("loreTitle").textContent=p.title||"Sin nombre";
+  var img=root.getElementById("loreImg");
+  if(p.img){img.src=p.img;img.style.display="block";img.onerror=function(){img.style.display="none";};}else img.style.display="none";
+  root.getElementById("loreBody").textContent=p.lore||"(Sin lore todavía.)"; loreEl.classList.add("open");}
+root.getElementById("loreClose").onclick=function(){loreEl.classList.remove("open");};
+
+/* ---------- Editar ---------- */
+var editScrim=root.getElementById("editScrim"),newXY=null,pickType="city";
+function renderTypePicker(){
+  root.getElementById("fType").innerHTML=TYPE_KEYS.map(function(k){var t=TYPES[k];
+    return '<button type="button" data-tp="'+k+'" class="'+(k===pickType?"on":"")+'" style="--pc:'+t.color+'">'+
+      '<span class="ti">'+t.icon+'</span>'+esc(t.label)+'</button>';}).join("");
+}
+function updateEditFields(type){
+  var isSub=(type==="submap");
+  root.getElementById("fImgWrap").style.display=isSub?"none":"";
+  root.getElementById("fShortWrap").style.display=isSub?"none":"";
+  root.getElementById("fLoreWrap").style.display=isSub?"none":"";
+  root.getElementById("fWikiWrap").style.display=isSub?"none":"";
+  root.getElementById("fSubWrap").style.display=isSub?"":"none";
+}
+root.getElementById("fType").addEventListener("click",function(e){
+  var b=e.target.closest("[data-tp]");if(!b)return;pickType=b.dataset.tp;renderTypePicker();updateEditFields(pickType);});
+function openEdit(id,x,y){
+  state.editingId=id;newXY=(id==null)?{x:x,y:y}:null;state.subFileData=null;
+  var p=id!=null?cur().pins.find(function(z){return z.id===id;}):null;
+  pickType=p?p.type:"city"; renderTypePicker(); updateEditFields(pickType);
+  root.getElementById("editHeading").textContent=p?"Editar lugar":"Nuevo lugar";
+  root.getElementById("fTitle").value=p?p.title:"";
+  root.getElementById("fImg").value=p?(p.img||""):"";
+  root.getElementById("fShort").value=p?(p.short||""):"";
+  root.getElementById("fLore").value=p?(p.lore||""):"";
+  root.getElementById("fSubFile").value="";
+  root.getElementById("fSubState").textContent=(p&&p.sub)?("✓ Submapa cargado ("+p.sub.name+")"):"";
+  (function(){var _sel=root.getElementById("fWiki");if(_sel){var _ws=(window.allWikiPages?allWikiPages():[]);_sel.innerHTML='<option value="">— ninguna —</option>'+_ws.map(function(w){return '<option value="'+esc(w.id)+'">'+esc(w.title||w.id)+'</option>';}).join("");_sel.value=(p&&p.wikiId)?p.wikiId:"";}})();
+  root.getElementById("fDelete").style.display=p?"":"none";
+  editScrim.classList.add("open");
+  setTimeout(function(){root.getElementById("fTitle").focus();},60);
+}
+root.getElementById("fSubFile").addEventListener("change",function(e){
+  var f=e.target.files&&e.target.files[0];if(!f)return;
+  var rd=new FileReader();rd.onload=function(){state.subFileData=rd.result;
+    root.getElementById("fSubState").textContent="✓ Imagen de submapa lista.";};rd.readAsDataURL(f);
+});
+function closeEdit(){editScrim.classList.remove("open");state.editingId=null;newXY=null;state.subFileData=null;}
+root.getElementById("fCancel").onclick=closeEdit;
+root.getElementById("fSave").onclick=function(){
+  var title=root.getElementById("fTitle").value.trim()||"Sin nombre";
+  var _wsel=root.getElementById("fWiki");var data={type:pickType,title:title,img:root.getElementById("fImg").value.trim(),
+    short:root.getElementById("fShort").value.trim(),lore:root.getElementById("fLore").value.trim(),wikiId:(_wsel?_wsel.value:"")};
+  var p;
+  if(state.editingId!=null){p=cur().pins.find(function(z){return z.id===state.editingId;});if(p)Object.assign(p,data);}
+  else{p=Object.assign(P(newXY.x,newXY.y,pickType,title,data.short,data.lore),{img:data.img});cur().pins.push(p);}
+  if(p){
+    if(pickType==="submap"){
+      if(state.subFileData){ if(p.sub){p.sub.src=state.subFileData;p.sub.name=title;} else {p.sub=makeMap(title,state.subFileData,[]);} }
+      else if(p.sub){ p.sub.name=title; }
+    } else { p.sub=null; }
+  }
+  closeEdit(); renderPins();
+};
+root.getElementById("fDelete").onclick=function(){
+  var m=cur();m.pins=m.pins.filter(function(z){return z.id!==state.editingId;});
+  if(state.openId===state.editingId)state.openId=null; closeEdit(); renderPins();
+};
+
+/* ---------- Export / Import ---------- */
+var expScrim=root.getElementById("expScrim");
+root.getElementById("btnExport").onclick=function(){
+  var m=cur();
+  root.getElementById("expMapName").textContent=m.name;
+  var data={
+    pins:m.pins.map(function(p){return {x:+p.x.toFixed(4),y:+p.y.toFixed(4),type:p.type,title:p.title,img:p.img,short:p.short,lore:p.lore,portal:!!p.sub};}),
+    areas:m.areas.map(function(a){return {kind:a.kind||"faction",name:a.name,color:a.color,pts:a.pts.map(function(p){return {x:+p.x.toFixed(4),y:+p.y.toFixed(4)};})};}),
+    routes:m.routes.map(function(r){return {kind:r.kind||"trade",name:r.name,color:r.color,pts:r.pts.map(function(p){return {x:+p.x.toFixed(4),y:+p.y.toFixed(4)};})};})
+  };
+  root.getElementById("expText").value=JSON.stringify(data,null,2);
+  expScrim.classList.add("open");
+};
+root.getElementById("expClose").onclick=function(){expScrim.classList.remove("open");};
+root.getElementById("expCopy").onclick=function(){var t=root.getElementById("expText");t.select();try{document.execCommand("copy");showHint("Copiado.");}catch(e){}};
+root.getElementById("expLoad").onclick=function(){
+  try{
+    var data=JSON.parse(root.getElementById("expText").value), m=cur();
+    var pinArr=Array.isArray(data)?data:(data.pins||[]);
+    m.pins=pinArr.map(function(p){return P(+p.x,+p.y,TYPES[p.type]?p.type:"city",p.title||"Sin nombre",p.short||"",p.lore||"",{img:p.img||""});});
+    if(!Array.isArray(data)){
+      m.areas=(data.areas||[]).map(function(a){return {id:++uid,kind:a.kind||"faction",name:a.name||"Área",color:a.color||"#7a5c3e",pts:(a.pts||[]).map(function(p){return {x:+p.x,y:+p.y};})};});
+      m.routes=(data.routes||[]).map(function(r){return {id:++uid,kind:r.kind||"trade",name:r.name||"Ruta",color:r.color||"#b8935a",pts:(r.pts||[]).map(function(p){return {x:+p.x,y:+p.y};})};});
+    }
+    state.openId=null;state.draft=null;renderPins();expScrim.classList.remove("open");
+    showHint("Cargado: "+m.pins.length+" lugares, "+m.areas.length+" áreas, "+m.routes.length+" rutas.");
+  }catch(e){showHint("Ese texto no es válido.");}
+};
+
+/* ---------- Ayuda ---------- */
+root.getElementById("btnHelp").onclick=function(){showHint("📚 Capas: prende varias (👁) para verlas encimadas; ✎ elige cuál editas. En Lugares filtras por tipo. Un pin 🗺️ Submapa te lleva a otro mapa al tocarlo.");};
+
+/* ---------- Lentes ---------- */
+/* ---------- Panel de capas ---------- */
+function renderLayers(){
+  var inSub=stack.length>1;
+  var list=inSub?LAYERS.filter(function(L){return L.key==="places";}):LAYERS;
+  root.getElementById("layerList").innerHTML=list.map(function(L){
+    var vis=!!state.visible[L.key], act=state.active===L.key;
+    return '<div class="lyrow'+(act?" active":"")+'">'+
+      '<button class="lyeye'+(vis?" on":"")+'" data-eye="'+L.key+'" title="Ver / ocultar">'+(vis?"👁":"◌")+'</button>'+
+      '<button class="lyname" data-act="'+L.key+'"><span class="lyico">'+L.icon+'</span>'+L.label+'</button>'+
+      '<span class="lyactive" title="Capa activa para editar">'+(act?"✎":"")+'</span></div>';
+  }).join("");
+  root.getElementById("typeSub").style.display=state.visible.places?"block":"none";
+}
+root.getElementById("layerList").addEventListener("click",function(e){
+  var eye=e.target.closest("[data-eye]");
+  if(eye){var k=eye.dataset.eye; state.visible[k]=!state.visible[k]; if(!state.visible[k]&&state.draft&&state.active===k)state.draft=null; renderLayers(); renderPins(); return;}
+  var act=e.target.closest("[data-act]");
+  if(act){var k2=act.dataset.act; state.active=k2; state.visible[k2]=true; state.draft=null; state.openId=null; renderLayers(); renderPins(); layerHint();}
+});
+root.getElementById("btnLayers").onclick=function(){
+  var p=root.getElementById("layers"); p.classList.toggle("open");
+  root.getElementById("btnLayers").classList.toggle("on",p.classList.contains("open"));
+};
+function layerHint(){
+  var a=state.active;
+  if(a==="places"){ showHint(state.mode==="edit"?"Editas Lugares: toca el mapa para crear un lugar.":"Capa activa: Lugares."); return; }
+  var cfg=LENS_CFG[a], isArea=cfg&&cfg.group==="area", L=LAYERS.filter(function(x){return x.key===a;})[0], nm=L?L.label:a;
+  if(state.mode!=="edit"){ showHint("Capa activa: "+nm+". Cambia a ✎ Editar para dibujar."); return; }
+  showHint(isArea?"Editas "+nm+": toca las esquinas; luego 'Cerrar área'.":"Editas "+nm+": toca las paradas en orden; luego 'Terminar ruta'.");
+}
+
+/* ---------- Barra de dibujo ---------- */
+function updateDraftBar(){
+  var bar=root.getElementById("draftbar");
+  if(!state.draft){bar.classList.remove("show");return;}
+  bar.classList.add("show");
+  var n=state.draft.pts.length, isArea=state.draft.group==="area", min=isArea?3:2;
+  root.getElementById("dDoneLbl").textContent=isArea?"Cerrar área":"Terminar ruta";
+  root.getElementById("draftInfo").textContent=(isArea?"Territorio":"Ruta")+": "+n+" punto"+(n===1?"":"s")+(n<min?" (mín. "+min+")":"");
+  var done=root.getElementById("dDone"); done.disabled=(n<min); done.style.opacity=(n<min)?".5":"1";
+}
+root.getElementById("dUndo").onclick=function(){if(state.draft&&state.draft.pts.length){state.draft.pts.pop();renderPins();}};
+root.getElementById("dCancel").onclick=function(){state.draft=null;renderPins();};
+root.getElementById("dDone").onclick=function(){
+  if(!state.draft)return; var isArea=state.draft.group==="area", min=isArea?3:2;
+  if(state.draft.pts.length<min)return;
+  openShapeForm(state.draft.group,state.draft.kind,null,state.draft.pts.slice());
+};
+
+/* ---------- Formulario de área / ruta ---------- */
+var shapeScrim=root.getElementById("shapeScrim");
+var SWATCHES=["#7a5c3e","#b8935a","#8a3a3a","#3a6a8a","#4a7a4a","#7a4a7a","#a0662c","#4a4a5a"];
+function renderSwatches(sel){
+  root.getElementById("shapeSwatches").innerHTML=SWATCHES.map(function(c){
+    return '<button type="button" data-sw="'+c+'" class="'+(c.toLowerCase()===String(sel).toLowerCase()?"on":"")+'" style="background:'+c+'"></button>';}).join("");
+}
+root.getElementById("shapeSwatches").addEventListener("click",function(e){
+  var b=e.target.closest("[data-sw]");if(!b)return;
+  root.getElementById("shapeColor").value=b.dataset.sw; renderSwatches(b.dataset.sw);});
+root.getElementById("shapeColor").addEventListener("input",function(){renderSwatches(this.value);});
+function openShapeForm(group,kind,id,pts){
+  state.shape={group:group,kind:kind,id:id,pts:pts||null};
+  var isArea=group==="area";
+  var existing=id!=null?(isArea?cur().areas:cur().routes).find(function(z){return z.id===id;}):null;
+  root.getElementById("shapeHeading").textContent=(existing?"Editar ":"Nueva ")+(KIND_LABEL[kind]||"forma");
+  root.getElementById("shapeNameLbl").textContent=KIND_NAMELBL[kind]||"Nombre";
+  root.getElementById("shapeName").value=existing?existing.name:"";
+  var col=existing?existing.color:(KIND_COLOR[kind]||"#7a5c3e");
+  root.getElementById("shapeColor").value=col; renderSwatches(col);
+  root.getElementById("shapeDelete").style.display=existing?"":"none";
+  shapeScrim.classList.add("open");
+  setTimeout(function(){root.getElementById("shapeName").focus();},60);
+}
+function editShapeById(group,id){
+  var isArea=group==="area";
+  var it=(isArea?cur().areas:cur().routes).find(function(z){return z.id===id;});
+  if(!it)return;
+  openShapeForm(group,it.kind||(isArea?"faction":"trade"),id,null);
+}
+root.getElementById("shapeCancel").onclick=function(){shapeScrim.classList.remove("open");state.shape=null;};
+root.getElementById("shapeSave").onclick=function(){
+  if(!state.shape)return; var isArea=state.shape.group==="area";
+  var name=root.getElementById("shapeName").value.trim()||(isArea?"Área":"Ruta");
+  var color=root.getElementById("shapeColor").value;
+  var list=isArea?cur().areas:cur().routes;
+  if(state.shape.id!=null){var it=list.find(function(z){return z.id===state.shape.id;});if(it){it.name=name;it.color=color;}}
+  else{list.push({id:++uid,kind:state.shape.kind,name:name,color:color,pts:state.shape.pts});state.draft=null;}
+  shapeScrim.classList.remove("open");state.shape=null;renderPins();
+};
+root.getElementById("shapeDelete").onclick=function(){
+  if(!state.shape||state.shape.id==null)return; var isArea=state.shape.group==="area";
+  if(isArea)cur().areas=cur().areas.filter(function(z){return z.id!==state.shape.id;});
+  else cur().routes=cur().routes.filter(function(z){return z.id!==state.shape.id;});
+  shapeScrim.classList.remove("open");state.shape=null;renderPins();
+};
+
+/* ---------- Init ---------- */
+var _shown=false;
+function show(){ if(!_shown){_shown=true; renderFilters(); renderLayers(); loadMap(); showHint("📚 Capas: 👁 prende/apaga y se superponen · ✎ marca cuál editas · 🗺 un pin de submapa te lleva a otro mapa."); } else { fit(); } }
+window.addEventListener("resize",function(){ if(_shown)apply(); });
+
+return {show:show};
+};</script>
+<script>(function(){var host=document.getElementById("view-map");if(!host||!window.EpicMapInit)return;var sr=host.attachShadow({mode:"open"});sr.appendChild(document.getElementById("map-template").content.cloneNode(true));window.EpicMap=EpicMapInit(sr);var _rv=renderView;renderView=function(id){_rv(id);if(id==="map"&&window.EpicMap)EpicMap.show();};})();</script>
 </body>
 </html>
