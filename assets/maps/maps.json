@@ -1,0 +1,38 @@
+[
+  {
+    "name": "Cheran",
+    "file": "cheran.jpg"
+  },
+  {
+    "name": "Urushan",
+    "file": "urushan.jpg"
+  },
+  {
+    "name": "Aetherion",
+    "file": "aetherion.jpg"
+  },
+  {
+    "name": "Central Sea",
+    "file": "central-sea.jpg"
+  },
+  {
+    "name": "Southern Spines",
+    "file": "southern-spines.jpg"
+  },
+  {
+    "name": "The Broken Isles",
+    "file": "broken-isles.jpg"
+  },
+  {
+    "name": "Northern Wastes",
+    "file": "northern-wastes.jpg"
+  },
+  {
+    "name": "Northern Wilderness",
+    "file": "northern-wilderness.jpg"
+  },
+  {
+    "name": "Beorn's Fury & the Glowing Forest",
+    "file": "beorns-fury-glowing-forest.jpg"
+  }
+]
