@@ -4072,10 +4072,9 @@ button{font-family:inherit;cursor:pointer}
     <div class="field" id="fShortWrap"><label>Resumen (popup)</label><textarea id="fShort" rows="2" placeholder="Una o dos líneas."></textarea></div>
     <div class="field" id="fLoreWrap"><label>Lore completo (ver más)</label><textarea id="fLore" rows="5" placeholder="Texto largo."></textarea></div>
     <div class="field" id="fWikiWrap"><label>Ficha del wiki (opcional)</label><select id="fWiki"><option value="">— ninguna —</option></select><div class="tip">"Ver más" abrirá esta entrada del wiki del Hub.</div></div>
-    <div class="field" id="fSubWrap"><label>Imagen del submapa</label>
-      <input type="file" id="fSubFile" accept="image/*">
-      <div class="tip">Sube el mapa de este submapa. Al tocar este pin (en modo Ver), entrarás a él.</div>
-      <div class="tip" id="fSubState" style="color:#3a7a3a"></div>
+    <div class="field" id="fSubWrap"><label>Mapa del submapa</label>
+      <select id="fSubMap"><option value="">— elige un mapa —</option></select>
+      <div class="tip">Elige a qué mapa lleva este pin. Al tocarlo (en modo Ver), entrarás a él.</div>
     </div>
   </div>
   <div class="actions">
@@ -4157,6 +4156,9 @@ uid=_maxId(ROOT,0);
 function persist(){try{if(window.dbSave)dbSave('mapdata',stack[0]);}catch(e){}}
 function cur(){return stack[stack.length-1];}
 var state={zoom:1,panX:0,panY:0,mode:"view",active:"places",visible:{places:true,faction:false,religion:false,trade:false,transport:false},openId:null,editingId:null,hidden:{},subFileData:null,draft:null,shape:null};
+var MAPS_LIST=[];
+function loadMapsList(){try{fetch("assets/maps/maps.json").then(function(r){return r.json();}).then(function(a){if(Array.isArray(a))MAPS_LIST=a;}).catch(function(){});}catch(e){}}
+loadMapsList();
 
 var LAYERS=[
   {key:"places",icon:"📍",label:"Lugares"},
@@ -4432,18 +4434,12 @@ function openEdit(id,x,y){
   root.getElementById("fImg").value=p?(p.img||""):"";
   root.getElementById("fShort").value=p?(p.short||""):"";
   root.getElementById("fLore").value=p?(p.lore||""):"";
-  root.getElementById("fSubFile").value="";
-  root.getElementById("fSubState").textContent=(p&&p.sub)?("✓ Submapa cargado ("+p.sub.name+")"):"";
+  (function(){var _sm=root.getElementById("fSubMap");if(_sm){var _cur=(p&&p.sub&&p.sub.src)?p.sub.src:"";_sm.innerHTML='<option value="">— elige un mapa —</option>'+MAPS_LIST.map(function(mp){var _v="assets/maps/"+mp.file;return '<option value="'+esc(_v)+'">'+esc(mp.name)+'</option>';}).join("");_sm.value=_cur;}})();
   (function(){var _sel=root.getElementById("fWiki");if(_sel){var _ws=(window.allWikiPages?allWikiPages():[]);_sel.innerHTML='<option value="">— ninguna —</option>'+_ws.map(function(w){return '<option value="'+esc(w.id)+'">'+esc(w.title||w.id)+'</option>';}).join("");_sel.value=(p&&p.wikiId)?p.wikiId:"";}})();
   root.getElementById("fDelete").style.display=p?"":"none";
   editScrim.classList.add("open");
   setTimeout(function(){root.getElementById("fTitle").focus();},60);
 }
-root.getElementById("fSubFile").addEventListener("change",function(e){
-  var f=e.target.files&&e.target.files[0];if(!f)return;
-  var rd=new FileReader();rd.onload=function(){state.subFileData=rd.result;
-    root.getElementById("fSubState").textContent="✓ Imagen de submapa lista.";};rd.readAsDataURL(f);
-});
 function closeEdit(){editScrim.classList.remove("open");state.editingId=null;newXY=null;state.subFileData=null;}
 root.getElementById("fCancel").onclick=closeEdit;
 root.getElementById("fSave").onclick=function(){
@@ -4455,7 +4451,8 @@ root.getElementById("fSave").onclick=function(){
   else{p=Object.assign(P(newXY.x,newXY.y,pickType,title,data.short,data.lore),{img:data.img});cur().pins.push(p);}
   if(p){
     if(pickType==="submap"){
-      if(state.subFileData){ if(p.sub){p.sub.src=state.subFileData;p.sub.name=title;} else {p.sub=makeMap(title,state.subFileData,[]);} }
+      var _mv=root.getElementById("fSubMap")?root.getElementById("fSubMap").value:"";
+      if(_mv){ if(p.sub){p.sub.src=_mv;p.sub.name=title;} else {p.sub=makeMap(title,_mv,[]);} }
       else if(p.sub){ p.sub.name=title; }
     } else { p.sub=null; }
   }
