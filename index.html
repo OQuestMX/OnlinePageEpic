@@ -982,10 +982,201 @@ textarea.form-input{min-height:70px;line-height:1.5}
 .jl-beat-chip.on{background:var(--blue);color:#fff;border-color:var(--blue)}
 .journal-tag.beat{cursor:pointer;color:var(--blue);border-color:var(--blue-light)}
 </style>
+<style id="eq-design-system">
+/* ══════════════════════════════════════════════════════════════
+   EPIC QUEST — illuminated cartography (capa de design system)
+   Se aplica por cascada sobre el CSS base sin reescribirlo.
+   ══════════════════════════════════════════════════════════════ */
+@import url('https://fonts.googleapis.com/css2?family=Young+Serif&family=Gloock&family=Crimson+Pro:ital,wght@0,400;0,600;0,700;1,400&family=IBM+Plex+Mono:wght@400;500;700&display=swap');
+
+:root{
+  /* ── familias tipográficas ── */
+  --font-display:'Young Serif',Georgia,'Times New Roman',serif;
+  --font-heading:'Gloock',Georgia,serif;
+  --font-body:'Crimson Pro',Georgia,serif;
+  --font-mono:'IBM Plex Mono','SFMono-Regular',Menlo,monospace;
+  /* repunta las dos familias que usa toda la app hacia las fuentes del diseño */
+  --font:'Crimson Pro',Georgia,'Times New Roman',serif;   /* cuerpo + UI */
+  --serif:'Gloock',Georgia,serif;                          /* títulos y nombres de tarjeta */
+  /* ── tinta carbón-marino cálida ── */
+  --ink:#2a2620;--ink2:#5a5449;--ink3:#8a8478;--ink4:#a8a294;
+  /* ── metales: marrón y oro antiguo (solo hairlines/labels/acentos) ── */
+  --brown:#7a5c3e;--gold-antique:#b8935a;--gold-deep:#a07d47;--gold-ink:#8a6f0a;
+  --hairline:rgba(122,92,62,.35);
+  --border:#e0dcd3;--border2:#ccc8be;
+  /* ── seis pigmentos + su lavado (la paleta que ya usa la app, nombrada) ── */
+  --azure:#2858a0;--azure-wash:#e6eefc;--forest:#247038;--forest-wash:#e4f2ea;
+  --vermilion:#b02828;--vermilion-wash:#fae8e8;--amethyst:#6030a0;--amethyst-wash:#ede6fa;
+  --ember:#a06010;--ember-wash:#faf0e2;--old-gold:#8a6f0a;--old-gold-wash:#f0ead0;
+  /* ── elevación de tinta cálida (nunca gris neutro) ── */
+  --shadow-sm:0 1px 6px rgba(60,50,35,.10);
+  --shadow-card:0 12px 34px rgba(60,50,35,.12);
+  --shadow-lg:0 12px 34px rgba(60,50,35,.18);
+  --shadow-modal:0 24px 60px rgba(28,29,46,.28);
+  --shadow:0 1px 6px rgba(60,50,35,.10);
+  /* ── glow de pergamino + motion + radios ── */
+  --glow-plate:radial-gradient(1200px 800px at 82% 12%, rgba(184,147,90,.10), transparent 60%),radial-gradient(900px 700px at 10% 95%, rgba(122,92,62,.08), transparent 55%);
+  --ease:cubic-bezier(.4,0,.2,1);--dur-fast:.15s;--dur:.2s;--dur-slow:.3s;
+  --radius-sm:6px;--radius:8px;--radius-lg:12px;--radius-pill:999px;
+}
+
+/* ── voces base ── */
+body{-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+h1{font-family:var(--font-display);font-weight:400;letter-spacing:-.01em}
+h2,h3,h4{font-family:var(--font-heading);font-weight:400}
+.content,.main{background-image:var(--glow-plate)}
+
+/* ── wordmark (Young Serif) ── */
+.sb-brand-name{font-family:var(--font-display)!important;letter-spacing:.01em}
+
+/* ── labels en versalita espaciada → mano mono del cartógrafo ── */
+.section-label,.view-sub,.sb-brand-sub,.sb-campaign-label,.sb-players-label,
+.detail-section-label,.obj-label,.reader-label,.filter-cat-label,.tracker-stat-label,
+.builder-tab,.lib-cat-tab,.wiki-index-group-title,.pgroup-label,.jl-label{
+  font-family:var(--font-mono)!important;font-weight:500;
+}
+
+/* ── títulos Gloock: quitar faux-bold (Gloock es un solo peso 400) ── */
+.detail-name,.scene-card .scene-name,.beat-name,.beat-tile-name,.player-card-name,
+.wiki-card-title,.creature-name,.npc-name,.loot-name,.modal-title,.arc-name,
+.empty-state-title,.no-session-title,.wiki-title-static,.game-arc-title,
+.writer-scene-name{font-weight:400;letter-spacing:-.005em}
+
+/* ── elevación cálida en las placas principales ── */
+.player-card,.wiki-card,.scene-card{box-shadow:var(--shadow-card)}
+.modal{box-shadow:var(--shadow-modal)}
+.modal-overlay{background:rgba(28,29,46,.42)}
+
+/* ── hover callado: el borde se vuelve oro ── */
+.btn:hover{border-color:var(--gold-antique)}
+
+/* ── anillo de foco oro en campos ── */
+.form-input:focus,.journal-textarea:focus,.wiki-title-input:focus,.wiki-editor:focus,
+.init-input:focus,.squad-name-input:focus,.library-search:focus,
+input:focus,textarea:focus,select:focus{
+  outline:none;border-color:var(--gold-antique)!important;
+  box-shadow:0 0 0 3px rgba(184,147,90,.18)!important;
+}
+
+/* ── enlaces de contenido (los .btn quedan intactos) ── */
+a:not(.btn){color:var(--gold-ink)}
+
+/* ══ Utilidades reutilizables del handoff ══ */
+.eq-label{font-family:var(--font-mono);font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:var(--brown);font-weight:400}
+.eq-label .no{color:var(--gold-deep)}
+.eq-label-rule{display:flex;align-items:center;gap:12px}
+.eq-label-rule::after{content:"";flex:1;height:1px;background:var(--border)}
+.eq-figure{font-family:var(--font-mono);font-size:15px;letter-spacing:.02em;color:var(--ink)}
+.eq-aside{font-family:var(--font-body);font-style:italic;color:var(--brown)}
+.eq-wordmark{font-family:var(--font-display);line-height:.9;letter-spacing:-.01em;color:var(--ink)}
+.eq-wordmark em{font-style:normal;color:var(--gold-deep)}
+.eq-plate{position:relative;border:1px solid var(--gold-deep)}
+.eq-plate::before{content:"";position:absolute;inset:7px;border:1px solid var(--hairline);pointer-events:none}
+.eq-parchment{background:#faf8f4;background-image:var(--glow-plate)}
+
+/* ══ Recetas de componentes del handoff (sobre clases reales de la app) ══ */
+/* SectionLabel: opener en versalita mono + regla al final (la mano del cartógrafo) */
+.section-label{display:flex;align-items:center;gap:12px}
+.section-label::after{content:"";flex:1;height:1px;background:var(--border)}
+/* Nav activo: acento oro a la izquierda (sin mover el layout) */
+.sb-item.active{box-shadow:inset 3px 0 0 var(--navy-gold,#c9a84c)}
+
+/* ══ COBERTURA UNIFORME EN TODAS LAS PESTAÑAS (clases que faltaban) ══ */
+/* Labels → versalita mono (mano del cartógrafo) */
+.form-label,.stake-label,.sort-label,.wiki-type-label,.active-tags-label,
+.d12-label,.d12-band-label,.echo-tracker-label,.game-active-label,
+.jl-beat-arc-label,.preview-group-label{
+  font-family:var(--font-mono)!important;font-weight:500;
+}
+/* Nombres y títulos → Gloock sin faux-bold */
+.ability-name,.echo-player-name,.faction-lore-title,.game-active-name,.game-beat-name,
+.game-scene-name,.graveyard-name,.init-row-name,.journal-editor-title,.lk-title,
+.mini-scene-name,.player-weapon-name,.preview-unit-name,.sb-campaign-name,.sb-item-name,
+.squad-name,.unit-name,.wiki-index-title,.wiki-title{
+  font-family:var(--serif);font-weight:400;letter-spacing:-.005em;
+}
+/* Título principal de cada pestaña → encabezado Gloock */
+.view-title{font-family:var(--serif);font-weight:400;font-size:26px;line-height:1.12;color:var(--ink);letter-spacing:-.01em}
+/* Cards que faltaban → elevación de tinta cálida */
+.npc-card,.unit-card,.wiki-type-card,.player-preview-card{box-shadow:var(--shadow-card)}
+
+/* ══════════════════════════════════════════════════════════════
+   BRAND BOARD — orfebrería: cartouche + lámina del cartógrafo
+   ══════════════════════════════════════════════════════════════ */
+/* Wordmark "Epic Quest" en el sidebar navy (Young Serif, "Quest" en oro) */
+.sb-brand{padding:8px 0 12px}
+.sb-brand-name{font-size:27px!important;font-weight:400!important;letter-spacing:0!important;
+  color:#e9e7f2!important;text-transform:none!important;line-height:1.02}
+.sb-brand-name em{font-style:normal;color:#c9a84c}
+.sb-compass{width:46px;height:46px;display:block;margin:10px auto 8px;opacity:.95}
+.sb-brand-sub{color:#8a8bab!important;letter-spacing:.14em!important;font-size:9.5px!important}
+
+/* La lámina del cartógrafo: doble filete oro sobre el área de contenido de TODA vista.
+   Va en .main (viewport estable) y no bloquea el scroll ni los toques. */
+.main{position:relative}
+.main::before{content:"";position:absolute;inset:9px;border:1px solid var(--gold-deep);
+  border-radius:11px;pointer-events:none;z-index:40}
+.main::after{content:"";position:absolute;inset:15px;border:1px solid var(--hairline);
+  border-radius:8px;pointer-events:none;z-index:40}
+/* aire para que el contenido no toque la placa */
+.content{padding:26px 30px}
+
+/* Elevación de tinta cálida a spec del board (.16–.18) en las placas */
+.player-card,.wiki-card,.scene-card,.npc-card,.unit-card,.card{box-shadow:0 12px 34px rgba(60,50,35,.16)}
+
+/* Regla de section-label con arranque en oro — la coordenada del cartógrafo */
+.section-label::after{background:linear-gradient(90deg,var(--gold-deep) 0,var(--gold-deep) 16px,var(--border) 42px)!important}
+
+/* ══ Personajes — maestro-detalle (ficha grande + lista colapsable a la derecha) ══ */
+.pv-wrap{display:flex;gap:18px;align-items:flex-start}
+.pv-sheet{flex:1;min-width:0}
+.pv-sheet-inner{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);
+  box-shadow:0 12px 34px rgba(60,50,35,.14);padding:22px 24px;background-image:var(--glow-plate)}
+.pv-header{display:flex;gap:20px;align-items:flex-start;flex-wrap:wrap;
+  border-left:4px solid var(--gold);padding-left:16px}
+.pv-art{display:flex;gap:14px;flex-wrap:wrap}
+.pv-art-slot{width:150px}
+.pv-art-kind{font-family:var(--font-mono);font-size:9.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--brown);margin-bottom:6px}
+.pv-art-media{width:150px;height:150px;border-radius:var(--r-lg);overflow:hidden;border:1px solid var(--border);background:var(--paper2);box-shadow:var(--shadow-sm)}
+.pv-art-img{width:100%;height:100%;object-fit:cover;display:block}
+.pv-art-fallback{width:100%;height:100%;place-items:center;font-size:56px;background:radial-gradient(circle at 50% 40%,var(--gold-pale),var(--paper2))}
+.pv-art-label{font-family:var(--serif);font-size:15px;color:var(--ink);margin-top:7px;text-align:center}
+.pv-id{display:flex;gap:14px;align-items:flex-start;flex:1;min-width:220px}
+.pv-rail{position:sticky;top:0;align-self:flex-start;display:flex;flex-direction:column;gap:8px;width:60px;padding:8px;background:var(--paper2);border:1px solid var(--border);border-radius:var(--r-lg);transition:width var(--dur) var(--ease)}
+.pv-rail.open{width:210px}
+.pv-rail-toggle{align-self:flex-end;width:28px;height:28px;border:1px solid var(--border);border-radius:50%;cursor:pointer;background:var(--surface);color:var(--ink2);font-size:14px;line-height:1}
+.pv-rail-item{display:flex;align-items:center;gap:10px;padding:5px;border-radius:var(--r);cursor:pointer;border:1px solid transparent;transition:background var(--dur-fast) var(--ease),border-color var(--dur-fast) var(--ease)}
+.pv-rail-item:hover{background:var(--surface)}
+.pv-rail-item.active{background:var(--gold-pale);border-color:var(--gold)}
+.pv-rail-name{font-family:var(--serif);font-size:14px;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:none}
+.pv-rail.open .pv-rail-name{display:block}
+@media(max-width:720px){.pv-art-slot{width:120px}.pv-art-media{width:120px;height:120px;font-size:44px}}
+
+/* ══ Personajes — Naipe de Tarot (carta splash + registro) ══ */
+.tarot{display:flex;gap:26px;align-items:flex-start}
+.tarot-card{width:340px;flex:none;position:relative;border-radius:14px;overflow:hidden;border:1px solid var(--gold-deep);box-shadow:0 18px 44px rgba(60,50,35,.22)}
+.tarot-card::after{content:"";position:absolute;inset:6px;border:1px solid rgba(255,255,255,.35);border-radius:9px;pointer-events:none;z-index:3}
+.tarot-splash{height:470px;background:radial-gradient(circle at 50% 35%,#3a2f52,#1c1d2e);display:grid;place-items:center;position:relative}
+.tarot-splash-img{width:100%;height:100%;object-fit:cover;display:block}
+.tarot-splash-fb{width:100%;height:100%;place-items:center;font-size:120px}
+.tarot-kind{position:absolute;top:14px;left:16px;z-index:4;font-family:var(--font-mono);font-size:10px;letter-spacing:.28em;color:#e9e7f2;text-transform:uppercase;background:rgba(28,29,46,.55);padding:5px 10px;border-radius:20px}
+.tarot-medallion{position:absolute;right:16px;bottom:98px;z-index:4;width:78px;height:78px;border-radius:50%;background:radial-gradient(circle at 50% 40%,var(--gold-pale),#e6d9b4);border:2px solid var(--gold-deep);display:grid;place-items:center;box-shadow:0 6px 16px rgba(0,0,0,.3)}
+.tarot-med-img{width:100%;height:100%;object-fit:cover;border-radius:50%}
+.tarot-med-fb{width:100%;height:100%;place-items:center;font-size:34px;border-radius:50%}
+.tarot-medallion span{position:absolute;bottom:-16px;left:50%;transform:translateX(-50%);font-family:var(--font-mono);font-size:8px;letter-spacing:.14em;color:var(--brown);white-space:nowrap}
+.tarot-base{position:absolute;left:0;right:0;bottom:0;z-index:4;padding:22px 18px 16px;background:linear-gradient(transparent,rgba(20,18,30,.92) 55%)}
+.tarot-name{font-family:var(--serif);font-size:32px;color:#fff;line-height:1}
+.tarot-sub{font-family:var(--font-mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:#c9a84c;margin-top:6px}
+.tarot-reg{flex:1;min-width:0}
+.tarot-reg .reg-vitals{display:flex;gap:26px;margin:6px 0 16px;flex-wrap:wrap}
+.tarot-reg .reg-vitals .v{font-family:var(--serif);font-size:26px;color:var(--ink);line-height:1}
+.tarot-reg .reg-vitals .k{font-family:var(--font-mono);font-size:9px;letter-spacing:.2em;color:var(--brown);text-transform:uppercase}
+@media(max-width:760px){.tarot{flex-direction:column}.tarot-card{width:100%}.tarot-splash{height:400px}}
+</style>
 </head>
 <body>
 <aside class="sidebar">
-  <div class="sb-brand"><div class="sb-brand-name">EPIC</div><div class="sb-brand-sub">STORY MASTER</div></div>
+  <div class="sb-brand"><div class="sb-brand-name">Epic <em>Quest</em></div><svg class="sb-compass" viewBox="0 0 100 100" fill="none" aria-hidden="true"><circle cx="50" cy="50" r="46" stroke="#c9a84c" stroke-width="1.4"/><circle cx="50" cy="50" r="34" stroke="#7a7b9a" stroke-width=".8"/><polygon points="50,10 57,50 50,54 43,50" fill="#b02828"/><polygon points="50,90 43,50 50,46 57,50" fill="#b0b1c8"/><polygon points="10,50 50,43 54,50 50,57" fill="#c9a84c"/><polygon points="90,50 50,57 46,50 50,43" fill="#c9a84c"/><circle cx="50" cy="50" r="3.4" fill="#c9a84c"/></svg><div class="sb-brand-sub">Story Master Hub · Avelir</div></div>
   <div class="sb-campaign" id="sb-campaign-info"></div>
   <nav class="sb-nav">
     <div class="sb-item active" data-action="nav" data-type="campaign"><div class="sb-item-icon">📜</div><div class="sb-item-name">Campaña</div></div>
@@ -1771,6 +1962,8 @@ document.addEventListener('click',function(e){
   if(a==='del-beat'){e.stopPropagation();delBeat(parseInt(el.dataset.arc),parseInt(el.dataset.idx))}
   if(a==='add-echo'){adjustEcho(id,1)}
   if(a==='sub-echo'){adjustEcho(id,-1)}
+  if(a==='select-player'){window.selectedPlayerId=id;renderPlayers()}
+  if(a==='toggle-player-rail'){window.playerRailOpen=!window.playerRailOpen;renderPlayers()}
   if(a==='qty-dec'){if(qtyModalState&&qtyModalState.qty>1){qtyModalState.qty--;renderQtyModal()}}
   if(a==='qty-inc'){if(qtyModalState&&qtyModalState.qty<12){qtyModalState.qty++;renderQtyModal()}}
   if(a==='qty-confirm'){qtyConfirm()}
@@ -2600,32 +2793,79 @@ function filterLib(q){var items=libItems(selectedLibTab);if(q)items=items.filter
 function toggleMove(vid,text){var v=dbGetById('villains',vid);if(!v)return;v.moves.forEach(function(m){if(m.text===text)m.done=!m.done});dbUpdate('villains',vid,{moves:v.moves});renderLibrary()}
 
 /* PLAYERS */
-function renderPlayers(){var el=document.getElementById('players-content');if(!el)return;var pls=dbGetAll('players');if(!pls.length){el.innerHTML='<div class="empty-state"><div class="empty-state-title">No hay jugadores</div><div class="empty-state-desc">Agrega a los héroes de tu mesa.</div><div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center"><button class="btn btn-primary" data-action="open-modal" data-type="players">+ Agregar jugador</button><a class="btn" href="creador-personaje.html" target="_blank" rel="noopener" style="text-decoration:none">🧙 Crear personaje (jugador)</a></div></div>';return}var h='<div class="section-label">PERSONAJES</div><div style="margin-bottom:12px;display:flex;gap:8px;flex-wrap:wrap"><button class="btn btn-primary" data-action="open-modal" data-type="players">+ Agregar jugador</button><a class="btn" href="creador-personaje.html" target="_blank" rel="noopener" style="text-decoration:none">🧙 Crear personaje (jugador)</a></div><div class="player-grid">';pls.forEach(function(p){var r=resolvePlayer(p);h+='<div class="player-card" style="border-color:'+r.factionColor+'"><div class="player-card-header">'+avatarHtml(r,'width:52px;height:52px;font-size:20px;')+'<div><div class="player-card-name">'+esc(r.name)+'</div><div class="player-card-class">'+esc(r.cls)+(r.sub?' · '+esc(r.sub):'')+(r.kit?' · Kit '+esc(r.kit):'')+' · Plano '+r.plano+'</div></div></div>';h+='<div class="player-meta"><span class="player-tag faction">'+esc(r.faction)+'</span><span class="player-tag">HP '+r.hp+'</span><span class="player-tag">Aen +'+r.aenRegen+'/turno</span>'+(r.chosenFeat?'<span class="player-tag" style="background:var(--gold-pale);color:var(--gold)">'+esc(r.chosenFeat.name)+'</span>':'')+'</div>';if(r.backstory)h+='<div style="font-size:13px;color:var(--ink3);margin-top:8px;line-height:1.5">'+esc(r.backstory)+'</div>';h+='<div class="echo-tracker"><div class="echo-tracker-label">ECHO</div><div class="echo-dots">';for(var i=0;i<5;i++)h+='<div class="echo-dot'+(i<r.echo?' filled':'')+'">✦</div>';h+='</div><button class="echo-btn" data-action="sub-echo" data-id="'+p.id+'" style="padding:4px 8px;font-size:12px;min-height:32px">−</button><button class="echo-btn" data-action="add-echo" data-id="'+p.id+'" style="padding:4px 8px;font-size:12px;min-height:32px">+</button></div>';
-    // Expanded abilities section
-    var exp=expandedPlayers[p.id];
-    if(exp){
-      h+='<div class="player-abilities-expanded">';
-      // Faction lore (its own collapsible, kept as-is)
-      h+=playerFactionSectionHtml(p,r);
-      // Weapons — collapsible group
-      var pWeapons=getPlayerWeapons(p);
-      var wInner=weaponSectionHtml(pWeapons,'player',p.id,true)+'<button class="btn" style="margin:6px 0 4px;font-size:13px" data-action="equip-weapon" data-ttype="player" data-tid="'+p.id+'">⚔ Equipar arma</button>';
-      h+=collapsibleGroup(p.id,'weapons','⚔ Armas legendarias',pWeapons.length,wInner);
-      // Class abilities
-      if(r.classAbilities&&r.classAbilities.length){var ci='';r.classAbilities.forEach(function(a){ci+=abilityLineHtml(a)});h+=collapsibleGroup(p.id,'class','Habilidades de Clase',r.classAbilities.length,ci)}
-      // Subclass abilities
-      if(r.subAbilities&&r.subAbilities.length){var si='';r.subAbilities.forEach(function(a){si+=abilityLineHtml(a)});h+=collapsibleGroup(p.id,'sub','Habilidades de Subclase',r.subAbilities.length,si)}
-      // Kit ability
-      if(r.kitAbility){var ki=abilityLineHtml(r.kitAbility);if(r.kitAbility.drawback)ki+='<div style="font-size:11px;color:var(--red);padding:2px 0 6px 0">⚠ Drawback: '+esc(r.kitAbility.drawback)+'</div>';h+=collapsibleGroup(p.id,'kit','Habilidad de Kit',0,ki)}
-      // Faction feat
-      if(r.chosenFeat){var fi='<div class="ability-line"><span class="ability-name">'+esc(r.chosenFeat.name)+'</span> <span style="color:var(--ink4);font-size:11px">['+esc(r.chosenFeat.attr)+']</span><div style="font-size:12px;color:var(--ink3)">'+esc(r.chosenFeat.desc)+'</div></div>';h+=collapsibleGroup(p.id,'feat','Feat de Facción',0,fi)}
-      // Journal notes (lens over the journal)
-      var jEntries=dbGetAll('sessions').filter(function(e){return (e.playerIds||[]).indexOf(p.id)>-1});
-      h+=collapsibleGroup(p.id,'journal','📔 Notas',jEntries.length,playerJournalHtml(p));
-      if((!r.classAbilities||!r.classAbilities.length)&&(!r.subAbilities||!r.subAbilities.length)&&!r.kitAbility&&!r.chosenFeat){h+='<div style="font-size:13px;color:var(--ink4);padding:8px 0">Este personaje no tiene clase/subclase/kit asignados. Edítalo para agregarlos.</div>'}
-      h+='</div>';
-    }
-    h+='<div style="display:flex;gap:6px;margin-top:10px"><button class="btn'+(exp?' btn-primary':'')+'" data-action="toggle-player-detail" data-id="'+p.id+'">'+(exp?'▲ Ocultar detalle':'▼ Ver detalle')+'</button><button class="btn" data-action="open-modal" data-type="players" data-id="'+p.id+'">Editar</button><button class="delete-btn" data-action="delete-item" data-type="players" data-id="'+p.id+'">×</button></div></div>'});h+='</div>';el.innerHTML=h}
+function playerArtHtml(kind,id,icon,label){
+  var dir=kind==='kit'?'assets/kits/':'assets/clases/';
+  var src=id?dir+id+'.png':'';
+  var media='<div class="pv-art-media">';
+  if(src){
+    media+='<img class="pv-art-img" src="'+esc(src)+'" alt="'+esc(label||'')+'" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'grid\'">';
+    media+='<div class="pv-art-fallback" style="display:none">'+icon+'</div>';
+  } else {
+    media+='<div class="pv-art-fallback" style="display:grid">'+icon+'</div>';
+  }
+  media+='</div>';
+  return '<div class="pv-art-slot"><div class="pv-art-kind">'+(kind==='kit'?'KIT':'CLASE')+'</div>'+media+'<div class="pv-art-label">'+esc(label||'—')+'</div></div>';
+}
+function playerSheetHtml(p){
+  var r=resolvePlayer(p);
+  var clsObj=(G&&G.classes)?G.classes.find(function(c){return c.id===p.classId}):null;
+  var kitObj=(G&&G.kits)?G.kits.find(function(k){return k.id===p.kitId}):null;
+  var clsIcon=(clsObj&&clsObj.icon)?clsObj.icon:'\uD83C\uDFAD';
+  var kitIcon=(kitObj&&kitObj.icon)?kitObj.icon:'\uD83C\uDF92';
+  var clsSrc=clsObj?'assets/clases/'+encodeURIComponent(clsObj.name)+'.jpg':'';
+  var kitSrc=kitObj?'assets/kits/'+encodeURIComponent(kitObj.name)+'.jpg':'';
+  var h='<div class="tarot">';
+  h+='<div class="tarot-card" style="--fac:'+r.factionColor+'">';
+  h+='<div class="tarot-kind">Clase</div>';
+  h+='<div class="tarot-splash">';
+  if(clsSrc){h+='<img class="tarot-splash-img" src="'+esc(clsSrc)+'" alt="'+esc(r.cls)+'" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'grid\'"><div class="tarot-splash-fb" style="display:none">'+clsIcon+'</div>';}
+  else{h+='<div class="tarot-splash-fb" style="display:grid">'+clsIcon+'</div>';}
+  h+='</div>';
+  h+='<div class="tarot-medallion">';
+  if(kitSrc){h+='<img class="tarot-med-img" src="'+esc(kitSrc)+'" alt="'+esc(r.kit||'')+'" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'grid\'"><div class="tarot-med-fb" style="display:none">'+kitIcon+'</div>';}
+  else{h+='<div class="tarot-med-fb" style="display:grid">'+kitIcon+'</div>';}
+  h+='<span>KIT \u00b7 '+esc(r.kit||'\u2014')+'</span></div>';
+  h+='<div class="tarot-base"><div class="tarot-name">'+esc(r.name)+'</div><div class="tarot-sub">'+esc(r.cls)+(r.sub?' \u00b7 '+esc(r.sub):'')+' \u00b7 '+esc(r.faction)+'</div></div>';
+  h+='</div>';
+  h+='<div class="tarot-reg">';
+  h+='<div class="section-label">VITALS</div>';
+  h+='<div class="reg-vitals"><div><div class="k">HP</div><div class="v">'+r.hp+'</div></div><div><div class="k">Aen</div><div class="v">+'+r.aenRegen+'</div></div><div><div class="k">Plano</div><div class="v">'+r.plano+'</div></div>'+(r.chosenFeat?'<div><div class="k">Feat</div><div class="v" style="font-size:13px;font-family:var(--font-mono)">'+esc(r.chosenFeat.name)+'</div></div>':'')+'</div>';
+  h+='<div class="echo-tracker"><div class="echo-tracker-label">ECHO</div><div class="echo-dots">';
+  for(var i=0;i<5;i++)h+='<div class="echo-dot'+(i<r.echo?' filled':'')+'">\u2726</div>';
+  h+='</div><button class="echo-btn" data-action="sub-echo" data-id="'+p.id+'" style="padding:4px 8px;font-size:12px;min-height:32px">\u2212</button><button class="echo-btn" data-action="add-echo" data-id="'+p.id+'" style="padding:4px 8px;font-size:12px;min-height:32px">+</button></div>';
+  if(r.backstory)h+='<div style="font-size:13.5px;color:var(--ink3);margin:10px 0;line-height:1.6">'+esc(r.backstory)+'</div>';
+  h+='<div class="section-label">DOSSIER</div>';
+  h+='<div class="player-abilities-expanded" style="border-top:0;margin-top:0;padding-top:0">';
+  h+=playerFactionSectionHtml(p,r);
+  var pWeapons=getPlayerWeapons(p);
+  var wInner=weaponSectionHtml(pWeapons,'player',p.id,true)+'<button class="btn" style="margin:6px 0 4px;font-size:13px" data-action="equip-weapon" data-ttype="player" data-tid="'+p.id+'">\u2694 Equipar arma</button>';
+  h+=collapsibleGroup(p.id,'weapons','\u2694 Armas legendarias',pWeapons.length,wInner);
+  if(r.classAbilities&&r.classAbilities.length){var ci='';r.classAbilities.forEach(function(a){ci+=abilityLineHtml(a)});h+=collapsibleGroup(p.id,'class','Habilidades de Clase',r.classAbilities.length,ci)}
+  if(r.subAbilities&&r.subAbilities.length){var si='';r.subAbilities.forEach(function(a){si+=abilityLineHtml(a)});h+=collapsibleGroup(p.id,'sub','Habilidades de Subclase',r.subAbilities.length,si)}
+  if(r.kitAbility){var ki=abilityLineHtml(r.kitAbility);if(r.kitAbility.drawback)ki+='<div style="font-size:11px;color:var(--red);padding:2px 0 6px 0">\u26a0 Drawback: '+esc(r.kitAbility.drawback)+'</div>';h+=collapsibleGroup(p.id,'kit','Habilidad de Kit',0,ki)}
+  if(r.chosenFeat){var fi='<div class="ability-line"><span class="ability-name">'+esc(r.chosenFeat.name)+'</span> <span style="color:var(--ink4);font-size:11px">['+esc(r.chosenFeat.attr)+']</span><div style="font-size:12px;color:var(--ink3)">'+esc(r.chosenFeat.desc)+'</div></div>';h+=collapsibleGroup(p.id,'feat','Feat de Facci\u00f3n',0,fi)}
+  var jEntries=dbGetAll('sessions').filter(function(e){return (e.playerIds||[]).indexOf(p.id)>-1});
+  h+=collapsibleGroup(p.id,'journal','\uD83D\uDCD4 Notas',jEntries.length,playerJournalHtml(p));
+  if((!r.classAbilities||!r.classAbilities.length)&&(!r.subAbilities||!r.subAbilities.length)&&!r.kitAbility&&!r.chosenFeat){h+='<div style="font-size:13px;color:var(--ink4);padding:8px 0">Este personaje no tiene clase/subclase/kit asignados. Ed\u00edtalo para agregarlos.</div>'}
+  h+='</div>';
+  h+='<div style="display:flex;gap:6px;margin-top:14px"><button class="btn" data-action="open-modal" data-type="players" data-id="'+p.id+'">Editar</button><button class="delete-btn" data-action="delete-item" data-type="players" data-id="'+p.id+'">\u00d7</button></div>';
+  h+='</div>';
+  h+='</div>';
+  return h;
+}
+function renderPlayers(){var el=document.getElementById('players-content');if(!el)return;var pls=dbGetAll('players');if(!pls.length){el.innerHTML='<div class="empty-state"><div class="empty-state-title">No hay jugadores</div><div class="empty-state-desc">Agrega a los h\u00e9roes de tu mesa.</div><div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center"><button class="btn btn-primary" data-action="open-modal" data-type="players">+ Agregar jugador</button><a class="btn" href="creador-personaje.html" target="_blank" rel="noopener" style="text-decoration:none">\uD83E\uDDD9 Crear personaje (jugador)</a></div></div>';return}
+  if(!window.selectedPlayerId||!pls.some(function(p){return p.id===window.selectedPlayerId}))window.selectedPlayerId=pls[0].id;
+  var sel=dbGetById('players',window.selectedPlayerId)||pls[0];
+  var railOpen=!!window.playerRailOpen;
+  var h='<div class="section-label">PERSONAJES</div>';
+  h+='<div style="margin-bottom:12px;display:flex;gap:8px;flex-wrap:wrap"><button class="btn btn-primary" data-action="open-modal" data-type="players">+ Agregar jugador</button><a class="btn" href="creador-personaje.html" target="_blank" rel="noopener" style="text-decoration:none">\uD83E\uDDD9 Crear personaje (jugador)</a></div>';
+  h+='<div class="pv-wrap">';
+  h+='<div class="pv-sheet">'+playerSheetHtml(sel)+'</div>';
+  h+='<div class="pv-rail'+(railOpen?' open':'')+'"><button class="pv-rail-toggle" data-action="toggle-player-rail" title="Expandir/colapsar lista">'+(railOpen?'\u00bb':'\u00ab')+'</button>';
+  pls.forEach(function(p){var r=resolvePlayer(p);h+='<div class="pv-rail-item'+(p.id===sel.id?' active':'')+'" data-action="select-player" data-id="'+p.id+'" title="'+esc(r.name)+'">'+avatarHtml(r,'width:40px;height:40px;font-size:16px;')+'<span class="pv-rail-name">'+esc(r.name)+'</span></div>'});
+  h+='</div>';
+  h+='</div>';
+  el.innerHTML=h}
 function adjustEcho(pid,d){var p=dbGetById('players',pid);if(!p)return;p.echo=Math.max(0,Math.min(5,(p.echo||0)+d));dbUpdate('players',pid,{echo:p.echo});renderPlayers()}
 
 /* SCENE BUILDER */
@@ -3835,7 +4075,7 @@ nav('campaign');
   --accent:#7a5c3e; --accent-light:#f0e9df; --gold:#b8935a; --gold-deep:#a07d47; --border:#e0dcd3;
   --shadow:0 12px 34px rgba(60,50,35,.18);
   --sans:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
-  --serif:Georgia,'Times New Roman',serif;
+  --serif:'Gloock',Georgia,'Times New Roman',serif;
 }
 *{box-sizing:border-box}
 :host{display:block;width:100%;height:100%;overflow:hidden;background:var(--bg);font-family:var(--sans);color:var(--ink);-webkit-tap-highlight-color:transparent}
@@ -3884,7 +4124,7 @@ button{font-family:inherit;cursor:pointer}
 .popup .ptype{display:inline-flex;align-items:center;gap:5px;font-family:var(--sans);font-size:10px;font-weight:700;
   letter-spacing:1px;text-transform:uppercase;padding:2px 8px;border-radius:999px;margin-bottom:7px;
   background:color-mix(in srgb,var(--pc,#b8935a) 16%, #fff);color:var(--accent);border:1px solid color-mix(in srgb,var(--pc,#b8935a) 42%, #fff)}
-.popup .ptitle{font-family:var(--serif);font-weight:700;font-size:16px;color:var(--ink);margin:0 0 4px;line-height:1.2}
+.popup .ptitle{font-family:var(--serif);font-weight:400;font-size:16px;color:var(--ink);margin:0 0 4px;line-height:1.2}
 .popup .pshort{font-size:14px;line-height:1.45;color:var(--ink2);margin:0 0 10px}
 .popup .prow{display:flex;gap:6px;flex-wrap:wrap}
 .popup a.pbtn,.popup button.pbtn{display:inline-flex;align-items:center;gap:6px;background:var(--accent-light);color:var(--accent);
@@ -3906,7 +4146,7 @@ button{font-family:inherit;cursor:pointer}
   padding:10px 14px;background:linear-gradient(180deg,rgba(250,248,244,.97),rgba(250,248,244,.62) 72%,transparent);pointer-events:none}
 #bar>*{pointer-events:auto}
 .brandwrap{margin-right:auto;min-width:0}
-.brand{font-family:var(--serif);font-weight:700;letter-spacing:2px;font-size:18px;color:var(--accent)}
+.brand{font-family:var(--serif);font-weight:400;letter-spacing:2px;font-size:18px;color:var(--accent)}
 #crumbs{font-family:var(--sans);font-size:11px;font-weight:600;letter-spacing:.6px;color:var(--ink3);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 #crumbs .cb{color:var(--ink3);cursor:pointer;text-decoration:underline}
 #crumbs .cb:hover{color:var(--accent)}
