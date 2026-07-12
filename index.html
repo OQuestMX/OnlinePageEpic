@@ -1172,6 +1172,73 @@ a:not(.btn){color:var(--gold-ink)}
 .tarot-reg .reg-vitals .v{font-family:var(--serif);font-size:26px;color:var(--ink);line-height:1}
 .tarot-reg .reg-vitals .k{font-family:var(--font-mono);font-size:9px;letter-spacing:.2em;color:var(--brown);text-transform:uppercase}
 @media(max-width:760px){.tarot{flex-direction:column}.tarot-card{width:100%}.tarot-splash{height:400px}}
+
+/* ══ Journal · Captura en vivo (tags) ══ */
+.jmode-tabs{display:flex;gap:4px;margin:0 0 18px;border-bottom:1px solid var(--border)}
+.jmode{background:transparent;border:0;border-bottom:2px solid transparent;padding:9px 14px;cursor:pointer;font-family:var(--font-mono);font-size:12px;letter-spacing:.06em;color:var(--ink3);margin-bottom:-1px}
+.jmode.on{color:var(--ink);border-bottom-color:var(--gold-deep)}
+.cap-bar{background:var(--surface);border:1px solid var(--border);border-radius:12px 12px 0 0;box-shadow:var(--shadow-sm);padding:12px 14px;display:flex;gap:10px;align-items:center;border-bottom:0;flex-wrap:wrap}
+.cap-scene-sel{font-family:var(--font-mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--brown);background:var(--gold-pale);border:1px solid var(--gold-deep);padding:7px 10px;border-radius:20px;max-width:220px}
+.cap-input{flex:1;min-width:160px;font-family:var(--font);font-size:16px;border:0;outline:none;background:transparent;color:var(--ink)}
+.cap-send{background:var(--gold-deep);color:#fff;border:0;border-radius:8px;min-height:40px;padding:0 16px;font-family:var(--font-mono);font-size:12px;cursor:pointer;letter-spacing:.06em}
+.assist{background:var(--paper2);border:1px solid var(--border);border-top:0;border-radius:0 0 12px 12px;padding:12px 16px;margin-bottom:18px}
+.assist-lb{font-family:var(--font-mono);font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--brown);margin:2px 0 8px}
+.chips{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:10px}
+.chips:last-child{margin-bottom:0}
+.chip{font-family:var(--font-mono);font-size:12.5px;padding:5px 11px;border-radius:20px;border:1px solid var(--border);background:var(--surface);cursor:pointer;display:inline-flex;align-items:center;gap:6px;color:var(--ink)}
+.chip .dot{width:7px;height:7px;border-radius:50%}
+.chip.per{color:var(--gold-deep);border-color:var(--gold-deep);background:var(--gold-pale)}
+.chip.per.ghost{background:var(--surface);color:var(--ink3);border-color:var(--border)}
+.chip.per.on{background:var(--gold-deep);color:#fff}
+.chip.tagchip.on{background:var(--tc);color:#fff;border-color:var(--tc)}
+.chip.tagchip.on .dot{background:#fff}
+.chip.new{border-style:dashed;color:var(--ink3)}
+.newtag{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:10px;padding-top:10px;border-top:1px solid var(--border)}
+.newtag-name{font-family:var(--font);font-size:14px;border:1px solid var(--border);border-radius:8px;padding:7px 10px;background:var(--surface)}
+.newtag-cols{display:flex;gap:5px}
+.swatch{width:22px;height:22px;border-radius:50%;cursor:pointer;border:2px solid transparent;box-sizing:content-box}
+.swatch.on{border-color:var(--ink)}
+.cap-filter{display:flex;align-items:center;gap:10px;margin:0 0 12px;font-family:var(--font-mono);font-size:12px;color:var(--brown)}
+.feed-row{display:flex;gap:14px;padding:12px 4px;border-bottom:1px solid var(--border)}
+.feed-time{font-family:var(--font-mono);font-size:11px;color:var(--brown);white-space:nowrap;padding-top:3px}
+.feed-body{flex:1;min-width:0}
+.feed-tx{font-size:15px;color:var(--ink);line-height:1.5}
+.feed-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:7px;align-items:center}
+.feed-tags .tg{font-family:var(--font-mono);font-size:11px;padding:2px 9px;border-radius:12px}
+.feed-tags .tg.per{color:var(--gold-deep);background:var(--gold-pale);border:1px solid var(--gold-deep);font-weight:700}
+.feed-scene{font-family:var(--font-mono);font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink4)}
+
+/* ══ Journal captura v2 — sub-tabs, enlaces, editar, archivo ══ */
+.jsub{display:flex;gap:8px;align-items:center;margin:0 0 16px;flex-wrap:wrap}
+.jsub-btn{background:var(--paper2);border:1px solid var(--border);border-radius:20px;padding:6px 14px;cursor:pointer;font-family:var(--font-mono);font-size:11px;letter-spacing:.06em;color:var(--ink3)}
+.jsub-btn.on{background:var(--gold-pale);border-color:var(--gold-deep);color:var(--ink)}
+.jsub-btn b{color:var(--gold-deep);margin-left:4px}
+.jsub-compile{margin-left:auto;background:var(--forest);color:#fff;border:0;border-radius:8px;padding:8px 14px;cursor:pointer;font-family:var(--font-mono);font-size:12px;letter-spacing:.06em}
+.cap-bar.editing{border-color:var(--gold-deep);box-shadow:0 0 0 2px var(--gold-pale)}
+.cap-cancel{background:transparent;border:1px solid var(--border);color:var(--ink3);border-radius:8px;min-height:40px;padding:0 12px;cursor:pointer;font-family:var(--font-mono);font-size:12px}
+.chips.draftrow{padding:8px 0 4px;margin-bottom:6px;border-bottom:1px dashed var(--border)}
+.chip.link{color:var(--azure);border-color:var(--azure);background:var(--azure-wash)}
+.chip.link.on{background:var(--azure);color:#fff;border-color:var(--azure)}
+.linkpicker{margin-top:10px;padding-top:10px;border-top:1px solid var(--border)}
+.lp-search{width:100%;font-family:var(--font);font-size:15px;border:1px solid var(--border);border-radius:8px;padding:9px 12px;background:var(--surface);margin-bottom:8px}
+.lp-list{max-height:230px;overflow-y:auto;border:1px solid var(--border);border-radius:8px;background:var(--surface)}
+.lp-item{display:flex;align-items:center;gap:8px;padding:9px 12px;cursor:pointer;border-bottom:1px solid var(--border);font-size:14px;color:var(--ink)}
+.lp-item:last-child{border-bottom:0}
+.lp-item:hover{background:var(--gold-pale)}
+.lp-item.lp-create{color:var(--gold-ink);font-family:var(--font-mono);font-size:13px}
+.lp-ic{font-size:15px}
+.lp-kind{margin-left:auto;font-family:var(--font-mono);font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink4)}
+.feed-acts{display:flex;gap:2px;align-items:flex-start;flex:none}
+.jl-edit,.jl-del{cursor:pointer;font-size:15px;background:transparent;border:0;color:var(--ink3);width:30px;height:30px;border-radius:6px;line-height:1}
+.jl-edit:hover{color:var(--gold-ink);background:var(--gold-pale)}
+.jl-del:hover{color:var(--vermilion);background:var(--vermilion-wash)}
+.feed-row.editing{background:var(--gold-pale);border-radius:8px}
+.tg.link{color:var(--azure);background:var(--azure-wash);border:1px solid var(--azure);font-family:var(--font-mono)}
+.arch-group{margin-bottom:20px;border:1px solid var(--border);border-radius:12px;overflow:hidden;background:var(--surface);box-shadow:var(--shadow-sm)}
+.arch-head{display:flex;align-items:center;gap:12px;padding:12px 16px;background:var(--paper2);border-bottom:1px solid var(--border)}
+.arch-title{font-family:var(--serif);font-size:16px;color:var(--ink);flex:1}
+.arch-count{font-family:var(--font-mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--brown)}
+.feed-row.arch{padding:10px 16px}
 </style>
 </head>
 <body>
@@ -1989,6 +2056,28 @@ document.addEventListener('click',function(e){
   if(a==='journal-save'){journalSave()}
   if(a==='journal-cancel'){journalCancel()}
   if(a==='journal-del'){journalDelete(el.dataset.id)}
+  if(a==='jc-mode'){captureSyncInput();window.journalMode=el.dataset.mode;renderJournal()}
+  if(a==='jc-subview'){captureSyncInput();window.journalCaptureView=el.dataset.view;renderJournal()}
+  if(a==='jc-send'){captureSend()}
+  if(a==='jc-editcap'){captureLoadEdit(el.dataset.id)}
+  if(a==='jc-canceledit'){window.captureEditId=null;window.captureDraft={text:'',links:[],tags:[]};renderJournal()}
+  if(a==='jc-player'){captureSyncInput();captureToggleLink('player',el.dataset.id,el.dataset.name,'\uD83E\uDDD9');renderJournal()}
+  if(a==='jc-tag'){captureSyncInput();captureToggleTag(el.dataset.name);renderJournal()}
+  if(a==='jc-rmtag'){captureSyncInput();captureToggleTag(el.dataset.name);renderJournal()}
+  if(a==='jc-rmlink'){captureSyncInput();var _d=captureDraftInit();_d.links.splice(+el.dataset.idx,1);renderJournal()}
+  if(a==='jc-linkopen'){captureSyncInput();window.captureLinkPicker={open:true};renderJournal();var _ls=document.getElementById('lp-search');if(_ls)_ls.focus()}
+  if(a==='jc-linkclose'){window.captureLinkPicker=null;renderJournal()}
+  if(a==='jc-link-add'){captureSyncInput();captureAddLink(el.dataset.kind,el.dataset.id,el.dataset.title,el.dataset.icon);window.captureLinkPicker=null;renderJournal()}
+  if(a==='jc-link-create'){captureLinkCreate()}
+  if(a==='jc-newtag-open'){captureSyncInput();window.captureNewTag={open:true,name:'',color:'#8a6f0a'};renderJournal()}
+  if(a==='jc-newtag-color'){var _nn=document.getElementById('newtag-name');if(_nn&&window.captureNewTag)window.captureNewTag.name=_nn.value;if(window.captureNewTag)window.captureNewTag.color=el.dataset.color;renderJournal()}
+  if(a==='jc-newtag-create'){captureNewTagCreate()}
+  if(a==='jc-newtag-cancel'){window.captureNewTag=null;renderJournal()}
+  if(a==='jc-filter'){captureSyncInput();window.captureFilter=(window.captureFilter===el.dataset.name?null:el.dataset.name);renderJournal()}
+  if(a==='jc-filter-clear'){window.captureFilter=null;renderJournal()}
+  if(a==='jc-compile'){captureCompile()}
+  if(a==='jc-goto'){window.journalMode='bitacora';renderJournal()}
+  if(a==='jc-del'){if(confirm('¿Eliminar captura?')){dbDelete('captures',el.dataset.id);renderJournal()}}
   if(a==='journal-toggle-player'){journalTogglePlayer(el.dataset.pid)}
   if(a==='journal-toggle-beat'){journalToggleBeat(el.dataset.bid)}
   if(a==='journal-open-beat'){openBeatFromJournal(el.dataset.bid)}
@@ -2112,8 +2201,161 @@ function journalApplyFilters(entries){
     return true;
   });
 }
+/* ===== Journal · Captura en vivo (tags + enlaces + archivo) ===== */
+function journalTagRegistry(){
+  var reg=dbLoad('journalTags');
+  if(!reg||!reg.length){
+    reg=[{name:'combate',color:'#b02828'},{name:'tirada',color:'#8a6f0a'},{name:'di\u00e1logo',color:'#2858a0'},{name:'revelaci\u00f3n',color:'#6030a0'},{name:'loot',color:'#a06010'},{name:'lugar',color:'#247038'},{name:'baja',color:'#2a2620'}];
+    dbSave('journalTags',reg);
+  }
+  return reg;
+}
+function journalTagColor(name){var reg=journalTagRegistry();for(var i=0;i<reg.length;i++){if(reg[i].name===name)return reg[i].color;}return '#8a6f0a';}
+function journalTagColorExists(name){var reg=journalTagRegistry();for(var i=0;i<reg.length;i++)if(reg[i].name===name)return true;return false;}
+function journalAddTag(name,color){var reg=journalTagRegistry();reg.push({name:name,color:color||'#8a6f0a'});dbSave('journalTags',reg);}
+function captureDraftInit(){if(!window.captureDraft)window.captureDraft={text:'',links:[],tags:[]};if(!window.captureDraft.links)window.captureDraft.links=[];if(!window.captureDraft.tags)window.captureDraft.tags=[];return window.captureDraft;}
+function captureSyncInput(){var inp=document.getElementById('cap-input');if(inp)captureDraftInit().text=inp.value;}
+function captureToggleTag(name){var d=captureDraftInit();var i=d.tags.indexOf(name);if(i>-1)d.tags.splice(i,1);else d.tags.push(name);}
+function captureToggleLink(kind,id,title,icon){var d=captureDraftInit();var i=-1;for(var k=0;k<d.links.length;k++){if(d.links[k].kind===kind&&d.links[k].id===id){i=k;break;}}if(i>-1)d.links.splice(i,1);else d.links.push({kind:kind,id:id,title:title,icon:icon||''});}
+function captureAddLink(kind,id,title,icon){var d=captureDraftInit();for(var k=0;k<d.links.length;k++){if(d.links[k].kind===kind&&d.links[k].id===id)return;}d.links.push({kind:kind,id:id,title:title,icon:icon||''});}
+function captureCurrentScene(){var id=(window.captureSceneId!==undefined&&window.captureSceneId!==null&&window.captureSceneId!=='')?window.captureSceneId:getActiveSceneId();var sc=id?dbGetById('scenes',id):null;return sc?{id:sc.id,name:sc.name}:null;}
+function captureTime(ts){if(!ts)return '';var t=new Date(ts);return ('0'+t.getHours()).slice(-2)+':'+('0'+t.getMinutes()).slice(-2);}
+function captureSend(){
+  captureSyncInput();
+  var d=captureDraftInit();
+  var text=(d.text||'').trim();
+  var tags=d.tags.slice();
+  var re=/(^|\s)#([A-Za-z\u00C0-\u017F0-9_\-]+)/g,m;
+  while((m=re.exec(text))){var w=m[2];if(tags.indexOf(w)===-1){tags.push(w);if(!journalTagColorExists(w))journalAddTag(w,'#8a6f0a');}}
+  if(!text&&!d.links.length&&!tags.length)return;
+  var sc=captureCurrentScene();
+  if(window.captureEditId){
+    dbUpdate('captures',window.captureEditId,{text:text,tags:tags,links:d.links.slice(),sceneId:sc?sc.id:'',sceneName:sc?sc.name:''});
+    window.captureEditId=null;
+  }else{
+    dbCreate('captures',{text:text,tags:tags,links:d.links.slice(),sceneId:sc?sc.id:'',sceneName:sc?sc.name:'',ts:Date.now(),archived:false});
+  }
+  window.captureDraft={text:'',links:[],tags:[]};
+  renderJournal();
+}
+function captureLoadEdit(id){var c=dbGetById('captures',id);if(!c)return;window.captureEditId=id;window.captureDraft={text:c.text||'',links:(c.links||[]).slice(),tags:(c.tags||[]).slice()};if(c.sceneId)window.captureSceneId=c.sceneId;window.journalCaptureView='live';renderJournal();var inp=document.getElementById('cap-input');if(inp){inp.focus();}}
+function captureNewTagCreate(){var nt=window.captureNewTag;if(!nt)return;var ntn=document.getElementById('newtag-name');var name=((ntn?ntn.value:nt.name)||'').trim().replace(/^#/,'');if(!name){window.captureNewTag=null;renderJournal();return;}if(!journalTagColorExists(name))journalAddTag(name,nt.color||'#8a6f0a');var d=captureDraftInit();if(d.tags.indexOf(name)===-1)d.tags.push(name);window.captureNewTag=null;renderJournal();}
+function captureLinkCreate(){var s=document.getElementById('lp-search');var title=(s?s.value:'').trim();if(!title){return;}if(typeof wikiCreatePage!=='function'){return;}var pg=wikiCreatePage(title,'');if(pg&&pg.id)captureAddLink('wiki',pg.id,pg.title,'\uD83D\uDCC4');window.captureLinkPicker=null;renderJournal();}
+function journalFilterLinkPicker(q){var qq=(q||'').toLowerCase();var items=document.querySelectorAll('.lp-item');for(var i=0;i<items.length;i++){var t=(items[i].getAttribute('data-title')||'').toLowerCase();items[i].style.display=(t.indexOf(qq)>-1)?'':'none';}var cr=document.getElementById('lp-create');if(cr){cr.style.display=q?'':'none';var qs=cr.querySelector('.lp-q');if(qs)qs.textContent=q||'';}}
+function captureCompile(){
+  var live=dbGetAll('captures').filter(function(c){return !c.archived;});
+  if(!live.length){alert('No hay capturas en vivo para enviar.');return;}
+  if(!confirm('Cerrar sesi\u00f3n y enviar '+live.length+' capturas a la Bit\u00e1cora?'))return;
+  live.sort(function(a,b){return (a.ts||0)-(b.ts||0);});
+  var sceneCount={},playerIds=[],lines=[];
+  live.forEach(function(c){
+    var link=(c.links||[]).map(function(l){return '[['+l.title+']]';}).join(' ');
+    var tag=(c.tags||[]).map(function(x){return '#'+x;}).join(' ');
+    var extra=[link,tag].filter(Boolean).join('  ');
+    lines.push(captureTime(c.ts)+' \u00b7 '+(c.text||'')+(extra?('  \u2014 '+extra):''));
+    if(c.sceneId)sceneCount[c.sceneId]=(sceneCount[c.sceneId]||0)+1;
+    (c.links||[]).forEach(function(l){if(l.kind==='player'&&playerIds.indexOf(l.id)===-1)playerIds.push(l.id);});
+  });
+  var topScene='',mx=0;Object.keys(sceneCount).forEach(function(k){if(sceneCount[k]>mx){mx=sceneCount[k];topScene=k;}});
+  var now=new Date();
+  var title='Transcript en vivo \u00b7 '+now.toLocaleDateString()+' '+captureTime(now.getTime());
+  var body='\u2014 '+title+' \u2014\n'+lines.join('\n');
+  var entry=dbCreate('sessions',{sessionNum:'',sessionTitle:title,text:body,sceneId:topScene,playerIds:playerIds,fromCaptures:true});
+  live.forEach(function(c){dbUpdate('captures',c.id,{archived:true,bitacoraId:entry.id,batchTitle:title});});
+  window.journalCaptureView='archivo';
+  renderJournal();
+}
+function journalTabsHtml(mode){
+  return '<div class="jmode-tabs"><button class="jmode'+(mode==='capture'?' on':'')+'" data-action="jc-mode" data-mode="capture">\u26a1 Captura en vivo</button><button class="jmode'+(mode==='bitacora'?' on':'')+'" data-action="jc-mode" data-mode="bitacora">\uD83D\uDCD6 Bit\u00e1cora</button></div>';
+}
+function captureChipTag(name,on){var col=journalTagColor(name);return '<span class="chip tagchip'+(on?' on':'')+'" data-action="jc-tag" data-name="'+esc(name)+'" style="--tc:'+col+'"><span class="dot" style="background:'+col+'"></span>#'+esc(name)+'</span>';}
+function renderJournalCapture(el){
+  var d=captureDraftInit();
+  var players=dbGetAll('players');
+  var reg=journalTagRegistry();
+  var sc=captureCurrentScene();
+  var scenes=dbGetAll('scenes');
+  var allCaps=dbGetAll('captures');
+  var view=window.journalCaptureView||'live';
+  var editing=!!window.captureEditId;
+  var h='<div class="view-header"><div><div class="view-title">\uD83D\uDCD4 Journal</div><div class="view-sub">Captura en vivo \u00b7 transcript que luego se archiva en la Bit\u00e1cora</div></div></div>';
+  h+=journalTabsHtml('capture');
+  var liveCount=allCaps.filter(function(c){return !c.archived;}).length;
+  var archCount=allCaps.length-liveCount;
+  h+='<div class="jsub"><button class="jsub-btn'+(view==='live'?' on':'')+'" data-action="jc-subview" data-view="live">En vivo <b>'+liveCount+'</b></button><button class="jsub-btn'+(view==='archivo'?' on':'')+'" data-action="jc-subview" data-view="archivo">Archivo <b>'+archCount+'</b></button>';
+  if(view==='live'&&liveCount){h+='<button class="jsub-compile" data-action="jc-compile">\u2713 Cerrar sesi\u00f3n \u2192 Bit\u00e1cora</button>';}
+  h+='</div>';
+
+  if(view==='archivo'){
+    var arch=allCaps.filter(function(c){return c.archived;}).sort(function(a,b){return (b.ts||0)-(a.ts||0);});
+    if(!arch.length){h+='<div class="jl-empty-note" style="margin-top:16px">Todav\u00eda no has archivado ninguna sesi\u00f3n. En "En vivo", captura y luego pulsa \u2713 Cerrar sesi\u00f3n.</div>';el.innerHTML=h;return;}
+    var groups={},order=[];
+    arch.forEach(function(c){var k=c.bitacoraId||'_';if(!groups[k]){groups[k]={title:c.batchTitle||'Sesi\u00f3n archivada',id:c.bitacoraId,items:[]};order.push(k);}groups[k].items.push(c);});
+    order.forEach(function(k){var g=groups[k];
+      h+='<div class="arch-group"><div class="arch-head"><span class="arch-title">'+esc(g.title)+'</span><span class="arch-count">'+g.items.length+' capturas</span>'+(g.id?'<button class="btn ghost" data-action="jc-goto" data-id="'+g.id+'" style="padding:4px 10px">Ver en Bit\u00e1cora \u2192</button>':'')+'</div>';
+      g.items.forEach(function(c){h+='<div class="feed-row arch"><div class="feed-time">'+captureTime(c.ts)+'</div><div class="feed-body"><div class="feed-tx">'+esc(c.text||'')+'</div><div class="feed-tags">';
+        (c.links||[]).forEach(function(l){h+='<span class="tg link">'+(l.icon||'')+' '+esc(l.title)+'</span>';});
+        (c.tags||[]).forEach(function(tn){var col=journalTagColor(tn);h+='<span class="tg" style="color:'+col+';background:'+col+'1f">#'+esc(tn)+'</span>';});
+      h+='</div></div><button class="jl-del" data-action="jc-del" data-id="'+c.id+'" title="Eliminar">\u00d7</button></div>';});
+      h+='</div>';
+    });
+    el.innerHTML=h;return;
+  }
+
+  /* ---- vista EN VIVO ---- */
+  h+='<div class="cap-bar'+(editing?' editing':'')+'">';
+  h+='<select class="cap-scene-sel" onchange="window.captureSceneId=this.value;renderJournal()"><option value="">\u25c7 Sin escena</option>'+scenes.map(function(s){var cur=(sc&&sc.id===s.id);return '<option value="'+s.id+'"'+(cur?' selected':'')+'>\u25c6 '+esc(s.name||'Escena')+'</option>';}).join('')+'</select>';
+  h+='<input id="cap-input" class="cap-input" placeholder="\u00bfQu\u00e9 pas\u00f3?" value="'+esc(d.text||'')+'" onkeydown="if(event.key===\'Enter\'){event.preventDefault();var b=document.querySelector(\'[data-action=jc-send]\');if(b)b.click();}">';
+  h+='<button class="cap-send" data-action="jc-send">'+(editing?'Guardar':'Registrar \u21b5')+'</button>';
+  if(editing)h+='<button class="cap-cancel" data-action="jc-canceledit">Cancelar</button>';
+  h+='</div>';
+  h+='<div class="assist">';
+  if(d.links.length||d.tags.length){
+    h+='<div class="assist-lb">En esta nota</div><div class="chips draftrow">';
+    d.links.forEach(function(l,ix){h+='<span class="chip link on" data-action="jc-rmlink" data-idx="'+ix+'">'+(l.icon||'')+' '+esc(l.title)+' \u00d7</span>';});
+    d.tags.forEach(function(tn){var col=journalTagColor(tn);h+='<span class="chip tagchip on" data-action="jc-rmtag" data-name="'+esc(tn)+'" style="--tc:'+col+'"><span class="dot" style="background:#fff"></span>#'+esc(tn)+' \u00d7</span>';});
+    h+='</div>';
+  }
+  h+='<div class="assist-lb">Enlazar \u00b7 @</div><div class="chips">';
+  players.forEach(function(p){var on=d.links.some(function(l){return l.kind==='player'&&l.id===p.id;});h+='<span class="chip per'+(on?' on':'')+'" data-action="jc-player" data-id="'+p.id+'" data-name="'+esc(p.name)+'">@'+esc(p.name)+'</span>';});
+  h+='<span class="chip per ghost" data-action="jc-linkopen">@ enlazar entidad\u2026</span>';
+  h+='</div>';
+  if(window.captureLinkPicker&&window.captureLinkPicker.open){
+    var links=(typeof allLinkables==='function')?allLinkables():[];
+    h+='<div class="linkpicker"><input id="lp-search" class="lp-search" placeholder="Buscar p\u00e1gina, personaje, escena, criatura\u2026" oninput="journalFilterLinkPicker(this.value)"><div class="lp-list">';
+    h+='<div class="lp-item lp-create" id="lp-create" data-action="jc-link-create" style="display:none">\uFF0B Crear p\u00e1gina Wiki \u201c<span class="lp-q"></span>\u201d</div>';
+    links.slice(0,300).forEach(function(e){h+='<div class="lp-item" data-action="jc-link-add" data-kind="'+e.kind+'" data-id="'+e.id+'" data-title="'+esc(e.title||'')+'" data-icon="'+(e.icon||'')+'"><span class="lp-ic">'+(e.icon||'')+'</span> '+esc(e.title||'')+' <span class="lp-kind">'+e.kind+'</span></div>';});
+    h+='</div><button class="btn ghost" data-action="jc-linkclose" style="margin-top:8px;padding:5px 12px">Cerrar</button></div>';
+  }
+  h+='<div class="assist-lb">Etiquetas \u00b7 #</div><div class="chips">';
+  reg.forEach(function(tg){h+=captureChipTag(tg.name,d.tags.indexOf(tg.name)>-1);});
+  h+='<span class="chip new" data-action="jc-newtag-open">\uFF0B nueva</span>';
+  h+='</div>';
+  if(window.captureNewTag&&window.captureNewTag.open){
+    var nt=window.captureNewTag;var pal=['#b02828','#a06010','#8a6f0a','#247038','#2858a0','#6030a0','#7a5c3e','#2a2620'];
+    h+='<div class="newtag"><input id="newtag-name" class="newtag-name" placeholder="nombre del tag" value="'+esc(nt.name||'')+'">';
+    h+='<div class="newtag-cols">'+pal.map(function(c){return '<span class="swatch'+(nt.color===c?' on':'')+'" data-action="jc-newtag-color" data-color="'+c+'" style="background:'+c+'"></span>';}).join('')+'</div>';
+    h+='<button class="btn" data-action="jc-newtag-create">Crear</button><button class="btn ghost" data-action="jc-newtag-cancel">Cancelar</button></div>';
+  }
+  h+='</div>';
+  var filt=window.captureFilter||null;
+  if(filt){var fc=journalTagColor(filt);h+='<div class="cap-filter">Filtrando por <span class="tg" style="color:'+fc+';background:'+fc+'1f">#'+esc(filt)+'</span> <button class="btn ghost" data-action="jc-filter-clear" style="padding:4px 10px">Limpiar</button></div>';}
+  var caps=allCaps.filter(function(c){return !c.archived;}).slice().sort(function(a,b){return (b.ts||0)-(a.ts||0);});
+  var shown=caps.filter(function(c){return !filt||(c.tags||[]).indexOf(filt)>-1;});
+  if(!shown.length){h+='<div class="jl-empty-note" style="margin-top:16px">A\u00fan no hay capturas'+(filt?' con ese tag':'')+'. Escribe arriba y Registra \u21b5.</div>';}
+  shown.forEach(function(c){
+    h+='<div class="feed-row'+(window.captureEditId===c.id?' editing':'')+'"><div class="feed-time">'+captureTime(c.ts)+'</div><div class="feed-body"><div class="feed-tx">'+esc(c.text||'')+'</div><div class="feed-tags">';
+    (c.links||[]).forEach(function(l){h+='<span class="tg link" data-action="open-linkable" data-kind="'+l.kind+'" data-id="'+l.id+'" data-title="'+esc(l.title)+'" style="cursor:pointer">'+(l.icon||'')+' '+esc(l.title)+'</span>';});
+    (c.tags||[]).forEach(function(tn){var col=journalTagColor(tn);h+='<span class="tg" data-action="jc-filter" data-name="'+esc(tn)+'" style="color:'+col+';background:'+col+'1f;cursor:pointer">#'+esc(tn)+'</span>';});
+    if(c.sceneName)h+='<span class="feed-scene">'+esc(c.sceneName)+'</span>';
+    h+='</div></div><div class="feed-acts"><button class="jl-edit" data-action="jc-editcap" data-id="'+c.id+'" title="Editar">\u270e</button><button class="jl-del" data-action="jc-del" data-id="'+c.id+'" title="Eliminar">\u00d7</button></div></div>';
+  });
+  el.innerHTML=h;
+}
 function renderJournal(){
   var el=document.getElementById('journal-content');if(!el)return;
+  if(window.journalMode!=='bitacora')window.journalMode='capture';
+  if(window.journalMode==='capture'){renderJournalCapture(el);return;}
   journalMigrate();
   var all=dbGetAll('sessions');
   var scenes=dbGetAll('scenes');
@@ -2121,6 +2363,7 @@ function renderJournal(){
   var filtered=journalApplyFilters(all);
   var groups=journalGrouped(filtered);
   var h='<div class="view-header"><div><div class="view-title">📔 Journal</div><div class="view-sub">Bitácora de sesiones · notas ligadas a escenas y personajes</div></div><button class="btn btn-primary" data-action="journal-new">+ Nueva entrada</button></div>';
+  h+=journalTabsHtml('bitacora');
   // FILTER BAR (selectores)
   var sessionNums=[];all.forEach(function(e){var k=(e.sessionNum===null||e.sessionNum===undefined||e.sessionNum==='')?'__none__':String(e.sessionNum);if(sessionNums.indexOf(k)===-1)sessionNums.push(k)});
   sessionNums.sort(function(a,b){if(a==='__none__')return 1;if(b==='__none__')return -1;return (+a)-(+b)});
