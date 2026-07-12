@@ -1239,6 +1239,16 @@ a:not(.btn){color:var(--gold-ink)}
 .arch-title{font-family:var(--serif);font-size:16px;color:var(--ink);flex:1}
 .arch-count{font-family:var(--font-mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--brown)}
 .feed-row.arch{padding:10px 16px}
+
+/* ══ @-mention global (popup de enlace en cualquier textarea) ══ */
+.mention-pop{position:fixed;z-index:9999;display:none;background:var(--surface);border:1px solid var(--gold-deep);border-radius:10px;box-shadow:0 24px 60px rgba(28,29,46,.28);max-height:250px;overflow-y:auto;font-family:var(--font)}
+.mention-pop .mp-item{display:flex;align-items:center;gap:8px;padding:8px 12px;cursor:pointer;border-bottom:1px solid var(--border);font-size:14px;color:var(--ink)}
+.mention-pop .mp-item:last-child{border-bottom:0}
+.mention-pop .mp-item.sel,.mention-pop .mp-item:hover{background:var(--gold-pale)}
+.mention-pop .mp-ic{font-size:15px}
+.mention-pop .mp-t{flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mention-pop .mp-k{font-family:var(--font-mono);font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink4)}
+.mention-pop .mp-create{color:var(--gold-ink);font-family:var(--font-mono);font-size:13px}
 </style>
 </head>
 <body>
@@ -2201,6 +2211,37 @@ function journalApplyFilters(entries){
     return true;
   });
 }
+/* ===== @-mention global — ligar entidades existentes en cualquier textarea ===== */
+function mentionPop(){var p=document.getElementById('mention-pop');if(!p){p=document.createElement('div');p.id='mention-pop';p.className='mention-pop';document.body.appendChild(p);}return p;}
+function mentionHide(){var p=document.getElementById('mention-pop');if(p)p.style.display='none';if(window._mention)window._mention.active=false;}
+function mentionDetect(ta){var v=ta.value,c=ta.selectionStart;if(c==null)return null;var upto=v.slice(0,c);var at=upto.lastIndexOf('@');if(at===-1)return null;if(at>0&&!/\s/.test(upto.charAt(at-1)))return null;var token=upto.slice(at+1);if(token.indexOf('\n')>-1)return null;if(token.length>40)return null;return {start:at,query:token};}
+function mentionItems(){var p=document.getElementById('mention-pop');return p?p.querySelectorAll('.mp-item'):[];}
+function mentionHighlight(){var items=mentionItems();for(var i=0;i<items.length;i++){if(items[i].classList)items[i].classList.toggle('sel',i===window._mention.sel);}}
+function mentionShow(det,ta){
+  var all=(typeof allLinkables==='function')?allLinkables():[];
+  var q=(det.query||'').toLowerCase();
+  var matches=all.filter(function(e){return (e.title||'').toLowerCase().indexOf(q)>-1;}).slice(0,8);
+  var html='';
+  matches.forEach(function(e){html+='<div class="mp-item" data-title="'+esc(e.title||'')+'"><span class="mp-ic">'+(e.icon||'')+'</span><span class="mp-t">'+esc(e.title||'')+'</span><span class="mp-k">'+e.kind+'</span></div>';});
+  /* @ global = solo enlazar entidades existentes (crear nuevo se hace con [[ ]]) */
+  if(!html){mentionHide();return;}
+  var pop=mentionPop();pop.innerHTML=html;
+  var r=ta.getBoundingClientRect();
+  pop.style.left=Math.round(r.left)+'px';
+  var top=r.bottom+4;if(top>window.innerHeight-170)top=Math.max(8,r.top-230);
+  pop.style.top=Math.round(top)+'px';
+  pop.style.width=Math.round(Math.min(Math.max(r.width,220),360))+'px';
+  pop.style.display='block';
+  window._mention={active:true,el:ta,start:det.start,query:det.query,sel:0};
+  mentionHighlight();
+}
+function mentionInsert(title){var m=window._mention;if(!m||!m.el)return;var ta=m.el,v=ta.value,c=ta.selectionStart,start=m.start;var before=v.slice(0,start),after=v.slice(c);var ins='[['+title+']] ';ta.value=before+ins+after;var pos=(before+ins).length;try{ta.setSelectionRange(pos,pos);}catch(e){}ta.dispatchEvent(new Event('input',{bubbles:true}));mentionHide();ta.focus();}
+function mentionChoose(item){if(!item)return;var cr=item.getAttribute('data-create');if(cr){if(typeof wikiCreatePage==='function'){var pg=wikiCreatePage(cr,'');mentionInsert(pg&&pg.title?pg.title:cr);}else mentionInsert(cr);}else{mentionInsert(item.getAttribute('data-title'));}}
+document.addEventListener('input',function(e){var t=e.target;if(!t||t.tagName!=='TEXTAREA')return;var det=mentionDetect(t);if(det)mentionShow(det,t);else mentionHide();},true);
+document.addEventListener('keydown',function(e){var m=window._mention;if(!m||!m.active||e.target!==m.el)return;var items=mentionItems();if(!items.length)return;if(e.key==='ArrowDown'){e.preventDefault();m.sel=(m.sel+1)%items.length;mentionHighlight();}else if(e.key==='ArrowUp'){e.preventDefault();m.sel=(m.sel-1+items.length)%items.length;mentionHighlight();}else if(e.key==='Enter'||e.key==='Tab'){e.preventDefault();mentionChoose(items[m.sel]);}else if(e.key==='Escape'){e.preventDefault();mentionHide();}},true);
+document.addEventListener('mousedown',function(e){var it=(e.target&&e.target.closest)?e.target.closest('.mp-item'):null;if(it){e.preventDefault();mentionChoose(it);return;}var pop=document.getElementById('mention-pop');if(pop&&pop.style.display!=='none'&&!(e.target&&e.target.closest&&e.target.closest('#mention-pop')))mentionHide();},true);
+document.addEventListener('scroll',function(){if(window._mention&&window._mention.active)mentionHide();},true);
+document.addEventListener('blur',function(e){var m=window._mention;if(m&&m.active&&e.target===m.el)setTimeout(mentionHide,150);},true);
 /* ===== Journal · Captura en vivo (tags + enlaces + archivo) ===== */
 function journalTagRegistry(){
   var reg=dbLoad('journalTags');
@@ -2293,7 +2334,7 @@ function renderJournalCapture(el){
     arch.forEach(function(c){var k=c.bitacoraId||'_';if(!groups[k]){groups[k]={title:c.batchTitle||'Sesi\u00f3n archivada',id:c.bitacoraId,items:[]};order.push(k);}groups[k].items.push(c);});
     order.forEach(function(k){var g=groups[k];
       h+='<div class="arch-group"><div class="arch-head"><span class="arch-title">'+esc(g.title)+'</span><span class="arch-count">'+g.items.length+' capturas</span>'+(g.id?'<button class="btn ghost" data-action="jc-goto" data-id="'+g.id+'" style="padding:4px 10px">Ver en Bit\u00e1cora \u2192</button>':'')+'</div>';
-      g.items.forEach(function(c){h+='<div class="feed-row arch"><div class="feed-time">'+captureTime(c.ts)+'</div><div class="feed-body"><div class="feed-tx">'+esc(c.text||'')+'</div><div class="feed-tags">';
+      g.items.forEach(function(c){h+='<div class="feed-row arch"><div class="feed-time">'+captureTime(c.ts)+'</div><div class="feed-body"><div class="feed-tx">'+renderLinkedText(c.text||'')+'</div><div class="feed-tags">';
         (c.links||[]).forEach(function(l){h+='<span class="tg link">'+(l.icon||'')+' '+esc(l.title)+'</span>';});
         (c.tags||[]).forEach(function(tn){var col=journalTagColor(tn);h+='<span class="tg" style="color:'+col+';background:'+col+'1f">#'+esc(tn)+'</span>';});
       h+='</div></div><button class="jl-del" data-action="jc-del" data-id="'+c.id+'" title="Eliminar">\u00d7</button></div>';});
@@ -2318,12 +2359,12 @@ function renderJournalCapture(el){
   }
   h+='<div class="assist-lb">Enlazar \u00b7 @</div><div class="chips">';
   players.forEach(function(p){var on=d.links.some(function(l){return l.kind==='player'&&l.id===p.id;});h+='<span class="chip per'+(on?' on':'')+'" data-action="jc-player" data-id="'+p.id+'" data-name="'+esc(p.name)+'">@'+esc(p.name)+'</span>';});
-  h+='<span class="chip per ghost" data-action="jc-linkopen">@ enlazar entidad\u2026</span>';
+  h+='<span class="chip per ghost" data-action="jc-linkopen">@ enlazar existente\u2026</span>';
   h+='</div>';
   if(window.captureLinkPicker&&window.captureLinkPicker.open){
     var links=(typeof allLinkables==='function')?allLinkables():[];
     h+='<div class="linkpicker"><input id="lp-search" class="lp-search" placeholder="Buscar p\u00e1gina, personaje, escena, criatura\u2026" oninput="journalFilterLinkPicker(this.value)"><div class="lp-list">';
-    h+='<div class="lp-item lp-create" id="lp-create" data-action="jc-link-create" style="display:none">\uFF0B Crear p\u00e1gina Wiki \u201c<span class="lp-q"></span>\u201d</div>';
+    /* captura @ = solo enlazar existentes; crear nuevo con [[ ]] en el texto */
     links.slice(0,300).forEach(function(e){h+='<div class="lp-item" data-action="jc-link-add" data-kind="'+e.kind+'" data-id="'+e.id+'" data-title="'+esc(e.title||'')+'" data-icon="'+(e.icon||'')+'"><span class="lp-ic">'+(e.icon||'')+'</span> '+esc(e.title||'')+' <span class="lp-kind">'+e.kind+'</span></div>';});
     h+='</div><button class="btn ghost" data-action="jc-linkclose" style="margin-top:8px;padding:5px 12px">Cerrar</button></div>';
   }
@@ -2344,7 +2385,7 @@ function renderJournalCapture(el){
   var shown=caps.filter(function(c){return !filt||(c.tags||[]).indexOf(filt)>-1;});
   if(!shown.length){h+='<div class="jl-empty-note" style="margin-top:16px">A\u00fan no hay capturas'+(filt?' con ese tag':'')+'. Escribe arriba y Registra \u21b5.</div>';}
   shown.forEach(function(c){
-    h+='<div class="feed-row'+(window.captureEditId===c.id?' editing':'')+'"><div class="feed-time">'+captureTime(c.ts)+'</div><div class="feed-body"><div class="feed-tx">'+esc(c.text||'')+'</div><div class="feed-tags">';
+    h+='<div class="feed-row'+(window.captureEditId===c.id?' editing':'')+'"><div class="feed-time">'+captureTime(c.ts)+'</div><div class="feed-body"><div class="feed-tx">'+renderLinkedText(c.text||'')+'</div><div class="feed-tags">';
     (c.links||[]).forEach(function(l){h+='<span class="tg link" data-action="open-linkable" data-kind="'+l.kind+'" data-id="'+l.id+'" data-title="'+esc(l.title)+'" style="cursor:pointer">'+(l.icon||'')+' '+esc(l.title)+'</span>';});
     (c.tags||[]).forEach(function(tn){var col=journalTagColor(tn);h+='<span class="tg" data-action="jc-filter" data-name="'+esc(tn)+'" style="color:'+col+';background:'+col+'1f;cursor:pointer">#'+esc(tn)+'</span>';});
     if(c.sceneName)h+='<span class="feed-scene">'+esc(c.sceneName)+'</span>';
