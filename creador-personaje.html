@@ -6,9 +6,19 @@
 <title>Crea tu Héroe — Epic Quest</title>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚔️</text></svg>">
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Young+Serif&family=Gloock&family=Crimson+Pro:ital,wght@0,400;0,600;0,700;1,400&family=IBM+Plex+Mono:wght@400;500;700&display=swap');
 :root{
-  --bg:#faf8f4; --surface:#fff; --border:#e0dcd3; --ink:#2a2620; --ink2:#5a5449; --ink3:#8a8478;
-  --accent:#7a5c3e; --accent-light:#f0e9df; --gold:#b8935a; --radius:10px;
+  --bg:#f3f2ee; --paper:#faf8f4; --surface:#fff; --surface2:#f9f8f5;
+  --border:#e0dcd3; --border2:#ccc8be; --hairline:#d8d2c6;
+  --ink:#2a2620; --ink2:#5a5449; --ink3:#8a8478; --ink4:#a8a294;
+  --brown:#7a5c3e; --gold:#b8935a; --gold-deep:#a07d47; --gold-ink:#8a6f0a; --gold-pale:#f0ead0; --gold-navy:#c9a84c;
+  --accent:#8a6f0a; --accent-light:#f0ead0;
+  --vermilion:#b02828; --azure:#2858a0; --forest:#247038; --amethyst:#6030a0; --ember:#a06010;
+  --vermilion-wash:#fae8e8; --azure-wash:#e6eefc; --forest-wash:#e4f2ea; --amethyst-wash:#ede6fa; --ember-wash:#faf0e2;
+  --navy:#1c1d2e; --radius:10px;
+  --font-body:'Crimson Pro',Georgia,serif; --font-head:'Gloock',Georgia,serif; --font-display:'Young Serif',Georgia,serif; --font-mono:'IBM Plex Mono',ui-monospace,monospace;
+  --shadow-sm:0 2px 8px rgba(60,50,35,.08); --shadow-card:0 12px 34px rgba(60,50,35,.14);
+  --glow-plate:radial-gradient(120% 80% at 50% 0,rgba(201,168,76,.06),transparent 60%);
 }
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:var(--bg);color:var(--ink);line-height:1.5;-webkit-text-size-adjust:100%}
@@ -104,10 +114,86 @@ input[type=text]:focus{outline:none;border-color:var(--gold)}
   .sheet{display:block}
   .screen{display:none}
 }
+/* ══════════════════════════════════════════════════════════════
+   EPIC QUEST — illuminated cartography (capa de identidad)
+   ══════════════════════════════════════════════════════════════ */
+body{font-family:var(--font-body);font-size:17px;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+h1,h2{font-family:var(--font-head);font-weight:400;letter-spacing:-.01em;line-height:1.12}
+h1{font-size:30px}h2{font-size:23px}
+.step-label{font-family:var(--font-mono)!important;font-weight:500;letter-spacing:.22em;color:var(--brown)}
+.lead{font-size:16px}
+.teach{background:var(--gold-pale);border-left:3px solid var(--gold-deep);font-size:14.5px}
+.concept{background:var(--surface2);border:1px dashed var(--gold)}
+.btn{background:var(--accent);box-shadow:var(--shadow-sm);font-family:var(--font-body);font-size:16px;font-weight:600;letter-spacing:.01em}
+.btn:hover{background:var(--gold-ink)}
+.btn:focus-visible{outline:none;box-shadow:0 0 0 3px rgba(184,147,90,.3)}
+.btn-ghost{background:transparent;color:var(--gold-ink);border:1.5px solid var(--gold)}
+.btn-ghost:hover{background:var(--gold-pale)}
+.opt{font-family:var(--font-body);font-size:16px;transition:border-color .15s,box-shadow .15s,background .15s}
+.opt:hover{border-color:var(--gold);box-shadow:var(--shadow-sm)}
+.opt.sel{border-color:var(--gold-deep);background:var(--gold-pale)}
+input[type=text]{font-family:var(--font-body)}
+input[type=text]:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(184,147,90,.18)}
+.result{border:1.5px solid var(--gold);box-shadow:var(--shadow-card);background-image:var(--glow-plate)}
+.result-name{font-family:var(--font-head);font-weight:400;font-size:28px}
+.result-desc{font-size:15px}
+.result-meta{font-family:var(--font-mono);background:var(--gold-pale);color:var(--ink2);letter-spacing:.02em}
+.explore summary{font-family:var(--font-mono);color:var(--gold-ink);letter-spacing:.04em}
+.explore-item.current,.explore-item:hover{border-color:var(--gold)}
+.explore-item.current{background:var(--gold-pale)}
+.explore-item-name{font-family:var(--font-head);font-weight:400}
+.abil-name{font-family:var(--font-head);font-weight:400}
+.abil-tag.base{background:var(--forest-wash)!important;color:var(--forest)!important;font-family:var(--font-mono)}
+.abil-tag.heroica{background:var(--amethyst-wash)!important;color:var(--amethyst)!important;font-family:var(--font-mono)}
+.abil-cost,.affinity{color:var(--gold-ink);font-family:var(--font-mono)}
+.echo-note{color:var(--amethyst)!important}
+.band-roll{font-family:var(--font-mono)}
+.band.b12 .band-roll{background:var(--gold-deep)}
+.tag{background:var(--gold-pale);color:var(--gold-ink);font-family:var(--font-mono);font-size:10px;letter-spacing:.06em;font-weight:500}
+.progress{height:6px;background:var(--border)}
+.progress-fill{background:linear-gradient(90deg,var(--gold-deep),var(--gold))}
+.summary-card{box-shadow:var(--shadow-sm);background-image:var(--glow-plate)}
+.summary-key{font-family:var(--font-mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--brown)}
+.edit-btn{background:var(--gold-pale);color:var(--gold-ink);font-family:var(--font-mono)}
+.sheet{font-family:var(--font-body)}
+.sheet h1,.sheet h2,.sheet h3{font-family:var(--font-head);font-weight:400}
+/* Cartouche (identidad en cada pantalla) */
+.cc-cartouche{text-align:center;padding:14px 0 4px}
+.cc-word{font-family:var(--font-display);font-size:30px;color:var(--ink);line-height:1}
+.cc-word em{font-style:normal;color:var(--gold-deep)}
+.cc-compass{width:40px;height:40px;display:block;margin:8px auto 6px;opacity:.92}
+.cc-sub{font-family:var(--font-mono);font-size:10px;letter-spacing:.24em;text-transform:uppercase;color:var(--brown)}
+.cc-rule{height:1px;background:linear-gradient(90deg,transparent,var(--gold-deep),transparent);margin:12px 0 4px}
+/* ══ Carta de héroe (estilo Hub) + constructor de backstory ══ */
+.tarot{display:flex;justify-content:center;margin:8px 0 20px}
+.tarot-card{width:min(360px,100%);position:relative;border-radius:14px;overflow:hidden;border:1px solid var(--gold-deep);box-shadow:var(--shadow-card)}
+.tarot-card::after{content:"";position:absolute;inset:6px;border:1px solid rgba(255,255,255,.35);border-radius:9px;pointer-events:none;z-index:3}
+.tarot-splash{height:440px;background:radial-gradient(circle at 50% 35%,#3a2f52,#1c1d2e);display:grid;place-items:center;position:relative}
+.tarot-splash-img{width:100%;height:100%;object-fit:cover;display:block}
+.tarot-splash-fb{width:100%;height:100%;place-items:center;font-size:104px}
+.hero-kick{position:absolute;top:14px;left:16px;z-index:5;font-family:var(--font-mono);font-size:10px;letter-spacing:.24em;color:#e9e7f2;text-transform:uppercase;background:rgba(28,29,46,.55);padding:5px 10px;border-radius:20px}
+.med-row{position:absolute;right:14px;bottom:94px;z-index:6;display:flex;flex-direction:column;gap:16px}
+.med{width:60px;height:60px;border-radius:50%;overflow:hidden;border:2px solid var(--gold-deep);box-shadow:0 6px 16px rgba(0,0,0,.35);position:relative;cursor:pointer;background:#2a2620;display:grid;place-items:center}
+.med img{width:100%;height:100%;object-fit:cover}
+.med .med-fb{width:100%;height:100%;place-items:center;font-size:24px;background:radial-gradient(circle at 50% 40%,var(--gold-pale),#e6d9b4);color:var(--brown);font-family:var(--font-head)}
+.med .lb{position:absolute;bottom:-15px;left:50%;transform:translateX(-50%);font-family:var(--font-mono);font-size:7px;letter-spacing:.12em;color:var(--brown);white-space:nowrap;text-transform:uppercase}
+.med.active{border-color:var(--gold-navy);box-shadow:0 0 0 3px var(--gold-pale)}
+.tarot-base{position:absolute;left:0;right:0;bottom:0;z-index:4;padding:24px 18px 16px;background:linear-gradient(transparent,rgba(20,18,30,.92) 55%)}
+.tarot-name{font-family:var(--font-head);font-size:30px;color:#fff;line-height:1}
+.tarot-sub{font-family:var(--font-mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--gold-navy);margin-top:6px}
+.bs-wrap{margin-top:6px}
+.bs-field{background:var(--surface);border:1.5px solid var(--border);border-radius:var(--radius);padding:14px 16px;margin-bottom:12px}
+.bs-label{font-family:var(--font-head);font-size:17px;color:var(--ink)}
+.bs-label .bs-q{font-family:var(--font-body);font-size:14px;color:var(--ink3);font-weight:400;margin-left:6px}
+.bs-hint{font-size:13px;color:var(--gold-ink);background:var(--gold-pale);border-radius:7px;padding:7px 10px;margin:6px 0 10px;line-height:1.45}
+.bs-hint em{color:var(--ink2)}
+.bs-input{width:100%;min-height:62px;font-family:var(--font-body);font-size:15px;border:1px solid var(--border);border-radius:8px;padding:10px 12px;background:var(--surface2);color:var(--ink);resize:vertical}
+.bs-input:focus{outline:none;border-color:var(--gold);box-shadow:0 0 0 3px rgba(184,147,90,.18)}
 </style>
 </head>
 <body>
 <div class="wrap">
+  <div class="cc-cartouche no-print"><div class="cc-word">Epic <em>Quest</em></div><svg class="cc-compass" viewBox="0 0 100 100" fill="none" aria-hidden="true"><circle cx="50" cy="50" r="46" stroke="#a07d47" stroke-width="1.4"/><circle cx="50" cy="50" r="34" stroke="#c8bfa8" stroke-width=".8"/><polygon points="50,10 57,50 50,54 43,50" fill="#b02828"/><polygon points="50,90 43,50 50,46 57,50" fill="#8a8478"/><polygon points="10,50 50,43 54,50 50,57" fill="#a07d47"/><polygon points="90,50 50,57 46,50 50,43" fill="#a07d47"/><circle cx="50" cy="50" r="3.4" fill="#a07d47"/></svg><div class="cc-sub">Crea tu héroe · Avelir</div><div class="cc-rule"></div></div>
   <div class="progress no-print"><div class="progress-fill" id="progress"></div></div>
   <div id="app" class="screen"></div>
 </div>
@@ -547,8 +633,20 @@ function renderSummary(){
   var ft=fac?fac.feats[state.factionFeatIdx]:null;
   var totalHP=10+(k?(k.hpBonus||0):0);
   var ed=state._edit||null;
-  var h='<div class="step-label">¡Terminaste!</div><h1>🎉 '+esc(state.name||'Tu héroe')+'</h1>'+
-    (c?'<div style="text-align:center;margin:6px 0 4px">'+classArt(c,'cart-md')+'</div>':'')+
+  if(!state.backstory)state.backstory={};
+  var cSrc=c?imgSrc('clases',c.name):'', kSrc=k?imgSrc('kits',k.name):'';
+  var cFb=c?classEmoji(c):'🎭', kFb='🎒', ini=(state.name||'?').charAt(0).toUpperCase();
+  var h='<div class="step-label">¡Tu héroe!</div>'+
+    '<div class="tarot"><div class="tarot-card">'+
+    '<div class="hero-kick" id="cc-kick">◆ Clase</div>'+
+    '<div class="tarot-splash">'+(c?('<img id="cc-main" class="tarot-splash-img" src="'+cSrc+'" onerror="this.style.display=\'none\';document.getElementById(\'cc-fb\').style.display=\'grid\'"><div id="cc-fb" class="tarot-splash-fb" style="display:none">'+cFb+'</div>'):('<div id="cc-fb" class="tarot-splash-fb" style="display:grid">'+cFb+'</div>'))+'</div>'+
+    '<div class="med-row">'+
+    '<div class="med" onclick="ccHero(\'\',\'Retrato\',\''+ini+'\',this)"><div class="med-fb" style="display:grid">'+ini+'</div><span class="lb">Retrato</span></div>'+
+    '<div class="med active" onclick="ccHero(\''+cSrc+'\',\'Clase\',\''+cFb+'\',this)">'+(cSrc?'<img src="'+cSrc+'" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'grid\'"><div class="med-fb" style="display:none">'+cFb+'</div>':'<div class="med-fb" style="display:grid">'+cFb+'</div>')+'<span class="lb">Clase</span></div>'+
+    '<div class="med" onclick="ccHero(\''+kSrc+'\',\'Kit\',\''+kFb+'\',this)">'+(kSrc?'<img src="'+kSrc+'" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'grid\'"><div class="med-fb" style="display:none">'+kFb+'</div>':'<div class="med-fb" style="display:grid">'+kFb+'</div>')+'<span class="lb">Kit</span></div>'+
+    '</div>'+
+    '<div class="tarot-base"><div class="tarot-name">'+esc(state.name||'Tu héroe')+'</div><div class="tarot-sub">'+(c?esc(c.name):'')+(k?' · '+esc(k.name):'')+(fac?' · '+esc(fac.name):'')+'</div></div>'+
+    '</div></div>'+
     '<p class="lead">Revisa a tu héroe. Puedes <strong>cambiar cualquier parte aquí mismo</strong> antes de imprimir.</p>'+
     '<div class="summary-card">';
 
@@ -617,6 +715,15 @@ function renderSummary(){
       kitAbilHtml(k);
   }
 
+  h+='<h2 style="margin-top:26px">✍️ Agrega tu backstory</h2>'+
+    '<p class="lead">Dale vida a tu héroe. Cada idea trae una chispa del lore de Avelir — escribe lo que quieras (o déjalo para la mesa). Todo esto viaja a tu hoja.</p>'+
+    '<div class="bs-wrap">';
+  bsPrompts().forEach(function(p){
+    h+='<div class="bs-field"><div class="bs-label">'+esc(p.label)+'<span class="bs-q">'+esc(p.q)+'</span></div>'+
+      '<div class="bs-hint">💡 '+p.hint+'</div>'+
+      '<textarea class="bs-input" placeholder="Escribe aquí…" oninput="state.backstory[\''+p.key+'\']=this.value">'+esc(state.backstory[p.key]||'')+'</textarea></div>';
+  });
+  h+='</div>';
   h+='<div class="teach">Tu hoja está lista. Toca <strong>Descargar / Imprimir</strong>, guárdala como PDF y mándasela a tu Story Master. Él te ayudará con el resto en la mesa.</div>'+
     '<div class="btn-row"><button class="btn btn-ghost" onclick="go(0)">↺ Empezar de nuevo</button><button class="btn" onclick="printSheet()">📄 Descargar / Imprimir</button></div>';
   return h;
@@ -626,6 +733,25 @@ function editRow(k,v,section){var open=state._edit===section;return '<div class=
 function toggleEdit(section){state._edit=(state._edit===section?null:section);render()}
 function summaryPickFaction(id){if(id!==state.factionId){state.factionId=id;state.factionFeatIdx=0}render()}
 function summaryPickFeat(i){state.factionFeatIdx=i;render()}
+function ccHero(src,kick,fb,elm){
+  var im=document.getElementById('cc-main'),f=document.getElementById('cc-fb'),k=document.getElementById('cc-kick');
+  if(f)f.textContent=fb;
+  if(src){if(im){im.style.display='';im.src=src;}if(f)f.style.display='none';}
+  else{if(im)im.style.display='none';if(f)f.style.display='grid';}
+  if(k)k.textContent='◆ '+kick;
+  var meds=document.querySelectorAll('.med');for(var i=0;i<meds.length;i++)meds[i].classList.remove('active');
+  if(elm)elm.classList.add('active');
+}
+function bsPrompts(){
+  var fac=getFaction(state.factionId), c=getClass(state.classId), k=getKit(state.kitId);
+  return [
+    {key:'origen',label:'Origen',q:'¿De dónde vienes en Avelir?',hint:'Un pueblo, una ciudad, un lugar salvaje… invéntalo o toma uno del mundo.'},
+    {key:'motivacion',label:'Motivación',q:'¿Qué te mueve?',hint:(fac?'Tu facción cree: <em>"'+esc(fac.declaration)+'"</em> — ¿cómo llegaste a creerlo?':'¿Qué buscas, qué quieres lograr?')},
+    {key:'vinculo',label:'Vínculo',q:'¿A quién proteges o quién te importa?',hint:'Un familiar, un maestro, un rival, un pueblo entero…'},
+    {key:'secreto',label:'Secreto',q:'Algo que nadie sabe de ti',hint:(c?'Eres <strong>'+esc(c.name)+'</strong>: '+esc(CLASS_DESC[c.id]||'')+' — ¿esconde eso un costo o un pasado?':'Un miedo, una culpa, un poder oculto…')},
+    {key:'apariencia',label:'Apariencia',q:'¿Cómo te ves?',hint:(k?'Tu kit es <strong>'+esc(k.fantasy||k.name)+'</strong> — ¿cómo se refleja en tu aspecto y tu equipo?':'Rasgos, ropa, algo que llame la atención.')}
+  ];
+}
 
 /* ══════════ CHARACTER SHEET IMPRIMIBLE ══════════ */
 function printSheet(){
@@ -700,8 +826,14 @@ function buildSheet(){
     for(var i=0;i<lines;i++)s+='<div style="border-bottom:1px solid #ddd;height:26px"></div>';
     return s+'</div>';
   }
-  h+=blankSection('APARIENCIA Y PERSONALIDAD',4);
-  h+=blankSection('TRASFONDO / HISTORIA',5);
+  var bs=state.backstory||{};
+  function bsBlock(title,text,lines){
+    if(text&&text.trim()){return '<div style="margin-bottom:18px;page-break-inside:avoid;break-inside:avoid"><div style="font-weight:bold;font-size:13px;letter-spacing:1px;color:#555;border-bottom:2px solid #333;padding-bottom:3px;margin-bottom:8px">'+title+'</div><div style="font-size:13px;color:#222;white-space:pre-wrap;line-height:1.55">'+esc(text)+'</div></div>';}
+    return blankSection(title,lines);
+  }
+  h+=bsBlock('APARIENCIA',(bs.apariencia||''),4);
+  var story=[]; if(bs.origen)story.push('Origen: '+bs.origen); if(bs.motivacion)story.push('Motivación: '+bs.motivacion); if(bs.vinculo)story.push('Vínculo: '+bs.vinculo); if(bs.secreto)story.push('Secreto: '+bs.secreto);
+  h+=bsBlock('TRASFONDO / HISTORIA',story.join('\n\n'),5);
   h+=blankSection('INVENTARIO',5);
   h+=blankSection('NOTAS',5);
   h+='<div style="text-align:center;font-size:11px;color:#999;margin-top:24px;border-top:1px solid #ccc;padding-top:8px">Creado con el Generador de Héroes · Epic Quest</div>';
