@@ -189,6 +189,32 @@ input[type=text]:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(184,14
 .bs-hint em{color:var(--ink2)}
 .bs-input{width:100%;min-height:62px;font-family:var(--font-body);font-size:15px;border:1px solid var(--border);border-radius:8px;padding:10px 12px;background:var(--surface2);color:var(--ink);resize:vertical}
 .bs-input:focus{outline:none;border-color:var(--gold);box-shadow:0 0 0 3px rgba(184,147,90,.18)}
+/* ══ Aparador de kits (galería + filtros + expand) ══ */
+.kit-filters{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:14px}
+.kit-filter{font-family:var(--font-mono);font-size:12px;letter-spacing:.04em;padding:6px 13px;border-radius:20px;border:1.5px solid var(--border);background:var(--surface);color:var(--ink2);cursor:pointer}
+.kit-filter:hover{border-color:var(--gold)}
+.kit-filter.on{background:var(--gold-pale);border-color:var(--gold-deep);color:var(--ink)}
+.kit-card{border:1.5px solid var(--border);border-radius:var(--radius);margin-bottom:10px;background:var(--surface);overflow:hidden;transition:border-color .15s,box-shadow .15s}
+.kit-card:hover{border-color:var(--gold)}
+.kit-card.open{border-color:var(--gold-deep);box-shadow:var(--shadow-card)}
+.kit-card.mine{border-color:var(--gold-deep)}
+.kit-card-head{display:flex;align-items:center;gap:10px;padding:14px 16px;cursor:pointer}
+.kit-name{font-family:var(--font-head);font-size:18px;color:var(--ink);flex:none}
+.kit-fan{font-family:var(--font-mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink3);flex:1}
+.kit-hp{font-family:var(--font-mono);font-size:12px;font-weight:700;color:var(--gold-ink);background:var(--gold-pale);padding:3px 9px;border-radius:12px}
+.kit-caret{color:var(--gold-deep);font-size:14px;width:16px;text-align:center}
+.kit-body{padding:0 16px 16px;border-top:1px solid var(--border)}
+.kit-art-wrap{margin:14px auto;max-width:60%}
+.kit-arch{font-family:var(--font-mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--brown);text-align:center;margin-bottom:12px}
+.kit-stat{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:12px 14px;margin-bottom:12px}
+.kit-stat-lb{font-family:var(--font-mono);font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--brown);margin-bottom:8px}
+.kit-hp-row{display:flex;justify-content:space-between;font-size:15px;margin-bottom:5px}
+.kit-hp-row strong{font-family:var(--font-head);color:var(--forest);font-size:18px}
+.kit-hp-bar{height:12px;border-radius:6px;overflow:hidden;display:flex;background:var(--border)}
+.kit-hp-base{background:var(--ink3)}
+.kit-hp-bonus{background:linear-gradient(90deg,var(--forest),#3a9450)}
+.kit-aen{font-size:13px;color:var(--ink2);margin-top:8px}
+.kit-benefit-lb{font-family:var(--font-mono);font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--brown);margin:4px 0 6px}
 </style>
 </head>
 <body>
@@ -261,6 +287,22 @@ var Q_CLASS = [
     {t:'"Nadie protege a mi gente más que yo"', s:{knight:2}},
     {t:'"Con la herramienta correcta, todo es posible"', s:{inventor:2}},
     {t:'"Una buena historia mueve al mundo"', s:{bard:2}}
+  ]},
+  {q:'Cuando todo sale mal en una pelea, ¿qué haces?', opts:[
+    {t:'Me enfurezco y golpeo aún más fuerte', s:{fury:2,knight:1}},
+    {t:'Me escondo y espero el momento perfecto', s:{shadow:2,archer:1}},
+    {t:'Respiro, me centro y busco la técnica correcta', s:{monk:2,wizard:1}},
+    {t:'Sostengo a mis aliados y aguanto por ellos', s:{knight:1,druid:1,bard:1}},
+    {t:'Recurro a un poder que quizá no debería usar', s:{warlock:2}},
+    {t:'Improviso algo con lo que tenga a la mano', s:{inventor:2,bard:1}}
+  ]},
+  {q:'¿Qué te empuja a volverte más fuerte?', opts:[
+    {t:'Proteger a quienes amo', s:{knight:2,druid:1}},
+    {t:'Vencer a un rival o cobrar una deuda', s:{fury:1,shadow:1,archer:1}},
+    {t:'Descubrir secretos y saber prohibido', s:{wizard:1,warlock:2}},
+    {t:'Dominar mi cuerpo y mi mente', s:{monk:2}},
+    {t:'Crear algo que nadie ha visto jamás', s:{inventor:2,wizard:1}},
+    {t:'Ser recordado, dejar una leyenda', s:{bard:2,fury:1}}
   ]}
 ];
 
@@ -410,7 +452,9 @@ function classAbilitiesHtml(c){
 /* ══════════ FLUJO DE PASOS ══════════ */
 // Pasos: 0=bienvenida 1=nombre 2=facción-q1 3=facción-feat 4=facción-result
 //        5..8=clase-q(4) 9=clase-result 10..12=kit-q(3) 13=kit-result 14=resumen
-var TOTAL_STEPS = 17;
+var NC=Q_CLASS.length, NK=Q_KIT.length;
+var S_CQ0=5, S_CRES=S_CQ0+NC, S_KIT=S_CRES+1, S_KRES=S_KIT+NK, S_SUM=S_KRES+1;
+var TOTAL_STEPS = S_SUM+1;
 
 function render(){
   var el=document.getElementById('app');
@@ -424,11 +468,12 @@ function render(){
   else if(s===2) h=renderFactionQ1();
   else if(s===3) h=renderFactionFeat();
   else if(s===4) h=renderFactionResult();
-  else if(s>=5&&s<=8) h=renderClassQ(s-5);
-  else if(s===9) h=renderClassResult();
-  else if(s>=10&&s<=14) h=renderKitQ(s-10);
-  else if(s===15) h=renderKitResult();
-  else if(s===16) h=renderSummary();
+  else if(s>=S_CQ0&&s<S_CRES) h=renderClassQ(s-S_CQ0);
+  else if(s===S_CRES) h=renderClassResult();
+  else if(s===S_KIT) h=(state.kitMode==='test')?renderKitQ(0):renderKitGallery();
+  else if(s>S_KIT&&s<S_KRES) h=renderKitQ(s-S_KIT);
+  else if(s===S_KRES) h=renderKitResult();
+  else if(s===S_SUM) h=renderSummary();
   el.innerHTML=h;
   window.scrollTo(0,0);
 }
@@ -502,7 +547,7 @@ function renderFactionResult(){
     h+='<div class="explore-item'+cur+'" onclick="switchFaction(\''+f.id+'\')"><div class="explore-item-name">'+esc(f.icon)+' '+esc(f.name)+(f.id===state.factionId?'<span class="tag">tu elección</span>':'')+'</div><div class="explore-item-desc">'+esc(f.declaration)+'</div></div>';
   });
   h+='</details>'+
-    '<div class="btn-row"><button class="btn btn-ghost" onclick="go(2)">← Rehacer</button><button class="btn" onclick="go(5)">Ahora tu clase →</button></div>';
+    '<div class="btn-row"><button class="btn btn-ghost" onclick="go(2)">← Rehacer</button><button class="btn" onclick="go('+S_CQ0+')">Ahora tu clase →</button></div>';
   return h;
 }
 function switchFaction(id){
@@ -518,12 +563,12 @@ function renderClassQ(qi){
   if(qi===0){
     teach='<div class="teach">Antes de empezar: en una pelea, tu <strong>turno</strong> es 1 movimiento + 2 acciones. Cada acción puede ser un ataque o una <strong>habilidad</strong> (tu movida especial). Tu clase decide qué habilidades geniales tienes. Elige según el estilo que te llame.</div>';
   }
-  var h='<div class="step-label">Paso 3 · Tu clase ('+(qi+1)+' de 4)</div><h2>'+esc(Q.q)+'</h2>'+teach;
+  var h='<div class="step-label">Paso 3 · Tu clase ('+(qi+1)+' de '+NC+')</div><h2>'+esc(Q.q)+'</h2>'+teach;
   Q.opts.forEach(function(o,i){
     var sel=(state._classAns&&state._classAns[qi]===i)?' sel':'';
     h+='<button class="opt'+sel+'" onclick="pickClass('+qi+','+i+')">'+esc(o.t)+'</button>';
   });
-  var backStep=qi===0?4:(5+qi-1);
+  var backStep=qi===0?4:(S_CQ0+qi-1);
   h+='<div class="btn-row"><button class="btn btn-ghost" onclick="go('+backStep+')">← Atrás</button></div>';
   return h;
 }
@@ -536,11 +581,11 @@ function pickClass(qi,oi){
     var q=Q_CLASS[k];var ans=state._classAns[k];
     if(q&&q.opts[ans])addScores(state.classScores,q.opts[ans].s);
   });
-  if(qi<3){go(5+qi+1)}
+  if(qi<NC-1){go(S_CQ0+qi+1)}
   else{
     // determinar clase ganadora
     state.classId=topScored(state.classScores);
-    go(9);
+    go(S_CRES);
   }
 }
 function renderClassResult(){
@@ -567,8 +612,12 @@ function renderClassResult(){
       (cl.id===state.classId?'':'<button class="btn btn-ghost" style="margin-top:8px;width:100%" onclick="switchClass(\''+cl.id+'\')">Elegir '+esc(cl.name)+'</button>')+
       '</div>';
   });
-  h+='</details>'+
-    '<div class="btn-row"><button class="btn btn-ghost" onclick="go(5)">← Rehacer test</button><button class="btn" onclick="go(10)">Ahora tu kit →</button></div>';
+  h+='</details>';
+  if(!state.backstory)state.backstory={};
+  h+='<div class="bs-field" style="margin-top:22px"><div class="bs-label">✍️ Tu chispa<span class="bs-q">¿cómo despertó tu poder de '+esc(c.name)+'?</span></div>'+
+    '<div class="bs-hint">💡 Eres '+esc(c.name)+': '+esc(CLASS_DESC[c.id]||'')+' — ¿un accidente, un maestro, una tragedia, un don de nacimiento?</div>'+
+    '<textarea class="bs-input" placeholder="Escribe aquí… (opcional, lo puedes cambiar al final)" oninput="state.backstory.chispa=this.value">'+esc(state.backstory.chispa||'')+'</textarea></div>';
+  h+='<div class="btn-row"><button class="btn btn-ghost" onclick="go('+S_CQ0+')">← Rehacer test</button><button class="btn" onclick="go('+S_KIT+')">Ahora tu kit →</button></div>';
   return h;
 }
 function switchClass(id){state.classId=id;render()}
@@ -580,13 +629,13 @@ function renderKitQ(qi){
   if(qi===0){
     teach='<div class="teach">Tu <strong>Kit</strong> es tu paquete de equipo y estilo. Te da <strong>vida extra (HP)</strong> y una habilidad propia. Piensa en él como tu fantasía visual: ¿vikingo? ¿ninja? ¿pirata? No tiene que combinar con tu clase — ¡experimenta!</div>';
   }
-  var h='<div class="step-label">Paso 4 · Tu kit ('+(qi+1)+' de 5)</div><h2>'+esc(Q.q)+'</h2>'+teach;
+  var h='<div class="step-label">Paso 4 · Tu kit ('+(qi+1)+' de '+NK+')</div><h2>'+esc(Q.q)+'</h2>'+teach;
   Q.opts.forEach(function(o,i){
     var sel=(state._kitAns&&state._kitAns[qi]===i)?' sel':'';
     h+='<button class="opt'+sel+'" onclick="pickKit('+qi+','+i+')">'+esc(o.t)+'</button>';
   });
-  var backStep=qi===0?9:(10+qi-1);
-  h+='<div class="btn-row"><button class="btn btn-ghost" onclick="go('+backStep+')">← Atrás</button></div>';
+  var backBtn=qi===0?'<button class="btn btn-ghost" onclick="state.kitMode=null;go('+S_KIT+')">← Volver a la galería</button>':'<button class="btn btn-ghost" onclick="go('+(S_KIT+qi-1)+')">← Atrás</button>';
+  h+='<div class="btn-row">'+backBtn+'</div>';
   return h;
 }
 function pickKit(qi,oi){
@@ -597,8 +646,8 @@ function pickKit(qi,oi){
     var q=Q_KIT[k];var ans=state._kitAns[k];
     if(q&&q.opts[ans])addScores(state.kitScores,q.opts[ans].s);
   });
-  if(qi<4){go(10+qi+1)}
-  else{state.kitId=topScored(state.kitScores);go(15)}
+  if(qi<NK-1){go(S_KIT+qi+1)}
+  else{state.kitId=topScored(state.kitScores);go(S_KRES)}
 }
 function renderKitResult(){
   var k=getKit(state.kitId);
@@ -622,10 +671,59 @@ function renderKitResult(){
       '</div>';
   });
   h+='</details>'+
-    '<div class="btn-row"><button class="btn btn-ghost" onclick="go(10)">← Rehacer test</button><button class="btn" onclick="go(16)">Ver mi héroe →</button></div>';
+    '<div class="btn-row"><button class="btn btn-ghost" onclick="state.kitMode=null;go('+S_KIT+')">← Volver a la galería</button><button class="btn" onclick="go('+S_SUM+')">Ver mi héroe →</button></div>';
   return h;
 }
 function switchKit(id){state.kitId=id;render()}
+function kitCats(k){
+  var a=(k.archetype||'').toLowerCase(), f=(k.fantasy||'').toLowerCase(), c=[];
+  if((k.hpBonus||0)>=7||a.indexOf('tank')>-1)c.push('vida');
+  if(a.indexOf('damage')>-1||a.indexOf('aggressive')>-1)c.push('daño');
+  if(a.indexOf('stealth')>-1||a.indexOf('assassin')>-1||f.indexOf('ninja')>-1)c.push('sigilo');
+  if(a.indexOf('support')>-1||a.indexOf('healing')>-1)c.push('apoyo');
+  if(a.indexOf('control')>-1)c.push('control');
+  if(a.indexOf('magic')>-1||a.indexOf('amplification')>-1||a.indexOf('arcane')>-1)c.push('magia');
+  if(!c.length)c.push('daño');
+  return c.filter(function(v,i){return c.indexOf(v)===i});
+}
+function setKitFilter(cat){state.kitFilter=cat;state._kitOpen=null;render()}
+function toggleKitOpen(id){state._kitOpen=(state._kitOpen===id?null:id);render()}
+function chooseKit(id){state.kitId=id;state._kitOpen=null;go(S_SUM)}
+function renderKitGallery(){
+  var filt=state.kitFilter||'todos';
+  var FILTERS=[['todos','Todos'],['vida','Más vida'],['daño','Daño'],['sigilo','Sigilo'],['apoyo','Apoyo'],['control','Control'],['magia','Magia']];
+  var kits=GAMEDATA.kits.filter(function(k){return filt==='todos'||kitCats(k).indexOf(filt)>-1;});
+  if(filt==='vida')kits=kits.slice().sort(function(a,b){return (b.hpBonus||0)-(a.hpBonus||0);});
+  var h='<div class="step-label">Paso 4 · Tu kit</div><h2>Elige tu equipo</h2>'+
+    '<p class="lead">Tu <strong>Kit</strong> es tu paquete de equipo y estilo: te da <strong>vida extra</strong> y una habilidad propia. Explora el aparador, toca uno para ver cómo cambia tus stats, y elige el que más te guste.</p>';
+  h+='<div class="kit-filters">';
+  FILTERS.forEach(function(f){h+='<button class="kit-filter'+(filt===f[0]?' on':'')+'" onclick="setKitFilter(\''+f[0]+'\')">'+f[1]+'</button>';});
+  h+='</div>';
+  h+='<div class="btn-row" style="margin-top:2px;margin-bottom:14px"><button class="btn btn-ghost" onclick="go('+S_CRES+')">← Atrás</button><button class="btn btn-ghost" onclick="state.kitMode=\'test\';state._kitAns={};go('+S_KIT+')">🎲 Ayúdame a elegir</button></div>';
+  kits.forEach(function(kit){
+    var open=state._kitOpen===kit.id, total=10+(kit.hpBonus||0);
+    var basePct=Math.round(10/total*100), bonusPct=100-basePct;
+    var mine=state.kitId===kit.id;
+    h+='<div class="kit-card'+(open?' open':'')+(mine?' mine':'')+'">';
+    h+='<div class="kit-card-head" onclick="toggleKitOpen(\''+kit.id+'\')"><span class="kit-name">'+esc(kit.name)+(mine?' <span class="tag">elegido</span>':'')+'</span><span class="kit-fan">'+esc(kit.fantasy||'')+'</span><span class="kit-hp">+'+(kit.hpBonus||0)+' HP</span><span class="kit-caret">'+(open?'▾':'▸')+'</span></div>';
+    if(open){
+      h+='<div class="kit-body">';
+      h+='<div class="kit-art-wrap">'+kitArt(kit)+'</div>';
+      h+='<div class="kit-arch">'+esc(kit.archetype||'')+'</div>';
+      h+='<div class="kit-stat"><div class="kit-stat-lb">Cómo se ve en tus stats</div>'+
+        '<div class="kit-hp-row"><span>HP total</span><span>10 → <strong>'+total+'</strong></span></div>'+
+        '<div class="kit-hp-bar"><div class="kit-hp-base" style="width:'+basePct+'%"></div><div class="kit-hp-bonus" style="width:'+bonusPct+'%"></div></div>'+
+        '<div class="kit-aen">Aen por turno: <strong>+'+GAMEDATA.rules.aenPerTurn+'</strong> <span class="hint">(igual para todas las clases)</span></div>'+
+        '</div>';
+      h+='<div class="kit-benefit-lb">Habilidad del kit</div>'+kitAbilHtml(kit);
+      h+='<button class="btn" style="width:100%;margin-top:10px" onclick="chooseKit(\''+kit.id+'\')">Elegir '+esc(kit.name)+' →</button>';
+      h+='</div>';
+    }
+    h+='</div>';
+  });
+  if(!kits.length)h+='<p class="hint" style="text-align:center;padding:20px">No hay kits en esa categoría.</p>';
+  return h;
+}
 
 /* ══════════ RESUMEN ══════════ */
 function renderSummary(){
@@ -745,6 +843,7 @@ function ccHero(src,kick,fb,elm){
 function bsPrompts(){
   var fac=getFaction(state.factionId), c=getClass(state.classId), k=getKit(state.kitId);
   return [
+    {key:'chispa',label:'Tu chispa',q:'¿cómo despertó tu poder?',hint:(c?'Eres <strong>'+esc(c.name)+'</strong> — ¿un accidente, un maestro, una tragedia, un don?':'¿De dónde viene tu poder?')},
     {key:'origen',label:'Origen',q:'¿De dónde vienes en Avelir?',hint:'Un pueblo, una ciudad, un lugar salvaje… invéntalo o toma uno del mundo.'},
     {key:'motivacion',label:'Motivación',q:'¿Qué te mueve?',hint:(fac?'Tu facción cree: <em>"'+esc(fac.declaration)+'"</em> — ¿cómo llegaste a creerlo?':'¿Qué buscas, qué quieres lograr?')},
     {key:'vinculo',label:'Vínculo',q:'¿A quién proteges o quién te importa?',hint:'Un familiar, un maestro, un rival, un pueblo entero…'},
@@ -832,7 +931,7 @@ function buildSheet(){
     return blankSection(title,lines);
   }
   h+=bsBlock('APARIENCIA',(bs.apariencia||''),4);
-  var story=[]; if(bs.origen)story.push('Origen: '+bs.origen); if(bs.motivacion)story.push('Motivación: '+bs.motivacion); if(bs.vinculo)story.push('Vínculo: '+bs.vinculo); if(bs.secreto)story.push('Secreto: '+bs.secreto);
+  var story=[]; if(bs.chispa)story.push('Chispa: '+bs.chispa); if(bs.origen)story.push('Origen: '+bs.origen); if(bs.motivacion)story.push('Motivación: '+bs.motivacion); if(bs.vinculo)story.push('Vínculo: '+bs.vinculo); if(bs.secreto)story.push('Secreto: '+bs.secreto);
   h+=bsBlock('TRASFONDO / HISTORIA',story.join('\n\n'),5);
   h+=blankSection('INVENTARIO',5);
   h+=blankSection('NOTAS',5);
