@@ -1034,6 +1034,70 @@ textarea.form-input{min-height:70px;line-height:1.5}
 #view-wiki .wiki-index-item{font-family:'Newsreader',Georgia,serif;font-size:16.5px;border-bottom:1px solid var(--border)}
 #view-wiki .wiki-index-item:hover{background:#FBFBFA}
 #view-wiki .wiki-index-title{font-family:'Newsreader',Georgia,serif;font-weight:300;font-size:26px;letter-spacing:-.01em}
+
+/* ═══ MESA DE TRABAJO ═══ */
+:root{--st-seed:#b0b0a8;--st-draft:#a06010;--st-work:#2858a0;--st-canon:#247038}
+#view-wiki .st{width:8px;height:8px;border-radius:5px;flex:none;display:inline-block}
+#view-wiki .st.seed{background:var(--st-seed)}#view-wiki .st.draft{background:var(--st-draft)}
+#view-wiki .st.work{background:var(--st-work)}#view-wiki .st.canon{background:var(--st-canon)}
+#view-wiki .wm-nav{flex:0 0 224px;border-right:1px solid var(--border);padding:12px 0;overflow-y:auto;align-self:stretch;max-height:calc(100vh - 60px);position:sticky;top:0}
+#view-wiki .wm-nava{display:flex;align-items:center;gap:8px;padding:7px 16px;font-size:13.5px;color:var(--ink3);cursor:pointer;border-left:2px solid transparent}
+#view-wiki .wm-nava:hover{color:var(--ink)}
+#view-wiki .wm-nava.on{color:var(--ink);border-left-color:var(--ink);background:#ECEEE9}
+#view-wiki .wm-navh{display:flex;align-items:center;gap:7px;padding:8px 16px 4px;font-size:10.5px;letter-spacing:.13em;text-transform:uppercase;color:var(--ink4);margin-top:8px;cursor:pointer;background:none;border:0;width:100%;text-align:left;font-family:var(--font)}
+#view-wiki .wm-navh .cd{width:7px;height:7px;border-radius:4px}
+#view-wiki .wm-navh .n{margin-left:auto}
+#view-wiki .wm-navp{display:flex;align-items:center;gap:6px;padding:4px 16px 4px 26px;font-size:13px;color:var(--ink3);cursor:pointer;border-left:2px solid transparent;line-height:1.35}
+#view-wiki .wm-navp:hover{color:var(--ink)}
+#view-wiki .wm-navp.on{color:var(--ink);border-left-color:currentColor;background:#ECEEE9}
+#view-wiki .wm-navp .dirty{margin-left:auto;font-size:10px;color:var(--gold)}
+#view-wiki .wm-legend{margin:14px 16px 8px;padding-top:10px;border-top:1px solid var(--border);font-size:11px;color:var(--ink4);display:grid;gap:4px}
+#view-wiki .wm-legend div{display:flex;align-items:center;gap:7px}
+#view-wiki .wm-eyebrow{font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink4)}
+#view-wiki h1.wm-mesa{font-family:'Newsreader',Georgia,serif;font-weight:300;font-size:32px;letter-spacing:-.02em;margin:4px 0 16px}
+#view-wiki .wm-stats{display:grid;grid-template-columns:repeat(5,1fr);gap:1px;background:var(--border);border:1px solid var(--border);margin-bottom:20px}
+#view-wiki .wm-stat{background:var(--surface);padding:11px 13px}
+#view-wiki .wm-stat b{display:block;font-size:21px;font-weight:500}
+#view-wiki .wm-stat span{font-size:11px;color:var(--ink3);display:flex;align-items:center;gap:6px;margin-top:2px}
+#view-wiki .wm-sechead{display:flex;align-items:baseline;justify-content:space-between;margin:20px 0 8px}
+#view-wiki .wm-queue{border:1px solid var(--border);background:var(--surface);border-radius:var(--r)}
+#view-wiki .wm-qrow{display:flex;align-items:center;gap:11px;padding:10px 13px;border-bottom:1px solid var(--border);cursor:pointer}
+#view-wiki .wm-qrow:last-child{border-bottom:0}
+#view-wiki .wm-qrow:hover{background:var(--surface2)}
+#view-wiki .wm-qrow .t{font-family:'Newsreader',Georgia,serif;font-size:16px;min-width:150px}
+#view-wiki .wm-qrow .why{font-size:12.5px;color:var(--ink3);flex:1}
+#view-wiki .wm-qrow .why b{color:var(--gold);font-weight:600}
+#view-wiki .wm-qrow.pin{background:var(--gold-light)}
+#view-wiki .wm-two{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:20px}
+#view-wiki .wm-mini{border:1px solid var(--border);background:var(--surface);border-radius:var(--r);padding:11px 13px}
+#view-wiki .wm-mrow{display:flex;align-items:center;gap:9px;padding:4px 0;font-size:13px;color:var(--ink2);cursor:pointer}
+#view-wiki .wm-mrow:hover{color:var(--ink)}
+#view-wiki .wm-mrow .when{margin-left:auto;font-size:11px;color:var(--ink4)}
+#view-wiki .wm-mrow .pub{margin-left:auto;font-size:10.5px;color:var(--gold);border:1px solid var(--gold);border-radius:100px;padding:1px 8px}
+#view-wiki .wm-cta{margin-top:12px;display:flex;align-items:center;gap:10px;border:1.5px dashed var(--gold);background:var(--gold-light);border-radius:var(--r);padding:9px 13px;font-size:13px;color:#6a5508}
+#view-wiki .wm-cta button{margin-left:auto;background:var(--gold);color:#fff;border:0;border-radius:6px;padding:7px 13px;font-size:12.5px;cursor:pointer}
+#view-wiki .wm-fhead{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:4px}
+#view-wiki .wm-stsel{display:flex;border:1px solid var(--border2);border-radius:100px;overflow:hidden;font-size:11.5px;font-family:var(--font)}
+#view-wiki .wm-stsel span{padding:4px 11px;cursor:pointer;color:var(--ink4);display:flex;align-items:center;gap:5px}
+#view-wiki .wm-stsel span.on{background:var(--ink);color:#fff}
+#view-wiki .wm-continua{display:flex;align-items:center;gap:9px;background:var(--gold-light);border:1px solid var(--gold);border-radius:var(--r);padding:7px 12px;margin:10px 0 14px;max-width:72ch}
+#view-wiki .wm-continua input{flex:1;border:0;background:transparent;font-size:13px;color:#6a5508;outline:none;font-style:italic;font-family:var(--font)}
+#view-wiki .wm-sec{position:relative;border-radius:6px;margin:0 -10px;padding:0 10px}
+#view-wiki .wm-sec:hover{background:#faf9f4}
+#view-wiki .wm-sec .hintE{position:absolute;top:10px;right:8px;font-size:11px;color:var(--ink4);opacity:0;font-family:var(--font)}
+#view-wiki .wm-sec:hover .hintE{opacity:1}
+#view-wiki .wm-ghost{border:1.5px dashed var(--border2);border-radius:var(--r);padding:9px 13px;margin:12px 0;color:var(--ink4);font-size:13px;font-family:var(--font);cursor:pointer;display:flex;align-items:center;gap:8px;max-width:72ch}
+#view-wiki .wm-ghost:hover{border-color:var(--gold);color:var(--gold);background:var(--gold-light)}
+#view-wiki .wm-ghost b{font-weight:600;letter-spacing:.08em;text-transform:uppercase;font-size:11px}
+#view-wiki .wm-edit{background:#fff;border:1.5px solid var(--blue);border-radius:var(--r);padding:10px 12px;margin:10px -12px;max-width:74ch}
+#view-wiki .wm-edit textarea{width:100%;border:0;outline:0;resize:vertical;min-height:110px;font-family:'Newsreader',Georgia,serif;font-size:16px;line-height:1.65;color:var(--ink);background:transparent}
+#view-wiki .wm-tools{display:flex;align-items:center;gap:8px;margin-top:8px;font-family:var(--font)}
+#view-wiki .wm-tools button{border:1px solid var(--border2);background:var(--surface);border-radius:6px;padding:5px 12px;font-size:12px;cursor:pointer}
+#view-wiki .wm-tools .save{background:var(--ink);color:#fff;border-color:var(--ink)}
+#view-wiki .wm-linker{margin-top:9px;border-top:1px dashed var(--border2);padding-top:8px;font-size:12.5px;color:var(--ink3);display:flex;align-items:center;gap:7px;flex-wrap:wrap;font-family:var(--font)}
+#view-wiki .wm-linker .cand{border:1px solid var(--blue);color:var(--blue);border-radius:100px;padding:2px 10px;cursor:pointer;font-size:12px}
+#view-wiki .wm-linker .cand:hover{background:var(--blue);color:#fff}
+#view-wiki .wm-foot{margin-top:18px;padding-top:9px;border-top:1px solid var(--border);font-size:11.5px;color:var(--ink4);display:flex;gap:16px;font-family:var(--font);max-width:72ch}
 </style>
 <style id="eq-design-system">
 /* ══════════════════════════════════════════════════════════════
@@ -1331,7 +1395,7 @@ a:not(.btn){color:var(--gold-ink)}
   </nav>
   <hr class="sb-divider">
   <div class="sb-players" id="sb-players-bar"></div>
-  <div class="sb-settings" data-action="nav" data-type="settings">⚙️ Configuración <span style="font-size:10px;color:var(--ink4);margin-left:4px">v0724-lore</span></div>
+  <div class="sb-settings" data-action="nav" data-type="settings">⚙️ Configuración <span style="font-size:10px;color:var(--ink4);margin-left:4px">v0724-mesa</span></div>
 </aside>
 <div class="main">
   <div class="topbar"><div class="breadcrumb" id="breadcrumb"></div><div class="topbar-spacer"></div></div>
@@ -4095,9 +4159,10 @@ function renderNarrativeLinks(text){
   h+='</div>';
   return h;
 }
-function renderSettings(){var el=document.getElementById('settings-content');if(!el)return;var h='<div class="section-label">CONFIGURACIÓN</div><div style="background:var(--surface);border:2px solid var(--border);border-radius:var(--r-lg);padding:18px;margin-bottom:16px"><div class="form-label">GAME DATA</div><div style="font-size:14px;color:var(--ink2);line-height:1.8">';if(G)h+='Clases: '+G.classes.length+' ('+G.classes.reduce(function(a,c){return a+c.subclasses.length},0)+' subclases)<br>Facciones: '+G.factions.length+'<br>Kits: '+G.kits.length+'<br>Bestiario base: '+(G.baseBestiary?G.baseBestiary.length:0);else h+='⚠ gamedata no cargado';h+='<br><br>';DB_TABLES.forEach(function(t){var d=dbLoad(t);h+=t+': '+(Array.isArray(d)?d.length:(d?1:0))+'<br>'});h+='</div></div>';h+='<div style="background:var(--surface);border:2px solid var(--border);border-radius:var(--r-lg);padding:18px;margin-bottom:16px"><div class="form-label">EXPORTAR</div><div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:8px">';DB_TABLES.forEach(function(t){h+='<button class="btn" data-action="export-db" data-type="'+t+'">'+t+'</button>'});h+='<button class="btn btn-primary" data-action="export-all">Todo</button><button class="btn btn-primary" onclick="exportLorePublic()">🌐 lore.js público</button><a class="btn" href="wiki.html" target="_blank" rel="noopener" style="text-decoration:none">📖 Ver wiki público</a></div></div>';h+='<div style="background:var(--surface);border:2px solid var(--border);border-radius:var(--r-lg);padding:18px;margin-bottom:16px"><div class="form-label">IMPORTAR</div><input type="file" accept=".json" style="font-size:14px;margin-top:8px" onchange="importFile(this)"><div id="import-status" style="margin-top:8px;font-size:13px"></div></div>';h+='<div style="background:var(--surface);border:2px solid var(--red);border-radius:var(--r-lg);padding:18px"><div class="form-label" style="color:var(--red)">ZONA DE PELIGRO</div><button class="btn" style="border-color:var(--red);color:var(--red);margin-top:8px" data-action="reset-all">Resetear todos los datos</button></div>';el.innerHTML=h}
+function renderSettings(){var el=document.getElementById('settings-content');if(!el)return;var h='<div class="section-label">CONFIGURACIÓN</div><div style="background:var(--surface);border:2px solid var(--border);border-radius:var(--r-lg);padding:18px;margin-bottom:16px"><div class="form-label">GAME DATA</div><div style="font-size:14px;color:var(--ink2);line-height:1.8">';if(G)h+='Clases: '+G.classes.length+' ('+G.classes.reduce(function(a,c){return a+c.subclasses.length},0)+' subclases)<br>Facciones: '+G.factions.length+'<br>Kits: '+G.kits.length+'<br>Bestiario base: '+(G.baseBestiary?G.baseBestiary.length:0);else h+='⚠ gamedata no cargado';h+='<br><br>';DB_TABLES.forEach(function(t){var d=dbLoad(t);h+=t+': '+(Array.isArray(d)?d.length:(d?1:0))+'<br>'});h+='</div></div>';h+='<div style="background:var(--surface);border:2px solid var(--border);border-radius:var(--r-lg);padding:18px;margin-bottom:16px"><div class="form-label">EXPORTAR</div><div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:8px">';DB_TABLES.forEach(function(t){h+='<button class="btn" data-action="export-db" data-type="'+t+'">'+t+'</button>'});h+='<button class="btn btn-primary" data-action="export-all">Todo</button><button class="btn btn-primary" onclick="exportLorePublic()">🌐 lore.js público</button><a class="btn" href="wiki.html" target="_blank" rel="noopener" style="text-decoration:none">📖 Ver wiki público</a></div></div>';h+='<div style="background:var(--surface);border:2px solid var(--border);border-radius:var(--r-lg);padding:18px;margin-bottom:16px"><div class="form-label">IMPORTAR</div><input type="file" accept=".json" style="font-size:14px;margin-top:8px" onchange="importFile(this)"><div id="import-status" style="margin-top:8px;font-size:13px"></div></div><div style="background:var(--surface);border:2px solid var(--border);border-radius:var(--r-lg);padding:18px;margin-bottom:16px"><div class="form-label">IMPORTAR B\u00d3VEDA (solo agrega \u2014 nunca reemplaza)</div><div style="font-size:13px;color:var(--ink3);margin-top:4px">P\u00e1ginas privadas del DM. Viven solo en este navegador y NUNCA salen en el export p\u00fablico mientras no marques \ud83c\udf10.</div><input type="file" accept=".json" style="font-size:14px;margin-top:8px" onchange="importVault(this)"><div id="vault-status" style="margin-top:8px;font-size:13px"></div></div><div style="background:var(--surface);border:2px solid var(--border);border-radius:var(--r-lg);padding:18px;margin-bottom:16px"><div class="form-label">\ud83e\uddf3 ESPACIO DE TRABAJO (para cambiar de dispositivo)</div><div style="font-size:13px;color:var(--ink3);margin-top:4px">Tu tabla wiki local + estados y notas de la Mesa, en un solo archivo. Exporta al cerrar en un dispositivo, importa al abrir en otro.</div><div style="display:flex;gap:8px;margin-top:10px;align-items:center;flex-wrap:wrap"><button class="btn btn-primary" onclick="wmExportWS()">Exportar espacio</button><input type="file" accept=".json" style="font-size:13px" onchange="wmImportWS(this)"></div><div id="ws-status" style="margin-top:8px;font-size:13px"></div></div>';h+='<div style="background:var(--surface);border:2px solid var(--red);border-radius:var(--r-lg);padding:18px"><div class="form-label" style="color:var(--red)">ZONA DE PELIGRO</div><button class="btn" style="border-color:var(--red);color:var(--red);margin-top:8px" data-action="reset-all">Resetear todos los datos</button></div>';el.innerHTML=h}
 function exportDB(t){var d=dbLoad(t);if(!d){alert('Sin datos');return}var b=new Blob([JSON.stringify(d,null,2)],{type:'application/json'});var a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='eq_'+t+'.json';a.click()}
 function exportAll(){var all={};DB_TABLES.forEach(function(t){all[t]=dbLoad(t)});var b=new Blob([JSON.stringify(all,null,2)],{type:'application/json'});var a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='eq_backup.json';a.click()}
+function importVault(input){var f=input.files[0];if(!f)return;var r=new FileReader();r.onload=function(e){try{var d=JSON.parse(e.target.result);if(!Array.isArray(d))throw new Error('Se esperaba una lista de p\u00e1ginas');var added=0,skipped=0;d.forEach(function(p){if(!p.title||!p.content)return;var ex=allWikiPages().some(function(x){return (x.title||'').trim().toLowerCase()===p.title.trim().toLowerCase()});if(ex){skipped++;return}dbCreate('wiki',{title:p.title,type:p.type||'concept',content:p.content,connections:[]});added++});document.getElementById('vault-status').innerHTML='\u2705 '+added+' p\u00e1ginas privadas agregadas'+(skipped?' \u00b7 '+skipped+' ya exist\u00edan (sin tocar)':'');renderView(currentView)}catch(err){document.getElementById('vault-status').innerHTML='\u274c '+err.message}input.value=''};r.readAsText(f)}
 function importFile(input){var f=input.files[0];if(!f)return;var r=new FileReader();r.onload=function(e){try{var d=JSON.parse(e.target.result);var imp=[];if(d.campaign!==undefined||d.npcs){var willImport=DB_TABLES.filter(function(t){return d[t]!==undefined});if(!confirm('Esto REEMPLAZARÁ estos datos: '+willImport.join(', ')+'. ¿Continuar?')){input.value='';return}DB_TABLES.forEach(function(t){if(d[t]!==undefined){dbSave(t,d[t]);imp.push(t)}});document.getElementById('import-status').innerHTML='✅ '+imp.join(', ')}else if(Array.isArray(d)){var n=f.name.replace('eq_','').replace('.json','');if(DB_TABLES.indexOf(n)>-1){if(!confirm('Esto REEMPLAZARÁ la tabla "'+n+'". ¿Continuar?')){input.value='';return}dbSave(n,d);document.getElementById('import-status').innerHTML='✅ '+n}}renderView(currentView)}catch(err){document.getElementById('import-status').innerHTML='❌ '+err.message}input.value=''};r.readAsText(f)}
 
 /* MODALS */
@@ -5345,6 +5410,202 @@ window.addEventListener("resize",function(){ if(_shown)apply(); });
 
 return {show:show};
 };</script>
-<script>(function(){var host=document.getElementById("view-map");if(!host||!window.EpicMapInit)return;var sr=host.attachShadow({mode:"open"});sr.appendChild(document.getElementById("map-template").content.cloneNode(true));window.EpicMap=EpicMapInit(sr);var _rv=renderView;renderView=function(id){_rv(id);if(id==="map"&&window.EpicMap)EpicMap.show();};})();</script>
+<script>(function(){var host=document.getElementById("view-map");if(!host||!window.EpicMapInit)return;var sr=host.attachShadow({mode:"open"});sr.appendChild(document.getElementById("map-template").content.cloneNode(true));window.EpicMap=EpicMapInit(sr);var _rv=renderView;renderView=function(id){_rv(id);if(id==="map"&&window.EpicMap)EpicMap.show();};})();
+/* ═══════════ MESA DE TRABAJO — redefine la pestaña Wiki ═══════════ */
+if(DB_TABLES.indexOf('wikimeta')===-1)DB_TABLES.push('wikimeta');
+function wmMetaAll(){return dbLoad('wikimeta')||{}}
+function wmMeta(t){return wmMetaAll()[(t||'').trim().toLowerCase()]||{}}
+function wmMetaSet(t,patch){var all=wmMetaAll();var k=(t||'').trim().toLowerCase();var m=all[k]||{};for(var x in patch)m[x]=patch[x];m.ts=Date.now();all[k]=m;dbSave('wikimeta',all)}
+function wmWords(c){return String(c||'').replace(/\[\[|\]\]|\*\*?|^#+.*$/gm,' ').split(/\s+/).filter(Boolean).length}
+function wmStateOf(p){var m=wmMeta(p.title);if(m.st)return m.st;
+  if((p.content||'').indexOf('Poco más se ha escrito')>-1)return 'seed';
+  var w=wmWords(p.content);if(w<70)return 'seed';if(w<200)return 'draft';return 'canon'}
+var WM_ST={seed:'Semilla',draft:'Borrador',work:'En obra',canon:'Canon'};
+function wmBaseMap(){var m={};wikiBasePages().forEach(function(b){m[b.title.trim().toLowerCase()]=b});return m}
+function wmDirty(){var base=wmBaseMap(),out=[];dbGetAll('wiki').forEach(function(p){
+  var k=(p.title||'').trim().toLowerCase(),b=base[k];
+  if(b&&b.content!==p.content)out.push({p:p,why:'editada'});
+  else if(!b&&p.pub)out.push({p:p,why:'nueva \ud83c\udf10'})});return out}
+function wmDeadLinks(p){var out=[],rx=/\[\[([^\]]+)\]\]/g,m;while((m=rx.exec(p.content||''))!==null){var n=m[1].trim();if(!wikiFindByTitle(n)&&out.indexOf(n)===-1)out.push(n)}return out}
+function wmAgo(ts){if(!ts)return'';var d=Date.now()-ts;if(d<36e5)return Math.max(1,Math.round(d/6e4))+' min';if(d<864e5)return 'hoy';if(d<1728e5)return 'ayer';return Math.round(d/864e5)+' d'}
+var WM_OPEN={},wmEditIdx=null,wmPendLinks=null;
+WIKI_TYPES.forEach(function(t){WM_OPEN[t.id]=true});
+
+/* ─ navegación ─ */
+function wmNav(){var pages=allWikiPages(),r=currentWikiId,dirty={},dl=wmDirty();
+  dl.forEach(function(d){dirty[(d.p.title||'').toLowerCase()]=1});
+  var h='<div class="wm-nav"><div style="padding:0 14px 8px"><button class="btn btn-primary" style="width:100%;justify-content:center" data-action="wiki-new">+ Nueva página</button></div>';
+  h+='<input type="text" class="form-input" placeholder="Filtrar..." value="'+esc(wikiSearch)+'" oninput="wikiSearch=this.value;renderWiki()" style="margin:0 14px 6px;width:calc(100% - 28px)">';
+  h+='<div class="wm-nava'+(!wikiShowIndex&&!r?' on':'')+'" onclick="currentWikiId=null;wikiShowIndex=false;renderWiki()">Mesa de Trabajo</div>';
+  h+='<div class="wm-nava'+(wikiShowIndex?' on':'')+'" data-action="wiki-index">Índice y búsqueda <span style="margin-left:auto;font-size:11px;color:var(--ink4)">'+pages.length+'</span></div>';
+  h+='<a class="wm-nava" href="wiki.html" target="_blank" rel="noopener" style="text-decoration:none">\ud83d\udcd6 Ver wiki público</a>';
+  var q=wikiSearch.trim().toLowerCase();
+  WIKI_TYPES.forEach(function(t){
+    var items=pages.filter(function(p){return p.type===t.id&&(!q||p.title.toLowerCase().indexOf(q)>-1)});
+    if(!items.length)return;
+    items.sort(function(a,b){return a.title.localeCompare(b.title,'es')});
+    h+='<button class="wm-navh" onclick="WM_OPEN[\''+t.id+'\']=!WM_OPEN[\''+t.id+'\'];renderWiki()"><span class="cd" style="background:'+t.color+'"></span>'+esc(t.label)+'<span class="n">'+items.length+'</span></button>';
+    if(WM_OPEN[t.id]||q)items.forEach(function(p){
+      var st=wmStateOf(p),on=p.id===r;
+      h+='<div class="wm-navp'+(on?' on':'')+'"'+(on?' style="color:'+t.color+'"':'')+' data-action="wiki-open" data-id="'+p.id+'"><span class="st '+st+'"></span>'+esc(p.title)+(dirty[p.title.toLowerCase()]?'<span class="dirty" title="Cambios sin publicar">\u25cf</span>':'')+'</div>';
+    });
+  });
+  h+='<div class="wm-legend"><div><span class="st canon"></span>Canon</div><div><span class="st work"></span>En obra</div><div><span class="st draft"></span>Borrador</div><div><span class="st seed"></span>Semilla</div><div><span style="color:var(--gold)">\u25cf</span>Sin publicar</div></div>';
+  return h+'</div>'}
+
+/* ─ mesa ─ */
+function wmMesa(){var pages=allWikiPages(),meta=wmMetaAll();
+  var counts={seed:0,draft:0,work:0,canon:0};pages.forEach(function(p){counts[wmStateOf(p)]++});
+  var h='<span class="wm-eyebrow">Hub · Wiki / Lore</span><h1 class="wm-mesa">Mesa de Trabajo</h1>';
+  h+='<div class="wm-stats"><div class="wm-stat"><b>'+pages.length+'</b><span>páginas</span></div>'
+   +'<div class="wm-stat"><b style="color:var(--st-canon)">'+counts.canon+'</b><span><span class="st canon"></span>canon</span></div>'
+   +'<div class="wm-stat"><b style="color:var(--st-work)">'+counts.work+'</b><span><span class="st work"></span>en obra</span></div>'
+   +'<div class="wm-stat"><b style="color:var(--st-draft)">'+counts.draft+'</b><span><span class="st draft"></span>borrador</span></div>'
+   +'<div class="wm-stat"><b style="color:var(--st-seed)">'+counts.seed+'</b><span><span class="st seed"></span>semillas</span></div></div>';
+  var noted=pages.filter(function(p){return (wmMeta(p.title).note||'').trim()}).sort(function(a,b){return (wmMeta(b.title).ts||0)-(wmMeta(a.title).ts||0)}).slice(0,5);
+  if(noted.length){h+='<div class="wm-sechead"><span class="wm-eyebrow">\u270d Continuar donde me quedé</span></div><div class="wm-queue">';
+    noted.forEach(function(p){h+='<div class="wm-qrow pin" data-action="wiki-open" data-id="'+p.id+'"><span class="st '+wmStateOf(p)+'"></span><span class="t">'+esc(p.title)+'</span><span class="why"><b>tu nota:</b> \u201c'+esc(wmMeta(p.title).note)+'\u201d</span><span style="font-size:12px;color:var(--ink4)">abrir \u2192</span></div>'});
+    h+='</div>'}
+  var cola=[];
+  pages.forEach(function(p){var st=wmStateOf(p);var dead=wmDeadLinks(p);
+    if(st==='seed')cola.push({p:p,pri:0,why:'semilla · '+wmWords(p.content)+' palabras'});
+    else if(dead.length)cola.push({p:p,pri:1,why:'menciona '+dead.length+' ficha'+(dead.length>1?'s':'')+' sin escribir: '+dead.slice(0,3).join(', ')});
+    else if(st==='draft')cola.push({p:p,pri:2,why:'borrador · '+wmWords(p.content)+' palabras'})});
+  cola.sort(function(a,b){return a.pri-b.pri||wmWords(a.p.content)-wmWords(b.p.content)});
+  h+='<div class="wm-sechead"><span class="wm-eyebrow">Cola de escritura — lo que el archivo pide</span><span style="font-size:12px;color:var(--ink4)">'+cola.length+' en total</span></div><div class="wm-queue">';
+  if(!cola.length)h+='<div class="wm-qrow" style="cursor:default"><span class="why">Nada pendiente detectado — el corpus está sano.</span></div>';
+  cola.slice(0,8).forEach(function(c){h+='<div class="wm-qrow" data-action="wiki-open" data-id="'+c.p.id+'"><span class="st '+wmStateOf(c.p)+'"></span><span class="t">'+esc(c.p.title)+'</span><span class="why">'+esc(c.why)+'</span><span style="font-size:12px;color:var(--ink4)">abrir \u2192</span></div>'});
+  h+='</div>';
+  var touched=pages.filter(function(p){return wmMeta(p.title).ts}).sort(function(a,b){return wmMeta(b.title).ts-wmMeta(a.title).ts}).slice(0,5);
+  var dirty=wmDirty();
+  h+='<div class="wm-two"><div class="wm-mini"><span class="wm-eyebrow" style="display:block;margin-bottom:7px">Últimas que toqué</span>';
+  if(!touched.length)h+='<div style="font-size:12.5px;color:var(--ink4)">Aún nada esta sesión.</div>';
+  touched.forEach(function(p){h+='<div class="wm-mrow" data-action="wiki-open" data-id="'+p.id+'"><span class="st '+wmStateOf(p)+'"></span>'+esc(p.title)+'<span class="when">'+wmAgo(wmMeta(p.title).ts)+'</span></div>'});
+  h+='</div><div class="wm-mini"><span class="wm-eyebrow" style="display:block;margin-bottom:7px">Sin publicar — difieren del lore.js</span>';
+  if(!dirty.length)h+='<div style="font-size:12.5px;color:var(--ink4)">Todo publicado. El repo está al día.</div>';
+  dirty.slice(0,6).forEach(function(d){h+='<div class="wm-mrow" data-action="wiki-open" data-id="'+d.p.id+'"><span class="st '+wmStateOf(d.p)+'"></span>'+esc(d.p.title)+'<span class="pub">'+d.why+'</span></div>'});
+  if(dirty.length)h+='<div class="wm-cta">'+dirty.length+' cambio'+(dirty.length>1?'s':'')+' listo'+(dirty.length>1?'s':'')+'<button onclick="exportLorePublic()">\ud83c\udf10 Exportar lore.js</button></div>';
+  h+='</div></div>';
+  return h}
+
+/* ─ secciones ─ */
+function wmParse(c){var lines=String(c||'').split('\n'),secs=[],cur={head:null,body:[]};
+  lines.forEach(function(ln){var m=ln.match(/^#\s+(.+)$/);
+    if(m){if(cur.head!==null||cur.body.join('').trim())secs.push(cur);cur={head:m[1].trim(),body:[]}}
+    else cur.body.push(ln)});
+  if(cur.head!==null||cur.body.join('').trim())secs.push(cur);
+  return secs}
+function wmBuild(secs){return secs.map(function(s){return (s.head!==null?'# '+s.head+'\n':'')+s.body.join('\n').replace(/^\n+|\n+$/g,'')}).join('\n\n')}
+function wmGhosts(page,secs){var tpl=WIKI_TEMPLATES[page.type]||'';var heads=[];var rx=/^#\s+(.+)$/gm,m;
+  while((m=rx.exec(tpl))!==null)heads.push(m[1].trim());
+  var have=secs.map(function(s){return (s.head||'').toLowerCase()});
+  return heads.filter(function(h){return have.indexOf(h.toLowerCase())===-1})}
+
+/* ─ ficha ─ */
+function wmPage(page){var t=wikiTypeById(page.type),c=t?t.color:'#888',secs=wmParse(page.content),m=wmMeta(page.title),st=wmStateOf(page);
+  var h='<span class="wm-eyebrow" style="cursor:pointer" onclick="currentWikiId=null;renderWiki()">\u2190 Mesa de Trabajo · '+esc(t?t.label:'')+'</span>';
+  h+='<div class="wm-fhead" style="margin-top:8px"><span class="wiki-type-badge" style="color:'+c+';border:1px solid '+c+'">'+esc(t?t.label:'')+'</span><div class="wm-stsel">';
+  ['seed','draft','work','canon'].forEach(function(k){h+='<span class="'+(st===k?'on':'')+'" onclick="wmMetaSet('+JSON.stringify(page.title)+',{st:\''+k+'\'});renderWiki()"><span class="st '+k+'"'+(st===k?' style="background:#fff"':'')+'></span>'+WM_ST[k]+'</span>'});
+  h+='</div>';
+  if(page._base)h+='<span style="margin-left:auto;font-size:12px;color:var(--ink4)">\ud83d\udcd7 publicada — edita una sección para crear tu copia</span>';
+  else h+='<label style="margin-left:auto;display:flex;align-items:center;gap:5px;font-size:12px;color:var(--ink3)"><input type="checkbox" onchange="setWikiPub(this.checked)" '+(page.pub?'checked':'')+'>\ud83c\udf10 público</label>'
+    +'<button class="btn" style="font-size:12px;padding:3px 10px;min-height:26px" data-action="wiki-delete" data-id="'+page.id+'">\ud83d\uddd1</button>';
+  h+='</div>';
+  if(page._base)h+='<div class="wiki-title-static" style="margin:6px 0 4px">'+esc(page.title)+'</div>';
+  else h+='<input type="text" class="wiki-title-input" style="margin:6px 0 4px;width:100%" value="'+esc(page.title)+'" oninput="saveWikiTitle(this.value)">';
+  h+='<div class="wm-continua">\u270d<input value="'+esc(m.note||'')+'" placeholder="Nota de continuación: ¿dónde te quedaste? (aparece en la Mesa)" onchange="wmMetaSet('+JSON.stringify(page.title)+',{note:this.value});"></div>';
+  h+='<div class="wiki-reading" style="max-width:72ch">';
+  secs.forEach(function(sec,i){
+    if(wmEditIdx===i){
+      h+='<div class="wm-edit">'+(sec.head!==null?'<div style="font-family:var(--font);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--blue);margin-bottom:6px">'+esc(sec.head)+' — editando</div>':'')
+       +'<textarea id="wm-ta">'+esc(sec.body.join('\n').replace(/^\n+|\n+$/g,''))+'</textarea>'
+       +'<div class="wm-linker" id="wm-linker" style="display:none"></div>'
+       +'<div class="wm-tools"><button class="save" onclick="wmSave('+i+',false)">Guardar sección</button><button onclick="wmEditIdx=null;wmPendLinks=null;renderWiki()">Cancelar</button>'
+       +'<span style="margin-left:auto;font-size:11px;color:var(--ink4)">[[corchetes]] siembran fichas nuevas</span></div></div>';
+    }else{
+      h+='<div class="wm-sec" onclick="wmEditIdx='+i+';wmPendLinks=null;renderWiki()"><span class="hintE">\u270e clic para editar</span>'
+       +(sec.head!==null?'<h3 class="wiki-h3">'+esc(sec.head)+'</h3>':'')
+       +renderLinkedParagraphs(sec.body.join('\n'))+'</div>';
+    }
+  });
+  wmGhosts(page,secs).forEach(function(g){h+='<div class="wm-ghost" onclick="wmAddSec('+JSON.stringify(g)+')"><b>\uff0b '+esc(g)+'</b> la plantilla de '+esc(t?t.label:'este tipo')+' la espera — sin escribir</div>'});
+  h+='<div class="wm-ghost" onclick="var n=prompt(\'Nombre de la sección nueva:\');if(n)wmAddSec(n)"><b>\uff0b Sección libre</b> agrega una que la plantilla no previó</div>';
+  h+='</div>';
+  var refs=wikiBacklinks(page.title);
+  if(refs.length){h+='<div class="wiki-backlinks"><div class="form-label">MENCIONADA EN</div>';refs.forEach(function(r){h+='<div class="wiki-backlink" data-action="'+r.action+'" data-id="'+r.id+'"'+(r.title?' data-title="'+esc(r.title)+'"':'')+'>'+r.icon+' '+esc(r.title||'')+'</div>'});h+='</div>'}
+  h+='<div class="wm-foot"><span>'+(m.ts?'Tocada '+wmAgo(m.ts):'Sin sello de sesión')+'</span>'
+   +(page._base?'<span>\ud83d\udcd7 = versión publicada en lore.js</span>':(wmDirty().some(function(d){return d.p.id===page.id})?'<span style="color:var(--gold)">\u25cf Difiere del lore.js publicado</span>':''))
+   +'<span>'+wmWords(page.content)+' palabras</span></div>';
+  return h}
+
+function wmAddSec(head){var page=wikiGetPage(currentWikiId);if(!page)return;
+  var secs=wmParse(page.content);secs.push({head:head,body:['']});
+  wmCommit(page,secs,secs.length-1);wmEditIdx=wmParse(wikiGetPage(currentWikiId).content).length-1;renderWiki()}
+
+function wmSave(i,force){var page=wikiGetPage(currentWikiId);if(!page)return;
+  var ta=document.getElementById('wm-ta');if(!ta)return;
+  var txt=ta.value;
+  if(!force){
+    var cands=[];allWikiPages().forEach(function(p){var t=p.title;
+      if(t===page.title||t.length<4)return;
+      if(txt.indexOf(t)>-1&&txt.indexOf('[['+t+']]')===-1&&cands.indexOf(t)===-1)cands.push(t)});
+    if(cands.length){wmPendLinks=cands;var L=document.getElementById('wm-linker');
+      L.style.display='flex';
+      var lh='\ud83d\udd17 Detecté menciones sin enlazar: ';
+      cands.forEach(function(cd,ci){lh+='<span class="cand" onclick="wmLink('+ci+')">'+esc(cd)+'</span>'});
+      lh+='<span style="margin-left:auto;color:var(--gold);cursor:pointer;font-size:12px" onclick="wmLinkAll('+i+')">enlazar todas y guardar \u2713</span>'
+        +'<span style="cursor:pointer;font-size:12px;color:var(--ink4)" onclick="wmSave('+i+',true)">guardar sin enlazar</span>';
+      L.innerHTML=lh;return}
+  }
+  var secs=wmParse(page.content);secs[i].body=txt.split('\n');
+  wmCommit(page,secs,i);wmEditIdx=null;wmPendLinks=null;renderWiki()}
+function wmLink(ci){var ta=document.getElementById('wm-ta');var name=wmPendLinks[ci];
+  ta.value=ta.value.split(name).join('[['+name+']]').split('[[[['+name+']]]]').join('[['+name+']]');
+  wmPendLinks[ci]=null;
+  var chips=document.querySelectorAll('#wm-linker .cand');if(chips[ci])chips[ci].remove()}
+function wmLinkAll(i){wmPendLinks.forEach(function(n,ci){if(n)wmLink(ci)});wmSave(i,true)}
+
+function wmCommit(page,secs,editedIdx){var content=wmBuild(secs);
+  var id=page.id;
+  if(page._base){
+    var copy=dbCreate('wiki',{title:page.title,type:page.type,content:content,connections:[],pub:true});
+    if(page.tree)dbUpdate('wiki',copy.id,{tree:page.tree});
+    currentWikiId=copy.id;id=copy.id;
+  }else dbUpdate('wiki',id,{content:content});
+  var rx=/\[\[([^\]]+)\]\]/g,m,made=[];
+  while((m=rx.exec(content))!==null){var n=m[1].trim();
+    if(!wikiFindByTitle(n)&&made.indexOf(n)===-1){made.push(n);
+      var gt=WIKI_LINK_TYPES[n]||'concept';
+      dbCreate('wiki',{title:n,type:gt,content:(WIKI_TEMPLATES[gt]||''),connections:[]});
+      wmMetaSet(n,{st:'seed'})}}
+  wmMetaSet(page.title,{})}
+
+/* ─ maleta ─ */
+function wmExportWS(){var d={wiki:dbGetAll('wiki'),wikimeta:wmMetaAll()};
+  var b=new Blob([JSON.stringify(d,null,2)],{type:'application/json'});
+  var a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='avelir_espacio.json';a.click()}
+function wmImportWS(input){var f=input.files[0];if(!f)return;var r=new FileReader();
+  r.onload=function(e){try{var d=JSON.parse(e.target.result);
+    if(!d.wiki||!Array.isArray(d.wiki))throw new Error('No es un archivo de espacio de trabajo');
+    if(!confirm('Esto REEMPLAZA tu espacio local ('+d.wiki.length+' páginas + estados/notas). ¿Continuar?')){input.value='';return}
+    dbSave('wiki',d.wiki);dbSave('wikimeta',d.wikimeta||{});
+    document.getElementById('ws-status').innerHTML='\u2705 Espacio restaurado: '+d.wiki.length+' páginas';renderView(currentView)}
+  catch(err){document.getElementById('ws-status').innerHTML='\u274c '+err.message}input.value=''};r.readAsText(f)}
+
+/* ─ renderWiki redefinido ─ */
+function renderWiki(){
+  var el=document.getElementById('wiki-content');if(!el)return;
+  var h='<div class="wiki-layout">'+wmNav();
+  if(wikiShowIndex&&!currentWikiId){h+='<div class="wiki-main">'+renderWikiIndex()+'</div></div>';el.innerHTML=h;return}
+  if(currentWikiId){
+    var page=wikiGetPage(currentWikiId);
+    if(!page){currentWikiId=null;renderWiki();return}
+    h+='<div class="wiki-main">'+wmPage(page)+'</div>'+wkRailHtml(page)+'</div>';
+    el.innerHTML=h;return}
+  h+='<div class="wiki-main">'+wmMesa()+'</div></div>';
+  el.innerHTML=h;
+}
+
+</script>
 </body>
 </html>
