@@ -1,12 +1,12 @@
-/* AVELIR — LORE PUBLICO  v0.6
+/* AVELIR — LORE PUBLICO  v0.7
    Fuente maestra: Avelir_Lore_Compilation.md — todo lo no-secreto vive aquí.
    Lo secreto (DM Only / Campaign Secret) va en la bóveda y NUNCA en este archivo.
    Lo leen index.html y wiki.html. */
 
 var LORE = {
 
-  version: "0.6",
-  exportedAt: "2026-07-24",
+  version: "0.7",
+  exportedAt: "2026-07-25",
 
   types: [
   {
@@ -121,7 +121,11 @@ var LORE = {
   "El Emperador": "character",
   "Tel-Haud": "character",
   "Cuencos de Poder": "concept",
-  "El Interplano": "concept"
+  "El Interplano": "concept",
+  "El Bosque de las Luces": "place",
+  "El Milagro Fundacional": "story",
+  "Los Hermanos del Arado": "concept",
+  "Los Hijos del Viento": "concept"
 },
 
   pages: [
@@ -129,7 +133,7 @@ var LORE = {
     "id": "wbase-cheran",
     "title": "Teocracia de Cherán",
     "type": "faction",
-    "content": "# Declaración\n\"Nuestro dios es el único. Él proveerá. Los infieles serán purificados. El fuego de Engar se esparcirá ante el retumbar de nuestra caballería.\"\n\n*Los Engari — El Pueblo que Ara*\n\n# Historia\nLos Engari nacieron en las estepas como una banda de mercenarios fanáticos que nadie tomaba en serio. Lo que los diferenciaba era su fe — una devoción total a **[[Engar Ab'Calen]]**, el dios que ara la tierra para que brote la vida.\n\nGeneración tras generación, esa fe los forjó. El primer Palan'Nur unificó las tribus dispersas y absorbió el Imperio de las Estepas. El segundo lo convirtió en un verdadero imperio. El tercero lo llevó a su cúspide.\n\nHoy son la potencia más temida de Avelir — no por tener el ejército más grande, sino porque tienen algo más peligroso: la certeza absoluta de que están en lo correcto.\n\n## Los Cuatro Palan'Nur\n- **[[Anandëlion]]** — El Primero. El Saladino. Convirtió a los Engari de mercenarios fanáticos a fuerza imperial.\n- **[[Anandël]]** — El Segundo. El Ciro. Ejecutó el mestizaje entre los Engari y el pueblo de las estepas.\n- **[[Anan'Nur]]** — El Tercero. El Darío. La cúspide institucional. Actualmente agonizando.\n- **[[An'Fahal]]** — El Cuarto. El heredero débil, rodeado de generales extraordinarios que cargan el peso que él aún no puede sostener.\n\n# Gobierno\n**Teocracia.** El **[[Palan'Nur]]** — el Ungido — ejecuta la voluntad divina. El **[[Palan'Shar]]** — el Concilio sagrado — define qué es esa voluntad. Cuatro facciones compiten dentro del Palan'Shar:\n- **[[Amin]]** — los ortodoxos. Fieles a Engar en su forma original y pura.\n- **[[Palan'Umbar]]** — los gnósticos. La sombra que provoca la luz.\n- **[[Amin'Kalam]]** — los iconoclastas. La fe pura sin representaciones físicas.\n- **[[Sar'Qaim]]** — los jihadistas. La guerra sagrada es un mandato — no una opción.\n\n# Figuras Clave\n- **[[Anan'Nur]]** — El Ungido que agoniza. Llevó a Cherán a su cúspide. Su muerte marcará una nueva era.\n- **[[An'Fahal]]** — El heredero. Su nombre significa \"el amanecer\".\n- **[[Temürel]] — Abu'Amin** — El Abuelo. El general más respetado sin título formal. La memoria viva del imperio. Tiene un plan que nadie conoce completamente.\n- **Los [[Sar'Qaim]]** — Los que ejecutan en la oscuridad. Marchan hacia el norte purificando todo a su paso.\n\n# Fuerza Económica\nMinería — sobre todo en las zonas volcánicas — y el control de metales y minerales estratégicos.\n\n# Situación Geopolítica\nCherán está en su momento más poderoso — y más inestable. La transición al cuarto Palan'Nur está en marcha. Las facciones del Palan'Shar compiten por influencia. Los [[Sar'Qaim]] avanzan ejecutando purgas que despiertan una resistencia que nadie calculó. Aetharion los llama el nuevo demonio. Los pueblos del norte empiezan a unirse contra ellos.",
+    "content": "# Declaración\n\"Nuestro dios es el único. Él proveerá. Los infieles serán purificados. El fuego de [[Engar Ab'Calen]] se esparcirá ante el retumbar de nuestra caballería.\"\n\n*Los Engari — El Pueblo que Ara*\n\n# Historia\nLas tierras del este de Avelir fueron durante siglos casi ingobernables: guerra tribal constante, agricultura pobre, dependencia del [[El Mar del Sur]]. Los **Engari** empezaron como mercenarios fanáticos de la estepa. Su devoción total a [[Engar Ab'Calen]] — el dios que ara la tierra para que brote la vida — fue la herramienta que por fin impuso el orden.\n\nTodo cambió con [[El Milagro Fundacional]]: cuando el primer Ungido llevó un remanente de [[El Bosque de las Luces]] al gran lago entre la cordillera volcánica y el Mar Central, las tierras se volvieron fértiles por primera vez. Fe y capacidad de alimentar a un pueblo quedaron inseparables — y una civilización entera tomó su nombre del acto más humilde: arar.\n\n# Gobierno\nTeocracia. El [[Palan'Nur]] — el Ungido — ejecuta la voluntad divina. El [[Palan'Shar]] — el concilio sagrado — define cuál es esa voluntad. Cuatro facciones compiten dentro del concilio: [[Amin]] los ortodoxos, [[Palan'Umbar]] los gnósticos, [[Amin'Kalam]] los iconoclastas y los [[Sar'Qaim]], los jihadistas — hoy la facción más agresiva, ejecutando purgas hacia el norte.\n\n# Fuerza Militar\nLa ventaja que define a Cherán: la **Caballería Combinada de Estepa**, la fuerza terrestre más rápida y devastadora de Avelir en campo abierto.\n- **[[Los Hermanos del Arado]]** — caballería pesada de choque: armadura laminar, lanzas pesadas y sables curvos. El martillo.\n- **[[Los Hijos del Viento]]** — arqueros a caballo de élite: puntería letal a galope tendido y las clásicas retiradas fingidas. El yunque móvil.\n- De 3 a 5 caballos por jinete, una movilidad estratégica que ni [[Aetharion]] ni [[Urushan]] pueden igualar en terreno abierto.\n\n# Fuerza Económica\nMinería — sobre todo cerca de la cordillera volcánica — y el control de metales y minerales estratégicos.\n\n# Figuras Clave\n- Los cuatro [[Palan'Nur]]: [[Anandëlion]] el Saladino, [[Anandël]] el Ciro, [[Anan'Nur]] el Darío — hoy agonizante — y [[An'Fahal]], el amanecer.\n- [[Temürel]] — **Abu'Amin, \"El Abuelo\"** — la memoria viva del imperio y su general más respetado.\n\n# Situación Geopolítica\nEn su cúspide de poder y, a la vez, en su momento más inestable por la sucesión. Los [[Sar'Qaim]] empujan al norte contra la confederación emergente de [[Arminio El Dorado]]. Adentro, una purificación religiosa avanza. El liderazgo empieza a darse cuenta de que tratar con las [[Casas Isleñas]] del Mar del Sur exige un juego político que no dominan — y, sobre todo, empieza a preparar al pueblo para la amenaza real de largo plazo: [[Aetharion]].",
     "tree": {
       "title": "Los Cuatro Palan'Nur",
       "gens": [
@@ -445,7 +449,7 @@ var LORE = {
     "id": "wpub-temurel",
     "title": "Temürel",
     "type": "character",
-    "content": "# Quién es\n**Abu'Amin** — el Abuelo. El general más respetado de la [[Teocracia de Cherán]] sin tener título formal alguno. Conoció al segundo Palan'Nur en su infancia: es la memoria viva del imperio.\n\n# Familia\nSu hijo **[[Jelmethar]]** es su espada. Su nieto **[[Argumel]]**, más susceptible a las corrientes religiosas del Palan'Shar, es la incógnita.\n\n# Rol actual\nMientras [[Anan'Nur]] agoniza y [[An'Fahal]] espera, Temürel observa. Tiene un plan que nadie conoce completamente — y en Cherán, eso lo dice todo."
+    "content": "# Quién es\n**Abu'Amin — \"El Abuelo\".** El general más respetado de la [[Teocracia de Cherán]] sin ostentar título formal alguno. ~72 años: un anciano todavía imponente, como un Filipo II envejecido. Rostro marcado por una vieja cicatriz sobre la ceja izquierda, cabello y barba de un blanco puro siempre cuidados, ojos oscuros pequeños y penetrantes. Viste la estética ceremonial plena de Cherán — túnicas pesadas en negro, púrpura y rojo sangre, bordadas en oro con símbolos de [[Engar Ab'Calen]].\n\n# Historia\nNació en una de las tribus de arqueros a caballo más antiguas y letales de las estepas del este — el pueblo que se convirtió en el **núcleo militar de élite** del imperio, el paralelo de los isaurios en Bizancio: la mayoría de los mejores comandantes todavía salen de esa raíz.\n\nDe joven oficial vivió la unificación. Entendió antes que nadie que la visión religiosa del primer [[Palan'Nur]] podía convertirse en el arma política más poderosa que las tribus hubieran tenido jamás. Dio al movimiento su apoyo militar decisivo, ayudó a aplastar rivales, y durante el reinado del segundo Ungido cimentó su lugar para siempre al casarse dentro de la familia del Palan'Nur. Desde entonces dejó de ser solo un general brillante: se volvió parte de la estructura del poder.\n\n# Familia\n- **Hijo mayor** — fanático religioso absoluto; vive y respira la doctrina de Engar. Orgullo público de la familia ante los ortodoxos y los [[Sar'Qaim]].\n- **Hijo menor** — mundano, libertino y escéptico. Desapareció hace años; la historia oficial, y lo que casi todos creen, es que murió.\n- Su nieto **[[Argumel]]**, más susceptible a las corrientes del [[Palan'Shar]].\n- Su hijo **[[Jelmethar]]** es su espada.\n\n# Rol actual\nEs la memoria viva de cómo se construyó Cherán de verdad — a partes iguales fe, sangre, disciplina y cálculo político frío. Por eso todos lo llaman El Abuelo: cuando habla, hasta los miembros más fanáticos del Palan'Shar escuchan."
   },
   {
     "id": "wpub-marcentral",
@@ -746,6 +750,30 @@ var LORE = {
     "title": "El Interplano",
     "type": "concept",
     "content": "# Qué es\nEl espacio al otro lado del Velo. Según la tradición de la Orden Escarlata, ahí libran su batalla eterna [[El Emperador]] y [[Tel-Haud]] — y de ahí se filtran las manifestaciones que a veces tocan el mundo. El [[El Rompimiento del Velo]] fue la herida que separó — y conectó — ambos lados."
+  },
+  {
+    "id": "e-bosqueluces",
+    "title": "El Bosque de las Luces",
+    "type": "place",
+    "content": "# Descripción\nUn cementerio cósmico — sagrado y profundamente temido. En los últimos días del [[El Rompimiento del Velo]], cuando el Velo por fin se desgarró, se libró aquí una de las batallas más grandes y desesperadas entre las huestes mortales y las fuerzas de [[Tel-Haud]]. Al romperse el Velo, la energía liberada consumió en un solo instante la fuerza vital de decenas de miles de combatientes de ambos bandos.\n\n# Lo que creció después\nLo que brotó sobre ese campo de batalla no son árboles normales: son la aglomeración mutada de toda esa fuerza vital, de los cuerpos y de la violencia de aquel día. Todavía hoy, quien se adentra lo suficiente encuentra siluetas humanoides fundidas en la madera y la tierra, y fragmentos de armadura antigua incrustados en los troncos. Las luces son el eco frío y residual de una matanza.\n\n# Su importancia\nDe aquí salió el remanente que dio origen a la fe de Cherán. Ver [[El Milagro Fundacional]]."
+  },
+  {
+    "id": "e-milagro",
+    "title": "El Milagro Fundacional",
+    "type": "story",
+    "content": "# Qué fue\nEl acto que legitimó la fe de la [[Teocracia de Cherán]]. [[Anandëlion]], el primer [[Palan'Nur]], entró en [[El Bosque de las Luces]] y recibió una visión. En ella se le dijo que tomara un remanente del bosque — una semilla, una flor, un fragmento de la sustancia alterada.\n\n# Sus consecuencias\nCuando ese remanente fue llevado al gran lago que yace entre la cordillera volcánica y el [[El Mar Central]], las tierras alrededor del lago se volvieron extraordinariamente fértiles por primera vez. Fue la prueba práctica que legitimó la nueva fe: por primera vez los pueblos de la estepa tuvieron una base agrícola estable.\n\n# Lo que dejó\nEl título y la teología de [[Engar Ab'Calen]] — \"el que ara la tierra\" — nacieron de este milagro concreto. Desde entonces, en Cherán, la fe y la capacidad de alimentar a un pueblo son inseparables."
+  },
+  {
+    "id": "e-hermanos-arado",
+    "title": "Los Hermanos del Arado",
+    "type": "concept",
+    "content": "# Qué son\nLa caballería pesada de choque de la [[Teocracia de Cherán]] — el martillo de la Caballería Combinada de Estepa. Armadura laminar, lanzas pesadas y sables curvos. Cuando cargan, cierran la batalla."
+  },
+  {
+    "id": "e-hijos-viento",
+    "title": "Los Hijos del Viento",
+    "type": "concept",
+    "content": "# Qué son\nLos arqueros a caballo de élite de la [[Teocracia de Cherán]] — el yunque móvil de la Caballería Combinada de Estepa. Puntería letal a galope tendido y maestros de la retirada fingida: el enemigo cree que huyen, y mueren persiguiéndolos."
   }
 ]
 
