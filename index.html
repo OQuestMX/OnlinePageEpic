@@ -736,6 +736,8 @@ textarea.form-input{min-height:70px;line-height:1.5}
 .band-b2 .band-tag{background:#2858a0}
 .band-b3 .band-tag{background:var(--green)}
 .band-b12 .band-tag{background:var(--gold)}
+.push-reach{font-size:9px;font-weight:700;color:var(--gold);margin-left:6px;letter-spacing:.5px;white-space:nowrap}
+.push-footer{font-size:10px;color:var(--ink4);font-style:italic;margin-top:3px;padding-left:4px}
 .band-b12{color:var(--ink2);font-weight:600}
 .echo-flag{color:var(--gold);font-size:10px;font-weight:700}
 
@@ -1610,7 +1612,7 @@ function weaponSectionHtml(weapons,targetType,targetId,noLabel){
     h+='<div class="player-weapon"><div class="player-weapon-head"><span class="player-weapon-name">⚔ '+esc(w.name)+'</span><span class="player-weapon-cost">'+w.aenCost+' Aen</span>';
     if(targetType)h+='<span class="weapon-unequip" data-action="unequip-weapon" data-ttype="'+targetType+'" data-tid="'+targetId+'" data-wid="'+w.id+'">×</span>';
     h+='</div>';
-    if(w.bandas){h+='<div class="band-static"><div class="band-static-row band-b1"><span class="band-tag">1-4</span> '+esc(w.bandas.b1||'')+'</div><div class="band-static-row band-b2"><span class="band-tag">5-8</span> '+esc(w.bandas.b2||'')+'</div><div class="band-static-row band-b3"><span class="band-tag">9-11</span> '+esc(w.bandas.b3||'')+'</div><div class="band-static-row band-b12"><span class="band-tag">12</span> '+esc(w.bandas.b12||'')+' <span class="echo-flag">⟡ Echo</span></div></div>'}
+    if(w.bandas){h+='<div class="band-static"><div class="band-static-row band-b1"><span class="band-tag">1-4</span> '+esc(w.bandas.b1||'')+'</div><div class="band-static-row band-b2"><span class="band-tag">5-8</span> '+esc(w.bandas.b2||'')+'<span class="push-reach">⇧ 15</span></div><div class="band-static-row band-b3"><span class="band-tag">9-11</span> '+esc(w.bandas.b3||'')+'<span class="push-reach">⇧ 17</span></div><div class="band-static-row band-b12"><span class="band-tag">12</span> '+esc(w.bandas.b12||'')+'<span class="push-reach">⇧ 20</span></div><div class="push-footer">⇧ Empuje: 1 carga · d20 + Echo vs alcance</div></div>'}
     if(w.drawback)h+='<div class="player-weapon-drawback">⚠ '+esc(w.drawback)+'</div>';
     h+='</div>';
   });
@@ -2697,7 +2699,7 @@ function renderLibDetail(table,id){var item=table==='bestiary'?getCreatureById(i
       if(item.aenCost!==undefined)h+='<div class="detail-section"><div class="detail-section-label">COSTO</div><div class="detail-section-value">'+item.aenCost+' Aen</div></div>';
       if(item.bandas){
         h+='<div class="detail-section"><div class="detail-section-label">TABLA d12 (referencia)</div>';
-        h+='<div class="band-static"><div class="band-static-row band-b1"><span class="band-tag">1-4</span> '+esc(item.bandas.b1||'')+'</div><div class="band-static-row band-b2"><span class="band-tag">5-8</span> '+esc(item.bandas.b2||'')+'</div><div class="band-static-row band-b3"><span class="band-tag">9-11</span> '+esc(item.bandas.b3||'')+'</div><div class="band-static-row band-b12"><span class="band-tag">12</span> '+esc(item.bandas.b12||'')+'</div></div></div>';
+        h+='<div class="band-static"><div class="band-static-row band-b1"><span class="band-tag">1-4</span> '+esc(item.bandas.b1||'')+'</div><div class="band-static-row band-b2"><span class="band-tag">5-8</span> '+esc(item.bandas.b2||'')+'<span class="push-reach">⇧ 15</span></div><div class="band-static-row band-b3"><span class="band-tag">9-11</span> '+esc(item.bandas.b3||'')+'<span class="push-reach">⇧ 17</span></div><div class="band-static-row band-b12"><span class="band-tag">12</span> '+esc(item.bandas.b12||'')+'<span class="push-reach">⇧ 20</span></div></div></div>';
       }
       if(item.passive)h+='<div class="detail-section"><div class="detail-section-label">PASIVO</div><div class="detail-section-value">'+esc(item.passive)+'</div></div>';
       if(item.drawback)h+='<div class="detail-section weapon-drawback"><div class="detail-section-label">⚠ COSTO</div><div class="detail-section-value">'+esc(item.drawback)+'</div></div>';
@@ -3811,9 +3813,10 @@ function bandStaticHtml(a){
   var b=a.bandas;
   var h='<div class="band-static">';
   h+='<div class="band-static-row band-b1"><span class="band-tag">1-4</span> '+esc(b.b1||'')+'</div>';
-  h+='<div class="band-static-row band-b2"><span class="band-tag">5-8</span> '+esc(b.b2||'')+'</div>';
-  h+='<div class="band-static-row band-b3"><span class="band-tag">9-11</span> '+esc(b.b3||'')+'</div>';
-  h+='<div class="band-static-row band-b12"><span class="band-tag">12</span> '+esc(b.b12||'')+'</div>';
+  h+='<div class="band-static-row band-b2"><span class="band-tag">5-8</span> '+esc(b.b2||'')+'<span class="push-reach">⇧ 15</span></div>';
+  h+='<div class="band-static-row band-b3"><span class="band-tag">9-11</span> '+esc(b.b3||'')+'<span class="push-reach">⇧ 17</span></div>';
+  h+='<div class="band-static-row band-b12"><span class="band-tag">12</span> '+esc(b.b12||'')+'<span class="push-reach">⇧ 20</span></div>';
+  h+='<div class="push-footer">⇧ Empuje: 1 carga · d20 + Echo vs alcance · si te quedas corto: paga el faltante en Vitalidad y llega, o conserva tu banda</div>';
   h+='</div>';
   return h;
 }
