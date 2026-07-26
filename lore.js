@@ -1,11 +1,11 @@
-/* AVELIR — LORE PUBLICO  v0.7
+/* AVELIR — LORE PUBLICO  v0.8
    Fuente maestra: Avelir_Lore_Compilation.md — todo lo no-secreto vive aquí.
    Lo secreto (DM Only / Campaign Secret) va en la bóveda y NUNCA en este archivo.
    Lo leen index.html y wiki.html. */
 
 var LORE = {
 
-  version: "0.7",
+  version: "0.8",
   exportedAt: "2026-07-25",
 
   types: [
@@ -125,7 +125,12 @@ var LORE = {
   "El Bosque de las Luces": "place",
   "El Milagro Fundacional": "story",
   "Los Hermanos del Arado": "concept",
-  "Los Hijos del Viento": "concept"
+  "Los Hijos del Viento": "concept",
+  "El Mundo Entre Imperios": "concept",
+  "Las Casas Libres": "faction",
+  "Los Navegantes": "faction",
+  "Los del Margen": "faction",
+  "Las Compañías": "faction"
 },
 
   pages: [
@@ -250,7 +255,7 @@ var LORE = {
     "id": "wbase-pueblos",
     "title": "Los Pueblos sin Techo",
     "type": "faction",
-    "content": "# Declaración\n\"Sin trono. Sin templo. Sin cadenas. Libres antes que cualquier imperio existiera. Libres cuando todos hayan caído.\"\n\n*La Confederación — Los Libres*\n\n# Historia\nLos Pueblos sin Techo no son una facción — **son el mundo entre las facciones**. Todo lo que existe fuera de las seis instituciones principales de Avelir: tribus nómadas, confederaciones emergentes, pueblos costeros, civilizaciones antiguas que se separaron de Urushan, asentamientos fundados por caballeros de la Orden Escarlata, mercados flotantes de Casa Vorin, comunidades que le hacen la guerra a Aetharion desde las montañas.\n\nNo son un pueblo — son una idea: **la libertad no se pide, se vive.** Habitan las montañas, las fronteras y los espacios entre imperios que nadie reclama.\n\n# Gobierno\nNo tienen uno — esa es exactamente su identidad. **[[Los Consejeros]]** — líderes sin título fijo. **[[Los Caballeros Errantes]]** — los que van donde nadie más quiere ir.\n\n**[[La Confederación]]** — el recurso emergente. Una horda de tribus unificadas bajo un símbolo relacionado al cuervo, al buitre — animales que aparecen donde hay cambio y muerte. No tienen agenda cósmica. Son una fuerza natural de la historia que aparece cada cierto tiempo y sacude el tablero.\n\n# Figuras Clave\n- **[[Arminio El Dorado]]** — El Resistente de Tol Varen. Resistió lo imposible con apenas un puñado de hombres y caballeros errantes. Las montañas del norte se unen bajo su bandera.\n- **[[Los Consejeros]]** — Líderes sin título fijo.\n- **[[Los Caballeros Errantes]]** — Los que van donde nadie más quiere ir.\n\n# Situación Geopolítica\nLa Confederación avanza — y los imperios empiezan a prestar atención por primera vez, en el momento en que menos pueden permitirse otra crisis. No son el villano de la historia: **son el estrés que revela las grietas que ya existían.**"
+    "content": "# Declaración\n\"Sin trono. Sin templo. Sin cadenas. Libres antes que cualquier imperio existiera. Libres cuando todos hayan caído.\"\n\n*La Confederación del Norte*\n\n# Historia\nLos Pueblos sin Techo son la **confederación del norte** que [[Arminio El Dorado]] unió alrededor de la fortaleza de [[Tol Varen]] — resistencia organizada nacida contra las purgas de la [[Teocracia de Cherán]]. Ya no es un nombre genérico para todo lo que vive entre imperios: es esta alianza concreta, marcada con el cuervo y el buitre, los animales que aparecen donde hay cambio y muerte.\n\nSon una de las cinco identidades del [[El Mundo Entre Imperios]] — y la más combativa.\n\n# Gobierno\nLiderazgo por consejo, no por trono. [[Arminio El Dorado]] es el unificador, no el rey — un Vercingétorix, no un césar. Que no exista la corona es exactamente el punto: aconsejan, no gobiernan.\n\n# Figuras Clave\n- [[Arminio El Dorado]] — el Resistente de Tol Varen, la figura que dio forma a la confederación.\n- [[Los Caballeros Errantes]] — muchos de la Orden Escarlata, que pelearon en Tol Varen y se quedaron.\n\n# Situación Geopolítica\nLos [[Sar'Qaim]] de Cherán empujan al norte contra ellos. Los imperios empiezan a prestarles atención — justo en el momento en que menos pueden permitirse otra crisis. Una fuerza natural de la historia: aparece cuando los imperios se sobreextienden."
   },
   {
     "id": "wpub-iridel",
@@ -359,7 +364,7 @@ var LORE = {
     "id": "wpub-tolvaren",
     "title": "Tol Varen",
     "type": "place",
-    "content": "# Descripción\nSitio del asedio que encendió la resistencia de los pueblos libres contra las purgas de la [[Teocracia de Cherán]]. Con un puñado de hombres y caballeros errantes, [[Arminio El Dorado]] resistió lo imposible — y de ese asedio nace la confederación que hoy une a las montañas del norte bajo su estandarte.\n\n# Lo que pasó aquí\nEntre sus defensores estuvo [[Ser Gianni du Mont]], Primero de la Mesa de Los Normales de la Orden Escarlata, que peleó junto a Arminio y se marchó sin despedirse — como llegan y se van los de la Orden.\n\n# Lo que se dice\nQue lo que Cherán quiso hacer un escarmiento se convirtió en un símbolo."
+    "content": "# Descripción\nUna antigua fortaleza del sistema defensivo de la era del [[El Emperador]] — masiva, vertical, casi brutal en su arquitectura, incrustada en una cordillera. [[Arminio El Dorado]] y las tribus aliadas la fortificaron de forma preventiva contra las purgas de la [[Teocracia de Cherán]].\n\n# El Asedio\nCherán llegó con su doctrina habitual de movilidad en campo abierto, esperando un asedio corto o un asalto rápido. Cometió el error clásico: sitiar un lugar diseñado para negarle todas las ventajas que posee. [[Arminio El Dorado]] convirtió la defensa en ataque:\n- Usó la fortaleza como base segura para salidas precisas y devastadoras.\n- Los objetivos no eran los soldados, sino lo que un ejército a caballo no puede permitirse perder: monturas, forraje y líneas de suministro.\n- Cada intento de montar campamentos estables o acercar máquinas de asedio recibía golpes rápidos desde la fortaleza.\n- Con el tiempo, el ejército sitiador perdió su movilidad, se desmoralizó y quedó sobreextendido en terreno hostil.\n- Cuando Arminio juzgó el momento, abrió las puertas y lanzó el contraataque decisivo.\n\n# Su significado\nNo fue resistencia pasiva: fue **la primera gran humillación terrestre de la doctrina militar de Cherán**. Entre sus defensores estuvo [[Ser Gianni du Mont]], Primero de la Mesa de [[Los Normales]], que peleó junto a Arminio y se marchó sin despedirse. Tol Varen se volvió el símbolo de que la resistencia es posible — y el núcleo alrededor del cual se formó la confederación de [[Los Pueblos sin Techo]]."
   },
   {
     "id": "wpub-batalla-tolmarin",
@@ -413,13 +418,13 @@ var LORE = {
     "id": "wpub-gianni",
     "title": "Ser Gianni du Mont",
     "type": "character",
-    "content": "# Quién es\nPrimero de la Mesa de **[[Los Normales]]** — la corriente de la Orden Escarlata que evalúa, caso por caso, qué acción salva más vidas.\n\n# Por qué se le conoce\nDefendió [[Tol Varen]] junto a [[Arminio El Dorado]] contra las purgas de la [[Teocracia de Cherán]] — y se marchó sin despedirse, como llegan y se van los de la Orden."
+    "content": "# Quién es\nPrimero de la Mesa de [[Los Normales]] — la corriente de la Orden Escarlata que evalúa, caso por caso, qué acción salva más vidas. Nobleza secundaria del norte de [[Urushan]]: lo bastante vieja para conocer los antiguos ideales imperiales, lo bastante periférica para no corromperse del todo en la corte de [[Artesh]].\n\n# Su mente\nUn estratega puro. Donde [[Arminio El Dorado]] lee el campo de batalla en el momento, Gianni ve el tablero largo: el suministro, la moral a lo largo de semanas, qué objetivos hay que destruir para que el enemigo no se recupere, el instante exacto para pasar de la defensa al ataque decisivo. Se complementaron casi a la perfección.\n\n# Por qué dejó Urushan\nPresenció — y se esperaba que aceptara — una decisión elegante, legal, incruenta sobre el papel, en la que una población menor fue sacrificada \"por el bien mayor del Imperio\". La capacidad del sistema de cometer atrocidades sin siquiera considerarlas como tales lo quebró. Se unió a la Orden Escarlata porque era la única institución que había visto que aún operaba con un código innegociable.\n\n# Lo que representa\nUna hemorragia silenciosa dentro de [[Urushan]]: nobles idealistas o desilusionados de segundo y tercer rango que abandonan el sistema. Algunos derivan hacia [[Alarion]] y [[Los Peregrinos]]; otros, como Gianni, eligen la Orden Escarlata."
   },
   {
     "id": "wpub-arminio",
     "title": "Arminio El Dorado",
     "type": "character",
-    "content": "# Quién es\nEl Resistente de [[Tol Varen]] — la figura alrededor de la cual se está formando la confederación de los pueblos libres.\n\n# Historia\nCuando las purgas de la [[Teocracia de Cherán]] llegaron a Tol Varen, resistió lo imposible con un puñado de hombres y caballeros errantes. No ganó un trono: ganó algo más raro — que las montañas del norte se unieran bajo un mismo estandarte, marcado con el cuervo y el buitre: los animales que aparecen donde hay cambio y muerte.\n\n# Rol actual\nLos imperios empiezan a prestarle atención — justo en el momento en que menos pueden permitirse otra crisis."
+    "content": "# Quién es\nEl líder de [[Los Pueblos sin Techo]] — el Resistente de [[Tol Varen]]. Un unificador de tribus, no un rey: un Vercingétorix. Alto e imponente, con rasgos que mezclan una fuerza eslava con un aire ligero de la estepa centroasiática; cabello oscuro, barba práctica de guerrero. Su armadura funde el estilo de la Rus de Kiev con una robustez casi enana — placas gruesas con motivos de cuervos, lobos y árboles, hechas para durar generaciones y aguantar castigo real.\n\n# Historia\nSirvió durante años como comandante competente en el **ejército de la [[Teocracia de Cherán]]**. Nunca fue uno de los generales más altos, pero entendió su táctica, su logística y su mentalidad desde adentro. Participó en al menos una campaña de purificación — y ver el genocidio de cerca rompió algo en él. Comprendió que la misma máquina vendría, tarde o temprano, por su propio pueblo.\n\nCuando la purga giró al norte, la mayoría de los líderes tribales prefirió negociar (\"solo quieren que aceptemos a [[Engar Ab'Calen]]\"). Arminio sabía por experiencia que empieza suave y luego lo consume todo. Convenció a los que quisieron escuchar, se replegó en buen orden a la antigua fortaleza de [[Tol Varen]] y envió emisarios a la Orden Escarlata.\n\n# Carácter militar\nUn genio táctico puro del campo de batalla. Lee el movimiento, el tiempo y la moral en tiempo real, y da lo mejor de sí en lo más espeso del combate y en salidas precisas y brutales."
   },
   {
     "id": "wpub-thecia",
@@ -774,6 +779,36 @@ var LORE = {
     "title": "Los Hijos del Viento",
     "type": "concept",
     "content": "# Qué son\nLos arqueros a caballo de élite de la [[Teocracia de Cherán]] — el yunque móvil de la Caballería Combinada de Estepa. Puntería letal a galope tendido y maestros de la retirada fingida: el enemigo cree que huyen, y mueren persiguiéndolos."
+  },
+  {
+    "id": "e-mundoentre",
+    "title": "El Mundo Entre Imperios",
+    "type": "concept",
+    "content": "# Qué es\nAvelir es vasto. Entre los grandes imperios existen cientos de comunidades, clanes, ciudades-estado, ducados menores, pueblos costeros, tribus de montaña y asentamientos de frontera que nunca fueron absorbidos del todo — o que se separaron. Los grandes poderes no pueden ocupar y administrar todo de forma rentable; el equilibrio entre ellos crea zonas grises; y un tejido fino de actores menores les resulta, de hecho, útil.\n\n# Las cinco identidades\n- [[Los Pueblos sin Techo]] — la confederación del norte de [[Arminio El Dorado]]. Resistencia organizada.\n- [[Las Casas Libres]] — ducados independientes, ciudades-estado y casas menores.\n- [[Los Navegantes]] — capitanes independientes, mercaderes, contrabandistas y flotas menores.\n- [[Los del Margen]] — clanes de montaña, tribus de bosque, pueblos de glaciar y frontera.\n- [[Las Compañías]] — compañías mercenarias profesionales y bandas de guerra libres."
+  },
+  {
+    "id": "e-casaslibres",
+    "title": "Las Casas Libres",
+    "type": "faction",
+    "content": "# Qué son\nDucados independientes, ciudades-estado y casas menores del [[El Mundo Entre Imperios]] — territorios que nunca fueron absorbidos por los grandes imperios y sobreviven en las zonas grises que el equilibrio de poder les deja.\n\n# Sus gentes\nNobles menores, diplomáticos, administradores. La política de lo pequeño: sobrevivir jugando a los grandes unos contra otros.\n\n# Lo que falta\nSu desarrollo detallado todavía está por escribirse."
+  },
+  {
+    "id": "e-navegantes",
+    "title": "Los Navegantes",
+    "type": "faction",
+    "content": "# Qué son\nCapitanes independientes, mercaderes, contrabandistas y flotas menores del [[El Mundo Entre Imperios]]. Donde [[Urushan]] tiene la flota imperial y [[Casa Vorin]] las rutas formales, los Navegantes son todo lo que se mueve por fuera y por debajo.\n\n# Sus gentes\nPilotos, comerciantes, contrabandistas, espías. Gente para quien una frontera es una oportunidad, no un límite.\n\n# Lo que falta\nSu desarrollo detallado todavía está por escribirse."
+  },
+  {
+    "id": "e-delmargen",
+    "title": "Los del Margen",
+    "type": "faction",
+    "content": "# Qué son\nClanes de montaña, tribus de bosque, pueblos de glaciar y de frontera del [[El Mundo Entre Imperios]] — los que viven donde los imperios no quieren o no pueden llegar.\n\n# Sus gentes\nExploradores, supervivientes, rastreadores. Conocen la tierra que los ejércitos temen.\n\n# Lo que falta\nSu desarrollo detallado todavía está por escribirse."
+  },
+  {
+    "id": "e-companias",
+    "title": "Las Compañías",
+    "type": "faction",
+    "content": "# Qué son\nCompañías mercenarias profesionales y bandas de guerra libres del [[El Mundo Entre Imperios]]. Venden la única cosa que todos los imperios necesitan y ninguno tiene de sobra: soldados sin lealtad de sangre.\n\n# Sus gentes\nMercenarios, oficiales sin estandarte, veteranos. La guerra como oficio, no como causa.\n\n# Lo que falta\nSu desarrollo detallado todavía está por escribirse."
   }
 ]
 
