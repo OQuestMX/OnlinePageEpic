@@ -27,6 +27,9 @@ rules: {
   "echoStat": "Echo = class echoBase (Might 1 / Magic 2) + kit aenBonus. Same number for planar skill checks and for pushing bands. Static until level progression exists; the DM never grants or removes it.",
   "echoCharges": "Charges by Echo: 1-2 -> 2 · 3-4 -> 3 · 5 -> 4. Recover when the session ends. The DM may burn charges narratively; never grant above max.",
   "pushRule": "After your d12, you may declare ONE push to a higher band. Spend 1 Echo charge on declaration. Roll d20+Echo vs the target band reach (5-8: 15 · 9-11: 17 · 12: 20). Reach it: read the target band. Fall short: pay the shortfall in Vitality and arrive anyway, or let go and keep your rolled band. Table abilities and legendary weapons only. Enemies cannot push.",
+  "reactionRule": "One reaction per round, free, outside your turn. It costs no Aen and no action.",
+  "buffDuration": "No buff you place on an ally lasts longer than the end of that ally next turn.",
+  "buffStacking": "A character can only be under one ally buff at a time. A new one replaces the old.",
   "kitAbilityCost": 3,
   "turnStructure": "1 Movement + 2 Actions per turn. Each action can be a normal attack or an ability.",
   "sinergiaRule": "Only the active player can start it. Calls allies who haven't taken their turn yet. They sacrifice their future turn.",
@@ -144,210 +147,210 @@ factions: [
 ],
 
 classes: [
-  {id:"fury",name:"Fury",nameEs:"Fury",type:"Might",echoBase:1,resource:"FURY",
+  {id:"fury",name:"Fury",nameEs:"Fury",type:"Might",role:"Striker",echoBase:1,resource:"FURY",
    abilities:[
-    {name:"Unstoppable",type:"Base",cost:"2 Aen",dmg:null,tabla:true,bandas:{b1:"4 damage on impact",b2:"7 damage, knocks down the target",b3:"9-11 damage, knocks down",b12:"12 damage to EVERYONE you touch in the line, all knocked down, and you become unstoppable (immune to knockdown) until your next turn"},desc:"Charge in a straight line crushing everything. Pierces 3 tiles, knocks down on impact."},
+    {name:"Unstoppable",type:"Base",cost:"2 Aen",dmg:null,tabla:true,bandas:{b1:"5 damage on impact",b2:"8 damage, knocks down the target",b3:"12 damage, knocks down",b12:"14 damage to EVERYONE you touch in the line, all knocked down, and you become unstoppable (immune to knockdown) until your next turn"},desc:"Charge in a straight line crushing everything. Pierces 3 tiles, knocks down on impact."},
     {name:"Come At Me",type:"Base",cost:"2 Aen",dmg:null,desc:"Taunt all enemies within radius 2. You gain +1 Aen per attack received."},
     {name:"Still Standing",type:"Heroica",cost:"3 Aen",dmg:null,desc:"You refuse to fall. Recover 8 Vitality and a free counterattack. Drawback: -1d8 Vitality when it ends."}
    ],
    subclasses:[
-    {id:"berserker",name:"Berserker",desc:"The more damage you take, the more dangerous you become.",
+    {id:"berserker",name:"Berserker",role:"Striker",desc:"The more damage you take, the more dangerous you become.",
          abilities:[
           {name:"Blood Frenzy",type:"Base",cost:"3 Aen",dmg:null,desc:"+2 damage per wound taken, ignores armor. Drawback: -1d6 Vitality on activation."},
           {name:"Seeing Red",type:"Heroica",cost:"4 Aen",dmg:null,desc:"Double damage 2 rounds. You attack the nearest, ally or enemy. Drawback: -1d10 Vitality when it ends."}
         ]},
-    {id:"colossus",name:"Colossus",desc:"A walking storm. Unstoppable presence.",
+    {id:"colossus",name:"Colossus",role:"Controller",desc:"A walking storm. Unstoppable presence.",
          abilities:[
-          {name:"Earthquake",type:"Base",cost:"4 Aen",dmg:null,tabla:true,bandas:{b1:"2 damage to all in the area",b2:"5 damage to all, knocked down",b3:"8 damage to all, knocked down",b12:"10 damage to all, knocked down and immobilized 1 round, and the terrain becomes difficult permanently"},desc:"You strike the ground. Radius 3 area."},
-          {name:"Eye of the Storm",type:"Heroica",cost:"5 Aen",dmg:null,tabla:true,bandas:{b1:"4 damage to all",b2:"7 damage to all, knocked down",b3:"9 damage to all, knocked down + stunned 1 round",b12:"12 damage to all, knocked down and stunned 2 rounds; the terrain becomes electrified (anyone stepping on it takes damage)"},desc:"You become the eye of the storm. Radius 4."}
+          {name:"Earthquake",type:"Base",cost:"4 Aen",dmg:null,tabla:true,bandas:{b1:"2 damage to all in the area",b2:"6 damage to all, knocked down",b3:"9 damage to all, knocked down",b12:"12 damage to all, knocked down and immobilized 1 round, and the terrain becomes difficult permanently"},desc:"You strike the ground. Radius 3 area."},
+          {name:"Eye of the Storm",type:"Heroica",cost:"5 Aen",dmg:null,tabla:true,bandas:{b1:"5 damage to all",b2:"8 damage to all, knocked down",b3:"10 damage to all, knocked down + stunned 1 round",b12:"14 damage to all, knocked down and stunned 2 rounds; the terrain becomes electrified (anyone stepping on it takes damage)"},desc:"You become the eye of the storm. Radius 4."}
         ]},
-    {id:"voivode",name:"Voivode",desc:"Aggressive leader. His fury spreads to the group.",
+    {id:"voivode",name:"Voivode",role:"Leader",desc:"Aggressive leader. His fury spreads to the group.",
          abilities:[
-          {name:"War Cry",type:"Base",cost:"3 Aen",dmg:null,desc:"Allies within radius 3 gain +4 damage and +1 Aen for 2 rounds. Drawback: -1d6 Vitality on activation."},
-          {name:"To The Last",type:"Heroica",cost:"5 Aen",dmg:null,tabla:true,bandas:{b1:"One ally recovers 6 Vitality",b2:"Allies within radius 3 recover 6 Vitality",b3:"Allies within radius 3 recover 10 Vitality, freed of conditions",b12:"All allies recover 10 Vitality, freed of conditions, and gain +4 damage for 1 round"},desc:"A roar that revitalizes allies."}
+          {name:"War Cry",type:"Base",cost:"3 Aen",dmg:null,desc:"Allies within radius 3 add +2 to their next attack, and you gain +1 Aen."},
+          {name:"To The Last",type:"Heroica",cost:"5 Aen",dmg:null,tabla:true,bandas:{b1:"One ally recovers 3 Vitality",b2:"Allies within radius 3 recover 3 Vitality",b3:"Allies within radius 3 recover 5 Vitality, freed of conditions",b12:"All allies recover 5 Vitality, freed of conditions, and add +2 to their next attack"},desc:"A roar that revitalizes allies."}
         ]}
    ]},
 
-  {id:"knight",name:"Knight",nameEs:"Knight",type:"Might",echoBase:1,resource:"DEVOTION",
+  {id:"knight",name:"Knight",nameEs:"Knight",type:"Might",role:"Defender",echoBase:1,resource:"DEVOTION",
    abilities:[
-    {name:"Oathstrike",type:"Base",cost:"2 Aen",dmg:null,tabla:true,bandas:{b1:"4 damage",b2:"7 damage, disarms the target",b3:"9-11 damage, disarms",b12:"12 damage, disarms, and the target is marked: the next ally to attack it deals double damage"},desc:"Precise strike guided by your oath. Ignores armor."},
+    {name:"Oathstrike",type:"Base",cost:"2 Aen",dmg:null,tabla:true,bandas:{b1:"2 damage",b2:"4 damage, disarms the target",b3:"6 damage, disarms",b12:"7 damage, disarms, and the target is marked: the next ally to attack it deals double damage"},desc:"Precise strike guided by your oath. Ignores armor."},
     {name:"Hold the Line",type:"Base",cost:"2 Aen",dmg:null,desc:"You plant your position. Block enemy movement within radius 2, halve damage taken."},
-    {name:"Sworn Duty",type:"Heroica",cost:"4 Aen",dmg:null,tabla:true,bandas:{b1:"8 damage (one strike)",b2:"13 damage (two strikes)",b3:"15-17 damage (two strikes), ignores armor",b12:"18 damage, both strikes critical, and you swear protection to 1 companion: halve the damage they take until your next turn"},desc:"Guaranteed double attack."}
+    {name:"Sworn Duty",type:"Heroica",cost:"4 Aen",dmg:null,tabla:true,bandas:{b1:"5 damage (one strike)",b2:"7 damage (two strikes)",b3:"9 damage (two strikes), ignores armor",b12:"10 damage, both strikes critical, and you swear protection to 1 companion: halve the damage they take until your next turn"},desc:"Guaranteed double attack."}
    ],
    subclasses:[
-    {id:"inquisitor",name:"Inquisitor",desc:"Hunter of heretics. Judges and executes.",
+    {id:"inquisitor",name:"Inquisitor",role:"Defender",desc:"Hunter of heretics. Judges and executes.",
          abilities:[
           {name:"Marked for Judgment",type:"Base",cost:"4 Aen",dmg:null,tabla:true,bandas:{b1:"Mark: +2 cumulative damage per attack received",b2:"Mark: +3 cumulative damage",b3:"Mark: +4 cumulative damage",b12:"Sacred mark: +5 cumulative damage, can't be removed, and the target can't heal while it lasts"},desc:"You mark your target for judgment."},
-          {name:"Final Verdict",type:"Heroica",cost:"5 Aen",dmg:null,tabla:true,bandas:{b1:"8 damage",b2:"13 damage",b3:"15-17 damage",b12:"18 damage; if not a boss, instant execution; if a boss, Stunned 1 round and Bleeding"},desc:"Judgment falls. Double damage if the target is marked."}
+          {name:"Final Verdict",type:"Heroica",cost:"5 Aen",dmg:null,tabla:true,bandas:{b1:"5 damage",b2:"7 damage",b3:"9 damage",b12:"10 damage; if not a boss, instant execution; if a boss, Stunned 1 round and Bleeding"},desc:"Judgment falls. Double damage if the target is marked."}
         ]},
-    {id:"protector",name:"Protector",desc:"Human shield. Gives his body for others.",
+    {id:"protector",name:"Protector",role:"Leader",desc:"Human shield. Gives his body for others.",
          abilities:[
           {name:"Take the Hit",type:"Base",cost:"3 Aen",dmg:null,desc:"You redirect damage from an ally within radius 3 to yourself, halved. Drawback: -1d6 Vitality on activation."},
-          {name:"Aegis",type:"Heroica",cost:"4 Aen",dmg:null,desc:"All allies immune to damage 1 round. Drawback: -1d10 Vitality, immobilized 1 round."}
+          {name:"Aegis",type:"Heroica",cost:"4 Aen",dmg:null,desc:"Until the end of their next turn, every ally within radius 3 takes 4 less from every hit."}
         ]},
-    {id:"martyr",name:"Martyr",desc:"Self-sacrificing. Gives everything for the group.",
+    {id:"martyr",name:"Martyr",role:"Leader",desc:"Self-sacrificing. Gives everything for the group.",
          abilities:[
-          {name:"Blood Oath",type:"Base",cost:"3 Aen",dmg:null,desc:"Ally gains +5 damage and +2 Aen for 2 rounds. Drawback: -1d8 Vitality on activation."},
-          {name:"Last Sacrifice",type:"Heroica",cost:"5 Aen",dmg:null,tabla:true,bandas:{b1:"You sacrifice part of your life → one ally recovers 8 Vitality",b2:"You drop to 0 (total sacrifice) → all allies recover 8 Vitality",b3:"You drop to 0 → all recover 12 Vitality, freed of conditions",b12:"You're left with 1 life → all recover 12 Vitality + freed of conditions + 1 action on their next turn"},desc:"You always trade your life for theirs."}
+          {name:"Blood Oath",type:"Base",cost:"3 Aen",dmg:null,desc:"One ally adds +5 to their next attack and gains +2 Aen."},
+          {name:"Last Sacrifice",type:"Heroica",cost:"5 Aen",dmg:null,tabla:true,bandas:{b1:"You sacrifice part of your life → one ally recovers 8 Vitality",b2:"You drop to 0 (total sacrifice) → all allies recover 8 Vitality",b3:"You drop to 0 → all recover 12 Vitality, freed of conditions",b12:"You are left with 1 life → all recover 12 Vitality, freed of conditions, and add +4 to their next attack"},desc:"You always trade your life for theirs."}
         ]}
    ]},
 
-  {id:"monk",name:"Monk",nameEs:"Monk",type:"Might",echoBase:1,resource:"CLARITY",
+  {id:"monk",name:"Monk",nameEs:"Monk",type:"Might",role:"Striker",echoBase:1,resource:"CLARITY",
    abilities:[
     {name:"Flowing Strike",type:"Base",cost:"2 Aen",dmg:null,tabla:true,bandas:{b1:"4 damage",b2:"7 damage, you move 2 tiles",b3:"9-11 damage, you move 2 tiles",b12:"12 damage, you move 4 tiles, and your next attack this turn is free (no Aen)"},desc:"You strike and move 2 tiles without provoking reactions."},
     {name:"Deflect",type:"Base",cost:"2 Aen",dmg:null,desc:"You nullify an attack and return half the damage."},
-    {name:"Inner Flow",type:"Heroica",cost:"3 Aen",dmg:"6",desc:"Extra action each round for 2 rounds, you dodge the first attack. Drawback: -1d8 Aen when it ends."}
+    {name:"Inner Flow",type:"Heroica",cost:"3 Aen",dmg:"6",desc:"Until the end of your next turn your base attacks go up one band and ignore resistance. The first attack against you each round drops one band."}
    ],
    subclasses:[
-    {id:"martial_artist",name:"Martial Artist",desc:"Pure fist. Perfect technique and combos.",
+    {id:"martial_artist",name:"Martial Artist",role:"Striker",desc:"Pure fist. Perfect technique and combos.",
          abilities:[
           {name:"Perfect Form",type:"Base",cost:"3 Aen",dmg:null,tabla:true,bandas:{b1:"4 damage",b2:"7 damage",b3:"9-11 damage, +2 to the next strike",b12:"12 damage, and your damage is copied to 1 extra adjacent enemy"},desc:"Building combo. Each consecutive hit on the same target adds up."},
           {name:"Thousand Strikes",type:"Heroica",cost:"5 Aen",dmg:null,tabla:true,bandas:{b1:"8 damage",b2:"13 damage, reduces enemy armor",b3:"15-17 damage, reduces armor",b12:"18 damage in an unstoppable flurry, the target loses all its armor and is Stunned 1 round"},desc:"You strike up to 5 times, reducing armor."}
         ]},
-    {id:"void",name:"Void",desc:"Inner emptiness. Corrupts and drains essence.",
+    {id:"void",name:"Void",role:"Striker",desc:"Inner emptiness. Corrupts and drains essence.",
          abilities:[
           {name:"Void Touch",type:"Base",cost:"3 Aen",dmg:null,tabla:true,bandas:{b1:"4 damage, steal 1 Aen",b2:"7 damage, steal 2 Aen",b3:"9-11 damage, steal 2 Aen, break their focus",b12:"12 damage, steal 3 Aen, and the enemy generates no Aen on their next turn"},desc:"You touch with the void. You steal Aen."},
           {name:"The Empty",type:"Heroica",cost:"5 Aen",dmg:null,tabla:true,bandas:{b1:"Steal 1 Aen from the target → 2 damage to 1 nearby enemy",b2:"Steal 2 Aen → 4 damage split among nearby enemies",b3:"Steal 3 Aen total from the group → 6 damage split among nearby",b12:"Drain ALL Aen from everyone in radius 3 → that total Aen becomes explosive damage (1 damage per Aen stolen) split among enemies, and all are incapacitated 1 round"},desc:"The void drains enemies' Aen and turns it into raw damage to those nearby. Radius 3."}
         ]}
    ]},
 
-  {id:"shadow",name:"Shadow",nameEs:"Shadow",type:"Might",echoBase:1,resource:"AEN",
+  {id:"shadow",name:"Shadow",nameEs:"Shadow",type:"Might",role:"Striker",echoBase:1,resource:"AEN",
    abilities:[
     {name:"Backstab",type:"Base",cost:"2 Aen",dmg:null,tabla:true,bandas:{b1:"4 damage (7 if it doesn't see you)",b2:"7 damage (double if it doesn't see you)",b3:"9-11 damage (double if it doesn't see you)",b12:"12 damage, and you make a misty step (short teleport to a nearby tile)"},desc:"Double damage if the target doesn't see you."},
     {name:"Vanish",type:"Base",cost:"2 Aen",dmg:null,desc:"You become invisible 1 round, move 4 tiles."},
     {name:"Death Mark",type:"Heroica",cost:"4 Aen",dmg:null,tabla:true,bandas:{b1:"8 damage",b2:"13 damage",b3:"15-17 damage",b12:"18 guaranteed damage; if the target drops below 50% HP, instant death (if not a boss)"},desc:"You teleport to the target + guaranteed strike."}
    ],
    subclasses:[
-    {id:"raven",name:"Raven",desc:"Predator. Marks its prey and eliminates it.",
+    {id:"raven",name:"Raven",role:"Striker",desc:"Predator. Marks its prey and eliminates it.",
          abilities:[
           {name:"Mark the Prey",type:"Base",cost:"3 Aen",dmg:"4",desc:"Marked target takes +4 damage from everyone for 3 rounds. Drawback: -1d6 Aen on activation."},
           {name:"Eternal Night",type:"Heroica",cost:"4 Aen",dmg:"10",desc:"Invisible 3 rounds, each attack from invisibility deals double damage. Drawback: -1d10 Vitality when it ends."}
         ]},
-    {id:"phantom",name:"Phantom",desc:"Deception, poison, and disappearance.",
+    {id:"phantom",name:"Phantom",role:"Striker",desc:"Deception, poison, and disappearance.",
          abilities:[
           {name:"Shadow Step",type:"Base",cost:"2 Aen",dmg:null,tabla:true,bandas:{b1:"You move 3 tiles (through enemies) + 4 damage on arrival",b2:"You move 4 tiles + 6 damage, without provoking reactions",b3:"You move 5 tiles + 8 damage, the target can't react",b12:"You move to ANY visible tile + 10 damage, and become Invisible until your next turn"},desc:"Shadowy repositioning + a strike as you materialize."},
           {name:"Fade to Nothing",type:"Heroica",cost:"4 Aen",dmg:null,desc:"Immune to all damage 2 rounds, you pass through enemies and walls. Drawback: -1d10 Vitality when it ends."}
         ]}
    ]},
 
-  {id:"archer",name:"Archer",nameEs:"Archer",type:"Might",echoBase:1,resource:"FOCUS",
+  {id:"archer",name:"Archer",nameEs:"Archer",type:"Might",role:"Controller",echoBase:1,resource:"FOCUS",
    abilities:[
-    {name:"Piercing Shot",type:"Base",cost:"2 Aen",dmg:null,tabla:true,bandas:{b1:"4 damage to each in the line",b2:"7 damage to each",b3:"9-11 damage to each",b12:"12 damage to each, and the arrow ricochets hitting one more enemy outside the line"},desc:"Pierces all enemies in a straight line."},
+    {name:"Piercing Shot",type:"Base",cost:"2 Aen",dmg:null,tabla:true,bandas:{b1:"5 damage to each in the line",b2:"9 damage to each",b3:"12 damage to each",b12:"15 damage to each, and the arrow ricochets hitting one more enemy outside the line"},desc:"Pierces all enemies in a straight line."},
     {name:"Suppressing Fire",type:"Base",cost:"2 Aen",dmg:"3",desc:"Radius 2 zone becomes difficult terrain, slows anyone who enters."},
-    {name:"Arrow Storm",type:"Heroica",cost:"4 Aen",dmg:null,tabla:true,bandas:{b1:"2 damage to all",b2:"5 damage to all",b3:"8 damage to all",b12:"10 damage to all visible enemies, and the arrows stick like thorns: the terrain becomes a great trap dealing 1d6 damage to anyone stepping on it (rest of combat)"},desc:"Rain of arrows over all visible enemies."}
+    {name:"Arrow Storm",type:"Heroica",cost:"4 Aen",dmg:null,tabla:true,bandas:{b1:"2 damage to all",b2:"6 damage to all",b3:"10 damage to all",b12:"12 damage to all visible enemies, and the arrows stick like thorns: the terrain becomes a great trap dealing 1d6 damage to anyone stepping on it (rest of combat)"},desc:"Rain of arrows over all visible enemies."}
    ],
    subclasses:[
-    {id:"sniper",name:"Sniper",desc:"A single shot. Lethal patience.",
+    {id:"sniper",name:"Sniper",role:"Striker",desc:"A single shot. Lethal patience.",
          abilities:[
           {name:"Steady Aim",type:"Base",cost:"3 Aen",dmg:"6",desc:"+5 damage per round without moving (max 3). Drawback: you can't move while charging."},
-          {name:"One Shot",type:"Heroica",cost:"5 Aen",dmg:null,tabla:true,bandas:{b1:"8 damage",b2:"13 damage",b3:"15-17 damage",b12:"Perfect shot to the vital point. Maximum damage ignoring everything; if not a boss, instant death; if a boss, Stunned 1 round"},desc:"Guaranteed hit, ignores armor."}
+          {name:"One Shot",type:"Heroica",cost:"5 Aen",dmg:null,tabla:true,bandas:{b1:"10 damage",b2:"16 damage",b3:"20 damage",b12:"Perfect shot to the vital point. Maximum damage ignoring everything; if not a boss, instant death; if a boss, Stunned 1 round"},desc:"Guaranteed hit, ignores armor."}
         ]},
-    {id:"hunter",name:"Hunter",desc:"Traps and tracking. The field is its territory.",
+    {id:"hunter",name:"Hunter",role:"Controller",desc:"Traps and tracking. The field is its territory.",
          abilities:[
           {name:"Set the Trap",type:"Base",cost:"3 Aen",dmg:"5",desc:"Trap: immobilizes the first to enter for 2 rounds. Drawback: -1d6 Aen on activation."},
           {name:"The Hunt",type:"Heroica",cost:"5 Aen",dmg:null,tabla:true,bandas:{b1:"1 enemy marked and immobilized 1 round",b2:"1 enemy marked and immobilized; YOU deal double damage against it",b3:"2 enemies marked and immobilized; YOU deal double damage against them",b12:"2 enemies marked and immobilized 2 rounds; YOU deal triple damage against them this turn, and they can't heal while the mark lasts"},desc:"You mark your prey; the double damage is yours alone."}
         ]}
    ]},
 
-  {id:"wizard",name:"Wizard",nameEs:"Wizard",type:"Magic",echoBase:2,resource:"RESONANCE",
+  {id:"wizard",name:"Wizard",nameEs:"Wizard",type:"Magic",role:"Controller",echoBase:2,resource:"RESONANCE",
    abilities:[
-    {name:"Arcane Bolt",type:"Base",cost:"2 Aen",dmg:null,tabla:true,bandas:{b1:"4 damage",b2:"7 damage",b3:"9-11 damage",b12:"12 damage, and the projectile splits hitting a second enemy for 6 damage"},desc:"Projectile of pure energy. Ignores armor."},
-    {name:"Rune Trap",type:"Base",cost:"2 Aen",dmg:null,tabla:true,bandas:{b1:"2 damage to all in the radius",b2:"5 damage to all",b3:"8 damage to all",b12:"10 damage to all, knocked down, and the rune leaves difficult terrain permanently"},desc:"Rune that explodes in radius 2 when stepped on."},
+    {name:"Arcane Bolt",type:"Base",cost:"2 Aen",dmg:null,tabla:true,bandas:{b1:"4 damage",b2:"7 damage",b3:"9 damage",b12:"11 damage, and the projectile splits hitting a second enemy for 6 damage"},desc:"Projectile of pure energy. Ignores armor."},
+    {name:"Rune Trap",type:"Base",cost:"2 Aen",dmg:null,tabla:true,bandas:{b1:"2 damage to all in the radius",b2:"5 damage to all",b3:"7 damage to all",b12:"9 damage to all, knocked down, and the rune leaves difficult terrain permanently"},desc:"Rune that explodes in radius 2 when stepped on."},
     {name:"Rewrite",type:"Heroica",cost:"3 Aen",dmg:null,desc:"Undo the last action of any creature, repeat your turn. Drawback: -1d8 Aen when it ends."}
    ],
    subclasses:[
-    {id:"battle_mage",name:"Battle Mage",desc:"Magic and combat fused. Sword and spell.",
+    {id:"battle_mage",name:"Battle Mage",role:"Controller",desc:"Magic and combat fused. Sword and spell.",
          abilities:[
           {name:"Spellblade",type:"Base",cost:"3 Aen",dmg:"7",desc:"Melee attacks deal +1d6 arcane damage for 3 rounds. Drawback: -1d6 Aen on activation."},
-          {name:"Arcane Surge",type:"Heroica",cost:"5 Aen",dmg:null,tabla:true,bandas:{b1:"4 damage to all",b2:"7 damage to all, knocked down",b3:"9 damage to all, knocked down",b12:"12 damage to all, knocked down, and you recover 2 Aen from the arcane overload"},desc:"Explosion of power in radius 3 around you."}
+          {name:"Arcane Surge",type:"Heroica",cost:"5 Aen",dmg:null,tabla:true,bandas:{b1:"4 damage to all",b2:"7 damage to all, knocked down",b3:"8 damage to all, knocked down",b12:"11 damage to all, knocked down, and you recover 2 Aen from the arcane overload"},desc:"Explosion of power in radius 3 around you."}
         ]},
-    {id:"elementalist",name:"Elementalist",desc:"Mastery of the elements. Fire, ice, lightning.",
+    {id:"elementalist",name:"Elementalist",role:"Controller",desc:"Mastery of the elements. Fire, ice, lightning.",
          abilities:[
-          {name:"Elemental Burst",type:"Base",cost:"3 Aen",dmg:null,tabla:true,bandas:{b1:"4 damage from the element",b2:"7 damage + condition (Burn / Freeze / Slow)",b3:"9-11 damage + condition",b12:"12 damage and the element unleashes fully: Fire = burns 3 rounds / Ice = Frozen 2 rounds / Lightning = Stunned and spreads to 1 nearby enemy"},desc:"Choose Fire, Ice, or Lightning when casting."},
-          {name:"Cataclysm",type:"Heroica",cost:"5 Aen",dmg:null,tabla:true,bandas:{b1:"4 damage to all",b2:"7 damage to all + one condition",b3:"9 damage to all + two conditions",b12:"12 damage to all, Burned + Frozen + Stunned at once, terrain difficult permanently"},desc:"Massive damage radius 4 with all elements."}
+          {name:"Elemental Burst",type:"Base",cost:"3 Aen",dmg:null,tabla:true,bandas:{b1:"4 damage from the element",b2:"7 damage + condition (Burn / Freeze / Slow)",b3:"9 damage + condition",b12:"11 damage and the element unleashes fully: Fire = burns 3 rounds / Ice = Frozen 2 rounds / Lightning = Stunned and spreads to 1 nearby enemy"},desc:"Choose Fire, Ice, or Lightning when casting."},
+          {name:"Cataclysm",type:"Heroica",cost:"5 Aen",dmg:null,tabla:true,bandas:{b1:"4 damage to all",b2:"7 damage to all + one condition",b3:"8 damage to all + two conditions",b12:"11 damage to all, Burned + Frozen + Stunned at once, terrain difficult permanently"},desc:"Massive damage radius 4 with all elements."}
         ]},
-    {id:"chronomancer",name:"Chronomancer",desc:"Manipulates time. Speeds up, stops, rewinds.",
+    {id:"chronomancer",name:"Chronomancer",role:"Striker",desc:"Manipulates time. Speeds up, stops, rewinds.",
          abilities:[
-          {name:"Haste",type:"Base",cost:"3 Aen",dmg:null,desc:"Target gains an extra action for 2 rounds. Drawback: -1d6 Aen on activation."},
+          {name:"Haste",type:"Base",cost:"3 Aen",dmg:null,desc:"You or one ally you can see: your next two attacks go up one band, and you move your full distance without provoking on your next turn."},
           {name:"Time Stop",type:"Heroica",cost:"4 Aen",dmg:null,desc:"2 full turns in a row, enemies frozen. Drawback: -1d12 Aen when it ends."}
         ]}
    ]},
 
-  {id:"druid",name:"Druid",nameEs:"Druid",type:"Magic",echoBase:2,resource:"ESSENCE",
+  {id:"druid",name:"Druid",nameEs:"Druid",type:"Magic",role:"Leader",echoBase:2,resource:"ESSENCE",
    abilities:[
     {name:"Healing Bloom",type:"Base",cost:"2 Aen",dmg:null,desc:"Ally recovers 6 Vitality."},
     {name:"Entangle",type:"Base",cost:"2 Aen",dmg:null,tabla:true,bandas:{b1:"1 enemy immobilized 1 round, 3 damage",b2:"2 enemies immobilized 2 rounds, 3 damage",b3:"3 enemies immobilized 2 rounds",b12:"ALL within radius 2 immobilized 2 rounds, and the roots drain 3 damage/round while they're trapped"},desc:"Roots sprout from the ground. Radius 2."},
     {name:"Wild Shape",type:"Heroica",cost:"3 Aen",dmg:"10",desc:"Beast form: +10 Vitality, increased melee damage for 3 rounds. Drawback: -1d8 Aen when it ends."}
    ],
    subclasses:[
-    {id:"shaman",name:"Shaman",desc:"Healing and purification. The earth heals all.",
+    {id:"shaman",name:"Shaman",role:"Leader",desc:"Healing and purification. The earth heals all.",
          abilities:[
           {name:"Purify",type:"Base",cost:"3 Aen",dmg:null,desc:"Ally is freed of all conditions and recovers 4 Vitality. Drawback: -1d6 Aen on activation."},
           {name:"Spirit Guardian",type:"Heroica",cost:"4 Aen",dmg:null,desc:"Allies recover 8 Vitality per round for 3 rounds. Drawback: -1d10 Aen when it ends."}
         ]},
-    {id:"beast_master",name:"Beast Master",desc:"Animal companion. Nature fights at its side.",
+    {id:"beast_master",name:"Beast Master",role:"Striker",desc:"Animal companion. Nature fights at its side.",
          abilities:[
           {name:"Call Companion",type:"Base",cost:"3 Aen",dmg:"5",desc:"Companion attacks separately, shares your turn. Drawback: -1d6 Aen on activation."},
           {name:"The Pack",type:"Heroica",cost:"5 Aen",dmg:null,tabla:true,bandas:{b1:"1 beast of the chosen type, lasts 1 round",b2:"1 beast of the chosen type, lasts 2 rounds",b3:"1 beast, lasts 3 rounds",b12:"Up to 2 beasts of TWO different types (e.g. one damage + one protection), last 2 rounds"},desc:"On activation you CHOOSE the beast type. The d12 scales count + duration."}
         ]}
    ]},
 
-  {id:"warlock",name:"Warlock",nameEs:"Warlock",type:"Magic",echoBase:2,resource:"PACT",
+  {id:"warlock",name:"Warlock",nameEs:"Warlock",type:"Magic",role:"Controller",echoBase:2,resource:"PACT",
    abilities:[
-    {name:"Chaos Bolt",type:"Base",cost:"2 Aen",dmg:null,tabla:true,bandas:{b1:"4 damage",b2:"7 damage, bounces to another enemy for 3",b3:"9-11 damage, bounces for 5",b12:"12 damage and chaos overflows: bounces among ALL nearby enemies for 4 each"},desc:"Chaotic damage that can bounce."},
-    {name:"Hex",type:"Base",cost:"2 Aen",dmg:null,tabla:true,bandas:{b1:"1 enemy: +2 damage taken 1 round",b2:"2 enemies: +4 damage taken, fail their next action",b3:"3 enemies: +4 damage taken, fail their next action",b12:"ALL within radius 3 (except the boss): +6 damage taken, fail their next action and become Frightened"},desc:"The curse spreads based on the roll."},
-    {name:"Unleash the Pact",type:"Heroica",cost:"4 Aen",dmg:null,tabla:true,bandas:{b1:"4 damage to all",b2:"7 damage to all, Frightened",b3:"9 damage to all, Frightened",b12:"12 damage to all, Frightened 2 rounds, and the pact rewards you: recover Vitality equal to total damage dealt"},desc:"You release the power of the pact. Radius 3, chaotic effects."}
+    {name:"Chaos Bolt",type:"Base",cost:"2 Aen",dmg:null,tabla:true,bandas:{b1:"5 damage",b2:"8 damage, bounces to another enemy for 3",b3:"12 damage, bounces for 5",b12:"14 damage and chaos overflows: bounces among ALL nearby enemies for 4 each"},desc:"Chaotic damage that can bounce."},
+    {name:"Hex",type:"Base",cost:"2 Aen",dmg:null,tabla:true,bandas:{b1:"1 enemy: +2 damage taken 1 round",b2:"2 enemies: +4 damage taken, fail their next action",b3:"4 enemies: +4 damage taken, fail their next action",b12:"ALL within radius 3 (except the boss): +6 damage taken, fail their next action and become Frightened"},desc:"The curse spreads based on the roll."},
+    {name:"Unleash the Pact",type:"Heroica",cost:"4 Aen",dmg:null,tabla:true,bandas:{b1:"5 damage to all",b2:"8 damage to all, Frightened",b3:"11 damage to all, Frightened",b12:"14 damage to all, Frightened 2 rounds, and the pact rewards you: recover Vitality equal to total damage dealt"},desc:"You release the power of the pact. Radius 3, chaotic effects."}
    ],
    subclasses:[
-    {id:"necromancer",name:"Necromancer",desc:"Death and the undead. The end is only the beginning.",
+    {id:"necromancer",name:"Necromancer",role:"Striker",desc:"Death and the undead. The end is only the beginning.",
          abilities:[
           {name:"Raise Dead",type:"Base",cost:"3 Aen",dmg:"4",desc:"Summon a skeleton: 4 damage, lasts until it dies. Drawback: -1d6 Vitality on activation."},
-          {name:"Army of the Dead",type:"Heroica",cost:"5 Aen",dmg:null,tabla:true,bandas:{b1:"2 undead (3 damage each)",b2:"3 undead (3 damage each)",b3:"4 undead (3 damage each), surround",b12:"5 undead (3 damage each), surround, and when one falls it explodes for 4 damage to the nearby enemy"},desc:"You raise undead that overwhelm."}
+          {name:"Army of the Dead",type:"Heroica",cost:"5 Aen",dmg:null,tabla:true,bandas:{b1:"2 undead (3 damage each)",b2:"4 undead (3 damage each)",b3:"5 undead (3 damage each), surround",b12:"6 undead (3 damage each), surround, and when one falls it explodes for 4 damage to the nearby enemy"},desc:"You raise undead that overwhelm."}
         ]},
-    {id:"illrigger",name:"Illrigger",desc:"Hexes and curses. Chaos made manifest.",
+    {id:"illrigger",name:"Illrigger",role:"Defender",desc:"Hexes and curses. Chaos made manifest.",
          abilities:[
           {name:"Doom Brand",type:"Base",cost:"3 Aen",dmg:"5",desc:"Curse: +2 damage per round, explodes on death. Drawback: -1d6 Aen on activation."},
           {name:"Chains of Chaos",type:"Heroica",cost:"4 Aen",dmg:"8",desc:"Enemies share damage taken for 3 rounds. Drawback: -1d10 Vitality when it ends."}
         ]},
-    {id:"heretic",name:"Heretic",desc:"Rejects order. Embraces the forbidden.",
+    {id:"heretic",name:"Heretic",role:"Controller",desc:"Rejects order. Embraces the forbidden.",
          abilities:[
           {name:"Forbidden Knowledge",type:"Base",cost:"3 Aen",dmg:"8",desc:"Copy the last ability used by any creature. Drawback: -1d8 Vitality on activation."},
-          {name:"Unbound Chaos",type:"Heroica",cost:"5 Aen",dmg:null,tabla:true,bandas:{b1:"8 damage to all (even nearby allies)",b2:"13 damage to all in the radius",b3:"15 damage to all",b12:"18 damage to all enemies, but it spares your allies (the chaos obeys you just this once); terrain razed"},desc:"Devastating chaos radius 5. Ignores everything."}
+          {name:"Unbound Chaos",type:"Heroica",cost:"5 Aen",dmg:null,tabla:true,bandas:{b1:"10 damage to all (even nearby allies)",b2:"15 damage to all in the radius",b3:"18 damage to all",b12:"21 damage to all enemies, but it spares your allies (the chaos obeys you just this once); terrain razed"},desc:"Devastating chaos radius 5. Ignores everything."}
         ]}
    ]},
 
-  {id:"inventor",name:"Inventor",nameEs:"Inventor",type:"Might",echoBase:1,resource:"INGENUITY",
+  {id:"inventor",name:"Inventor",nameEs:"Inventor",type:"Might",role:"Controller",echoBase:1,resource:"INGENUITY",
    abilities:[
     {name:"Turret",type:"Base",cost:"2 Aen",dmg:null,tabla:true,bandas:{b1:"Turret: 4 damage/round, lasts 2 rounds",b2:"Turret: 4 damage/round, lasts 3 rounds",b3:"Turret: 6 damage/round, lasts 3 rounds",b12:"Overcharged turret: 6 damage/round, lasts 3 rounds, fires at 2 enemies at once"},desc:"You deploy a turret that fires on its own."},
     {name:"Upgrade",type:"Base",cost:"2 Aen",dmg:null,desc:"Ally gains +3 damage and +5 Vitality for 3 rounds."},
-    {name:"Masterwork",type:"Heroica",cost:"4 Aen",dmg:null,tabla:true,bandas:{b1:"8 line damage",b2:"13 line damage, 1 ally +2 damage 1 round",b3:"15-17 line damage, 1 ally +3 damage",b12:"18 line damage, 2 allies gain +5 damage and +1 action on their next turn"},desc:"Ultimate artifact: line damage + buff."}
+    {name:"Masterwork",type:"Heroica",cost:"4 Aen",dmg:null,tabla:true,bandas:{b1:"8 line damage",b2:"14 line damage, 1 ally +2 damage 1 round",b3:"17 line damage, 1 ally +3 damage",b12:"18 line damage, and 2 allies add +2 to their next attack"},desc:"Ultimate artifact: line damage + buff."}
    ],
    subclasses:[
-    {id:"sapper",name:"Sapper",desc:"Explosives and traps. Calculated destruction.",
+    {id:"sapper",name:"Sapper",role:"Controller",desc:"Explosives and traps. Calculated destruction.",
          abilities:[
-          {name:"Demolition Charge",type:"Base",cost:"4 Aen",dmg:null,tabla:true,bandas:{b1:"4 damage to all, destroys cover",b2:"7 damage to all, destroys cover and terrain",b3:"9 damage to all, knocked down",b12:"12 damage to all, knocked down, and the chain explosion hits enemies adjacent outside the radius for 6"},desc:"Explosive charge radius 3. Destroys cover."},
-          {name:"Carpet Bomb",type:"Heroica",cost:"5 Aen",dmg:null,tabla:true,bandas:{b1:"2 damage to all, knocked down",b2:"5 damage to all, knocked down",b3:"8 damage to all, knocked down, difficult terrain",b12:"10 damage to all, knocked down, difficult terrain permanently and enemies Stunned 1 round"},desc:"Bombardment radius 5. Knocks down all."}
+          {name:"Demolition Charge",type:"Base",cost:"4 Aen",dmg:null,tabla:true,bandas:{b1:"4 damage to all, destroys cover",b2:"7 damage to all, destroys cover and terrain",b3:"10 damage to all, knocked down",b12:"13 damage to all, knocked down, and the chain explosion hits enemies adjacent outside the radius for 6"},desc:"Explosive charge radius 3. Destroys cover."},
+          {name:"Carpet Bomb",type:"Heroica",cost:"5 Aen",dmg:null,tabla:true,bandas:{b1:"2 damage to all, knocked down",b2:"5 damage to all, knocked down",b3:"8 damage to all, knocked down, difficult terrain",b12:"11 damage to all, knocked down, difficult terrain permanently and enemies Stunned 1 round"},desc:"Bombardment radius 5. Knocks down all."}
         ]},
-    {id:"cyborg",name:"Cyborg",desc:"Modifies itself. Body as artifact.",
+    {id:"cyborg",name:"Cyborg",role:"Striker",desc:"Modifies itself. Body as artifact.",
          abilities:[
           {name:"Augment",type:"Base",cost:"3 Aen",dmg:"5",desc:"+5 Vitality, +2 melee damage, +2 move for 3 rounds. Drawback: -1d6 Aen on activation."},
-          {name:"Machine Mode",type:"Heroica",cost:"4 Aen",dmg:"12",desc:"Immune to conditions, extra action, melee damage x2 for 2 rounds. Drawback: -1d10 Vitality when it ends."}
+          {name:"Machine Mode",type:"Heroica",cost:"4 Aen",dmg:"12",desc:"Until the end of your next turn you are immune to conditions, and your melee base attacks go up one band and hit a second adjacent enemy for half."}
         ]}
    ]},
 
-  {id:"bard",name:"Bard",nameEs:"Bard",type:"Might",echoBase:1,resource:"INSPIRATION",
+  {id:"bard",name:"Bard",nameEs:"Bard",type:"Might",role:"Leader",echoBase:1,resource:"INSPIRATION",
    abilities:[
     {name:"Inspire",type:"Base",cost:"2 Aen",dmg:null,desc:"Ally gains +1d6 to next action and +3 damage."},
     {name:"Charm",type:"Base",cost:"2 Aen",dmg:null,desc:"Enemy can't attack you for 2 rounds. You break their focus."},
-    {name:"Grand Finale",type:"Heroica",cost:"3 Aen",dmg:"6",desc:"Allies gain an extra action, enemies terrified. Drawback: -1d8 Aen when it ends."}
+    {name:"Grand Finale",type:"Heroica",cost:"3 Aen",dmg:"6",desc:"Every ally adds +2 to their next attack, and every enemy within radius 3 is Frightened until the end of their next turn."}
    ],
    subclasses:[
-    {id:"skald",name:"Skald",desc:"War song. Fights on the front line.",
+    {id:"skald",name:"Skald",role:"Leader",desc:"War song. Fights on the front line.",
          abilities:[
-          {name:"War Song",type:"Base",cost:"3 Aen",dmg:"4",desc:"Allies within radius 3: +4 damage, resist conditions for 3 rounds. Drawback: -1d6 Aen on activation."},
-          {name:"Battle Hymn",type:"Heroica",cost:"4 Aen",dmg:null,desc:"Allies: double damage and +1 action for 2 rounds. Drawback: -1d10 Vitality when it ends."}
+          {name:"War Song",type:"Base",cost:"3 Aen",dmg:"4",desc:"Allies within radius 3 add +2 to their next attack and are immune to conditions until the end of their next turn."},
+          {name:"Battle Hymn",type:"Heroica",cost:"4 Aen",dmg:null,desc:"Every ally within radius 3 adds +3 to their next attack, and that attack ignores resistance."}
         ]},
-    {id:"spy",name:"Spy",desc:"Disguise, mimicry, manipulation. Never who they seem.",
+    {id:"spy",name:"Spy",role:"Striker",desc:"Disguise, mimicry, manipulation. Never who they seem.",
          abilities:[
           {name:"Disguise",type:"Base",cost:"3 Aen",dmg:null,desc:"You pass as an enemy: they ignore your presence for 2 rounds. Drawback: -1d6 Aen on activation."},
           {name:"The Long Con",type:"Heroica",cost:"5 Aen",dmg:null,tabla:true,bandas:{b1:"You control the enemy 1 round",b2:"You control 2 rounds, steal 1 of their abilities",b3:"You control 2 rounds, steal ALL their abilities while it lasts",b12:"You control 3 rounds, steal all their abilities and can keep using them even after the control ends"},desc:"The perfect con: you take control of the enemy and steal their arsenal."}
