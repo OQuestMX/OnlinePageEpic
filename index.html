@@ -1380,6 +1380,85 @@ a:not(.btn){color:var(--gold-ink)}
 .med.active{border-color:#c9a84c;box-shadow:0 0 0 3px var(--gold-pale)}
 .hero-lightbox{position:fixed;inset:0;z-index:10000;display:none;align-items:center;justify-content:center;background:rgba(20,18,30,.92);cursor:zoom-out;padding:24px}
 .hero-lightbox img{max-width:92%;max-height:92%;border-radius:12px;box-shadow:0 24px 60px rgba(0,0,0,.5)}
+/* ══════ MAESTRÍAS — compartido entre index.html y creador-personaje.html ══════ */
+.mst{margin-top:26px}
+.mst-top{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:14px}
+.mst-tabs{display:flex;gap:6px;flex-wrap:wrap}
+.mst-tab{padding:7px 14px;border:1px solid var(--border);border-radius:20px;background:var(--surface);
+  font-size:12px;font-weight:700;letter-spacing:.4px;color:var(--ink3);cursor:pointer;white-space:nowrap}
+.mst-tab .n{font-size:10px;color:var(--ink4);font-weight:600;margin-left:5px}
+.mst-tab.active{background:var(--gold-pale);border-color:var(--gold);color:var(--gold)}
+.mst-tab.owned{border-color:var(--gold)}
+.mst-marks{display:flex;align-items:center;gap:8px;padding:6px 12px;background:var(--gold-pale);
+  border:1px solid var(--gold);border-radius:20px;margin-left:auto}
+.mst-marks-l{font-size:10px;font-weight:700;color:var(--gold);letter-spacing:.6px}
+.mst-marks-v{font-family:var(--serif);font-size:17px;font-weight:700;color:var(--ink)}
+.mst-mbtn{border:1px solid var(--gold);background:var(--surface);color:var(--gold);border-radius:50%;
+  width:24px;height:24px;font-size:13px;line-height:1;cursor:pointer;padding:0}
+
+.mst-root{display:flex;gap:14px;align-items:flex-start;padding:13px 15px;border-radius:var(--r-lg);
+  border:1px solid var(--border);background:var(--surface2);margin-bottom:16px}
+.mst-root.on{border-color:var(--gold);background:var(--gold-pale)}
+.mst-root.can{cursor:pointer;border-style:dashed}
+.mst-root-body{flex:1;min-width:0}
+.mst-root-name{font-family:var(--serif);font-size:16px;font-weight:700;color:var(--ink)}
+.mst-root-eff{font-size:12.5px;color:var(--ink3);line-height:1.55;margin-top:3px}
+
+.mst-cols{display:grid;gap:14px}
+.mst-col{border:1px solid var(--border);border-radius:var(--r-lg);background:var(--surface);overflow:hidden;
+  display:flex;flex-direction:column}
+.mst-col.locked{opacity:.42}
+.mst-col-head{padding:11px 13px;background:var(--surface2);border-bottom:1px solid var(--border)}
+.mst-col-name{font-family:var(--serif);font-size:16px;font-weight:700;color:var(--ink);line-height:1.15}
+.mst-col-sub{font-size:11px;color:var(--ink4);font-style:italic}
+.mst-col-chips{display:flex;gap:5px;flex-wrap:wrap;margin-top:7px}
+.mst-chip{font-size:9.5px;font-weight:700;letter-spacing:.4px;padding:2px 7px;border-radius:9px;
+  background:var(--surface);border:1px solid var(--border);color:var(--ink3)}
+.mst-chip.gold{background:var(--gold-pale);border-color:var(--gold);color:var(--gold)}
+.mst-low{font-size:11px;color:var(--ink3);line-height:1.45;padding:8px 13px;border-bottom:1px solid var(--border);
+  background:var(--gold-pale)}
+.mst-low b{color:var(--gold);font-size:10px;letter-spacing:.5px;display:block;margin-bottom:2px}
+
+.mst-tier{padding:9px 13px;border-bottom:1px solid var(--border)}
+.mst-tier:last-child{border-bottom:0}
+.mst-tier-head{display:flex;align-items:baseline;gap:7px;margin-bottom:7px}
+.mst-tier-t{font-size:10.5px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;color:var(--ink4)}
+.mst-gate{font-size:9px;font-weight:700;padding:1px 6px;border-radius:8px;background:var(--surface2);
+  border:1px solid var(--border);color:var(--ink4);white-space:nowrap}
+.mst-gate.open{border-color:var(--gold);color:var(--gold);background:var(--gold-pale)}
+
+.mst-node{border:1px solid var(--border);border-radius:var(--r);padding:8px 10px;margin-bottom:6px;
+  background:var(--surface2);cursor:not-allowed;position:relative}
+.mst-node:last-child{margin-bottom:0}
+.mst-node.can{cursor:pointer;background:var(--surface);border-style:dashed}
+.mst-node.can:hover{border-color:var(--gold);background:var(--gold-pale)}
+.mst-node.own{background:var(--gold-pale);border-color:var(--gold);cursor:pointer}
+.mst-node.lock{opacity:.45}
+.mst-node-head{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.mst-node-name{font-size:13px;font-weight:700;color:var(--ink);flex:1;min-width:90px}
+.mst-node-eff{font-size:11.5px;color:var(--ink3);line-height:1.5;margin-top:3px}
+.mst-node-fire{font-size:11px;color:var(--ink2);line-height:1.45;margin-top:5px;padding:5px 7px;
+  border-radius:6px;background:var(--surface);border-left:2px solid var(--gold)}
+.mst-node-fire b{color:var(--gold);font-size:9.5px;letter-spacing:.5px}
+.mst-tick{width:16px;height:16px;border-radius:50%;border:1.5px solid var(--border);flex:none;
+  display:flex;align-items:center;font-size:9px;justify-content:center;color:#fff}
+.mst-node.own .mst-tick,.mst-root.on .mst-tick{background:var(--gold);border-color:var(--gold)}
+
+.pl{font-size:8.5px;font-weight:700;letter-spacing:.5px;padding:1px 6px;border-radius:8px;flex:none}
+.pl-avelir{background:var(--green-light);color:var(--green)}
+.pl-veil{background:var(--blue-light);color:var(--blue)}
+.pl-hold{background:var(--purple-light);color:var(--purple)}
+.pl-inter{background:var(--red-light);color:var(--red)}
+.mst-tag{font-size:8.5px;font-weight:700;letter-spacing:.5px;padding:1px 6px;border-radius:8px;
+  background:var(--ink);color:#fff;flex:none}
+
+.mst-sum{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+  padding:12px 14px;border:1px solid var(--gold);border-radius:var(--r-lg);background:var(--gold-pale);margin-bottom:16px}
+.mst-sum-k{font-size:9.5px;font-weight:700;letter-spacing:.7px;color:var(--gold)}
+.mst-sum-v{font-family:var(--serif);font-size:15px;color:var(--ink);line-height:1.35;margin-top:2px}
+.mst-sum-v small{font-family:var(--font);font-size:11.5px;color:var(--ink3);display:block}
+@media(max-width:900px){.mst-cols{grid-template-columns:1fr!important}}
+
 </style>
 </head>
 <body>
@@ -1624,7 +1703,7 @@ function resolvePlayer(p){if(!p)return null;var cls=G?G.classes.find(function(c)
   var kitAbility=kit?{name:kit.ability.name,type:'Kit',desc:kit.ability.desc,cost:kit.ability.cost,drawback:kit.ability.drawback}:null;
   var chosenFeat=(fac&&fac.feats&&p.featChosen!=null&&fac.feats[p.featChosen])?fac.feats[p.featChosen]:null;
   var ab=classAbilities.concat(subAbilities);if(kitAbility)ab.push(kitAbility);
-  var _em=(cls?(cls.echoBase||(cls.type==='Magic'?2:1)):1)+(kit?(kit.aenBonus||0):0);var _cm=_em<=2?2:(_em<=4?3:4);return{id:p.id,name:p.name,initial:p.initial||p.name.charAt(0),bg:p.bg||'#444',fg:p.fg||'#fff',img:p.img||'',echoMod:_em,chargesMax:_cm,charges:Math.max(0,Math.min(p.echo==null?_cm:p.echo,_cm)),cls:cls?cls.nameEs:(p.classId||'?'),clsType:cls?cls.type:'',resource:cls?cls.resource:'',sub:sub?sub.name:'',kit:kit?kit.name:'',plano:p.plano||1,faction:fac?fac.name:(p.factionId||''),factionColor:fac?fac.color:'#666',hp:(G?G.rules.hpBase:10)+(kit?kit.hpBonus:0),aenRegen:(G?G.rules.aenPerTurn:2)+(kit?kit.aenBonus:0),abilities:ab,classAbilities:classAbilities,subAbilities:subAbilities,kitAbility:kitAbility,chosenFeat:chosenFeat,backstory:p.backstory||''}}
+  var _em=(cls?(cls.echoBase||(cls.type==='Magic'?2:1)):1)+(kit?(kit.aenBonus||0):0);var _cm=_em<=2?2:(_em<=4?3:4);var _ms=deriveMastery(p);return{id:p.id,mastery:_ms,marksTotal:_ms.total,marksSpent:_ms.spent,name:p.name,initial:p.initial||p.name.charAt(0),bg:p.bg||'#444',fg:p.fg||'#fff',img:p.img||'',echoMod:_em,chargesMax:_cm,charges:Math.max(0,Math.min(p.echo==null?_cm:p.echo,_cm)),cls:cls?cls.nameEs:(p.classId||'?'),clsType:cls?cls.type:'',resource:cls?cls.resource:'',sub:sub?sub.name:'',kit:kit?kit.name:'',plano:p.plano||1,faction:fac?fac.name:(p.factionId||''),factionColor:fac?fac.color:'#666',hp:(G?G.rules.hpBase:10)+(kit?kit.hpBonus:0),aenRegen:(G?G.rules.aenPerTurn:2)+(kit?kit.aenBonus:0),abilities:ab,classAbilities:classAbilities,subAbilities:subAbilities,kitAbility:kitAbility,chosenFeat:chosenFeat,backstory:p.backstory||''}}
 function hpColor(pct){if(pct>60)return'var(--green)';if(pct>25)return'var(--orange)';return'var(--red)'}
 function diffLabel(d){return{easy:'Fácil',medium:'Medio',hard:'Duro',boss:'Jefe'}[d]||d}
 function roleBadge(role){if(!role)return'';return '<span class="role-badge role-'+role.toLowerCase()+'">'+esc(role)+'</span>'}
@@ -1696,6 +1775,9 @@ document.addEventListener('click',function(e){
   if(a==='push-pay'){pushPay(el.dataset.uid,el.dataset.ability)}
   if(a==='push-drop'){pushDrop(el.dataset.uid,el.dataset.ability)}
   if(a==='toggle-player-detail'){expandedPlayers[id]=!expandedPlayers[id];renderPlayers()}
+  if(mstHandleAction(a,el))return;
+  if(a==='hero-import'){openHeroImport()}
+  if(a==='hero-import-do'){heroImportDo()}
   if(a==='equip-weapon'){openWeaponPicker(el.dataset.ttype,el.dataset.tid)}
   if(a==='toggle-faction-lore'){expandedFactionLore[el.dataset.id]=!expandedFactionLore[el.dataset.id];renderPlayers()}
   if(a==='toggle-pgroup'){var gk=el.dataset.id+':'+el.dataset.key;collapsedGroups[gk]=!collapsedGroups[gk];renderPlayers()}
@@ -2764,6 +2846,7 @@ function playerSheetHtml(p){
   h+='<div class="echo-tracker"><div class="echo-tracker-label">CARGAS</div><div class="echo-dots">';
   for(var i=0;i<r.chargesMax;i++)h+='<div class="echo-dot'+(i<r.charges?' filled':'')+'">\u2726</div>';
   h+='</div><button class="echo-btn" data-action="sub-echo" data-id="'+p.id+'" style="padding:4px 8px;font-size:12px;min-height:32px">\u2212</button><button class="echo-btn" data-action="add-echo" data-id="'+p.id+'" style="padding:4px 8px;font-size:12px;min-height:32px">+</button></div>';
+  h+='<div class="echo-tracker" style="background:var(--surface2);border:1px solid var(--border)"><div class="echo-tracker-label" style="color:var(--ink3)">MARCAS</div><div style="font-family:var(--serif);font-size:17px;font-weight:700">'+(r.mastery.total-r.mastery.spent)+' <span style="font-size:11px;color:var(--ink4);font-family:var(--font)">libres de '+r.mastery.total+'</span></div><button class="echo-btn" data-action="sub-mark" data-id="'+p.id+'" style="padding:4px 8px;font-size:12px;min-height:32px">\u2212</button><button class="echo-btn" data-action="add-mark" data-id="'+p.id+'" style="padding:4px 8px;font-size:12px;min-height:32px">+</button></div>';
   if(r.backstory)h+='<div style="font-size:13.5px;color:var(--ink3);margin:10px 0;line-height:1.6">'+esc(r.backstory)+'</div>';
   h+='<div class="section-label">DOSSIER</div>';
   h+='<div class="player-abilities-expanded" style="border-top:0;margin-top:0;padding-top:0">';
@@ -2782,14 +2865,350 @@ function playerSheetHtml(p){
   h+='<div style="display:flex;gap:6px;margin-top:14px"><button class="btn" data-action="open-modal" data-type="players" data-id="'+p.id+'">Editar</button><button class="delete-btn" data-action="delete-item" data-type="players" data-id="'+p.id+'">\u00d7</button></div>';
   h+='</div>';
   h+='</div>';
+  h+='<div class="mst"><div class="section-label">MAESTRÍAS DE ARMA</div>'+masteryTreeHtml(p.id,{showMarks:true})+'</div>';
   return h;
 }
-function renderPlayers(){var el=document.getElementById('players-content');if(!el)return;var pls=dbGetAll('players');if(!pls.length){el.innerHTML='<div class="empty-state"><div class="empty-state-title">No hay jugadores</div><div class="empty-state-desc">Agrega a los h\u00e9roes de tu mesa.</div><div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center"><button class="btn btn-primary" data-action="open-modal" data-type="players">+ Agregar jugador</button><a class="btn" href="creador-personaje.html" target="_blank" rel="noopener" style="text-decoration:none">\uD83E\uDDD9 Crear personaje (jugador)</a></div></div>';return}
+
+/* ══ puente del anfitrión ══ */
+var MSTH = {
+  data:      function(){ return G },
+  esc:       function(s){ return esc(s) },
+  get:       function(pid){ return dbGetById('players', pid) },
+  set:       function(pid, obj){ dbUpdate('players', pid, obj) },
+  rerender:  function(){ renderPlayers() }
+};
+
+/* ══════════════════════════════════════════════════════════════════════
+   MOTOR DE MAESTRÍAS — compartido entre index.html y creador-personaje.html
+   La página anfitriona define MSTH antes de este bloque:
+     MSTH.data()        -> GAMEDATA
+     MSTH.get(pid)      -> {marks:[ids], marksTotal:n}
+     MSTH.set(pid,obj)  -> guarda {marks} y/o {marksTotal}
+     MSTH.rerender()    -> vuelve a pintar
+     MSTH.esc(s)        -> escapa html
+   ══════════════════════════════════════════════════════════════════════ */
+var MST_TRUNK = {};
+var MST_PLANE = {avelir:'AVELIR', veil:'VELO', hold:'CUENCO', inter:'INTERPLANO'};
+
+function mstTrunks(){ var g = MSTH.data(); return (g && g.masteryTrunks) ? g.masteryTrunks : [] }
+function mstEsc(s){ return MSTH.esc(s) }
+
+/* ── puertas ── */
+function gateOk(tier, own){
+  var have = 0;
+  tier.nodes.forEach(function(n){ if(own[n.id]) have++ });
+  if(tier.gate === 'all') return have === tier.nodes.length;
+  if(tier.gate === 'any') return have >= 1;
+  return have >= Number(tier.gate);
+}
+function gateLabel(tier){
+  if(tier.gate === 'all') return tier.nodes.length === 1 ? '1 de 1' : 'los ' + tier.nodes.length;
+  if(tier.gate === 'any') return '1 de ' + tier.nodes.length;
+  return tier.gate + ' de ' + tier.nodes.length;
+}
+
+/* ── localizar un nodo por id ── */
+function mstFind(nodeId){
+  var hit = null;
+  mstTrunks().forEach(function(tr){
+    if(tr.root.id === nodeId){ hit = {tr:tr, root:1}; return }
+    tr.branches.forEach(function(br){
+      br.tiers.forEach(function(ti, ix){
+        ti.nodes.forEach(function(n){ if(n.id === nodeId) hit = {tr:tr, br:br, ti:ti, ix:ix, n:n} });
+      });
+    });
+  });
+  return hit;
+}
+
+/* ── estado derivado ── */
+function deriveMastery(rec){
+  rec = rec || {};
+  var own = {};
+  (rec.marks || []).forEach(function(id){ own[id] = 1 });
+  var out = { own:own, spent:Object.keys(own).length,
+              total:(rec.marksTotal == null ? 0 : rec.marksTotal),
+              roots:{}, branches:{}, dice:{}, lows:[], reacts:[], legends:[], actives:[] };
+  mstTrunks().forEach(function(tr){
+    var rootOn = !!own[tr.root.id];
+    if(rootOn) out.roots[tr.id] = 1;
+    tr.branches.forEach(function(br){
+      var st = { open:rootOn, owned:0, tiers:[], mastery:0, die:br.die, low:null };
+      var prevOk = rootOn;
+      br.tiers.forEach(function(ti){
+        var unlocked = prevOk;
+        ti.nodes.forEach(function(n){
+          if(!own[n.id]) return;
+          st.owned++;
+          if(n.mast)   st.mastery = 1;
+          if(n.react)  out.reacts.push({b:br.name, n:n});
+          if(n.legend) out.legends.push({b:br.name, n:n});
+          if(n.active) out.actives.push({b:br.name, n:n});
+        });
+        st.tiers.push({ unlocked:unlocked, done:gateOk(ti, own) });
+        prevOk = unlocked && gateOk(ti, own);
+      });
+      if(st.owned > 0){ st.low = br.low; out.lows.push({b:br.name, low:br.low, die:br.die}) }
+      out.branches[br.id] = st;
+      if(st.mastery)   out.dice[br.id] = '3d12';
+      else if(rootOn)  out.dice[br.id] = '2d12';
+    });
+  });
+  return out;
+}
+
+/* ── ¿comprable ahora? ── */
+function canBuy(d, tr, br, ix){
+  if(!br) return !d.own[tr.root.id];
+  if(!d.own[tr.root.id]) return false;
+  return d.branches[br.id].tiers[ix].unlocked;
+}
+
+/* ── comprar / soltar, con cascada ── */
+function masteryToggle(pid, nodeId){
+  var rec = MSTH.get(pid);
+  if(!rec) return;
+  var marks = (rec.marks || []).slice();
+  var i = marks.indexOf(nodeId);
+  if(i > -1){
+    marks.splice(i, 1);
+    var guard = 0;
+    while(guard++ < 60){
+      var d = deriveMastery({marks:marks, marksTotal:rec.marksTotal});
+      var drop = null;
+      mstTrunks().forEach(function(tr){
+        if(!d.own[tr.root.id]){
+          tr.branches.forEach(function(br){ br.tiers.forEach(function(ti){
+            ti.nodes.forEach(function(n){ if(d.own[n.id] && !drop) drop = n.id }) }) });
+        } else {
+          tr.branches.forEach(function(br){
+            var st = d.branches[br.id];
+            br.tiers.forEach(function(ti, ix){
+              if(st.tiers[ix].unlocked) return;
+              ti.nodes.forEach(function(n){ if(d.own[n.id] && !drop) drop = n.id });
+            });
+          });
+        }
+      });
+      if(!drop) break;
+      marks.splice(marks.indexOf(drop), 1);
+    }
+  } else {
+    var d0 = deriveMastery(rec);
+    if(d0.total - d0.spent <= 0) return;
+    var f = mstFind(nodeId);
+    if(!f) return;
+    if(!canBuy(d0, f.tr, f.br, f.ix)) return;
+    marks.push(nodeId);
+  }
+  MSTH.set(pid, {marks:marks});
+  MSTH.rerender();
+}
+function adjustMarks(pid, delta){
+  var rec = MSTH.get(pid);
+  if(!rec) return;
+  var t = Math.max(0, Math.min(60, (rec.marksTotal == null ? 0 : rec.marksTotal) + delta));
+  if(delta < 0 && t < (rec.marks || []).length) return;
+  MSTH.set(pid, {marksTotal:t});
+  MSTH.rerender();
+}
+
+/* ── un nodo ── */
+function mstNodeHtml(pid, d, tr, br, ix, n, ro){
+  var owned = !!d.own[n.id];
+  var open  = canBuy(d, tr, br, ix);
+  var can   = !owned && open && (d.total - d.spent) > 0;
+  var cls   = 'mst-node' + (owned ? ' own' : (open ? ' can' : ' lock'));
+  var act   = (!ro && (owned || can))
+            ? ' data-action="mastery-toggle" data-id="' + pid + '" data-node="' + n.id + '"' : '';
+  var h = '<div class="' + cls + '"' + act + '>';
+  h += '<div class="mst-node-head"><span class="mst-tick">' + (owned ? '✓' : '') + '</span>';
+  h += '<span class="mst-node-name">' + mstEsc(n.name) + '</span>';
+  if(n.react)  h += '<span class="mst-tag">REACCIÓN</span>';
+  if(n.mast)   h += '<span class="mst-tag">MAESTRÍA</span>';
+  if(n.legend) h += '<span class="mst-tag">LEGENDARIA</span>';
+  h += '<span class="pl pl-' + n.plane + '">' + (MST_PLANE[n.plane] || n.plane) + '</span></div>';
+  h += '<div class="mst-node-eff">' + mstEsc(n.eff) + '</div>';
+  if(n.fire)   h += '<div class="mst-node-fire"><b>AL 12 · ' + mstEsc(n.die || '') + '</b><br>' + mstEsc(n.fire) + '</div>';
+  if(n.active) h += '<div class="mst-node-fire"><b>ACTIVA</b><br>' + mstEsc(n.active) + '</div>';
+  if(n.bet)    h += '<div class="mst-node-fire"><b>LA APUESTA</b><br>' + mstEsc(n.bet) + '</div>';
+  if(n.edge)   h += '<div class="mst-node-fire"><b>BORDE</b><br>No saca de combate a criaturas duras ni a jefes: pierden una acción.</div>';
+  return h + '</div>';
+}
+
+/* ── el árbol completo ──
+   opts: {readonly, showMarks, showTabs, trunkId} */
+function masteryTreeHtml(pid, opts){
+  opts = opts || {};
+  if(!mstTrunks().length) return '';
+  var rec = MSTH.get(pid);
+  if(!rec) return '';
+  var ro  = !!opts.readonly;
+  var d   = deriveMastery(rec);
+  var tid = opts.trunkId || MST_TRUNK[pid] || mstTrunks()[0].id;
+  var tr  = mstTrunks().filter(function(t){ return t.id === tid })[0] || mstTrunks()[0];
+  var free = d.total - d.spent;
+  var h = '';
+
+  if(opts.showTabs !== false){
+    h += '<div class="mst-top"><div class="mst-tabs">';
+    mstTrunks().forEach(function(t){
+      var cnt = d.own[t.root.id] ? 1 : 0;
+      t.branches.forEach(function(b){ cnt += d.branches[b.id].owned });
+      h += '<div class="mst-tab' + (t.id === tr.id ? ' active' : '') + (cnt ? ' owned' : '') +
+           '" data-action="mastery-trunk" data-id="' + pid + '" data-trunk="' + t.id + '">' +
+           mstEsc(t.name) + '<span class="n">' + (cnt || '') + '</span></div>';
+    });
+    h += '</div>';
+    h += '<div class="mst-marks"><span class="mst-marks-l">MARCAS LIBRES</span>' +
+         '<span class="mst-marks-v">' + free + '</span>';
+    if(opts.showMarks){
+      h += '<button class="mst-mbtn" data-action="sub-mark" data-id="' + pid + '">−</button>' +
+           '<button class="mst-mbtn" data-action="add-mark" data-id="' + pid + '">+</button>';
+    } else {
+      h += '<span style="font-size:11px;color:var(--ink3)">de ' + d.total + '</span>';
+    }
+    h += '</div></div>';
+  }
+
+  /* resumen de lo que cambió en la mesa */
+  if(d.spent){
+    var dice = [];
+    mstTrunks().forEach(function(t){
+      if(!d.own[t.root.id]) return;
+      var m = [];
+      t.branches.forEach(function(b){ if(d.branches[b.id].mastery) m.push(b.name + ' 3d12 · firma ' + b.die) });
+      dice.push(t.name + ' 2d12' + (m.length ? ' → ' + m.join(' • ') : ''));
+    });
+    var lows = d.lows.map(function(l){ return l.low.name + ' (' + l.b + ')' });
+    var nm = function(a){ return a.map(function(x){ return x.n.name }).join(' • ') };
+    h += '<div class="mst-sum">' +
+      '<div><div class="mst-sum-k">DADOS DE ATAQUE</div><div class="mst-sum-v">' + (dice.length ? mstEsc(dice.join(' • ')) : '1d12') + '</div></div>' +
+      '<div><div class="mst-sum-k">FIRMAS DE BANDA 1-4</div><div class="mst-sum-v">' + (lows.length ? mstEsc(lows.join(' • ')) : '—') + '</div></div>' +
+      '<div><div class="mst-sum-k">REACCIONES</div><div class="mst-sum-v">' + (d.reacts.length ? mstEsc(nm(d.reacts)) : '—') + '<small>una por ronda, gratis</small></div></div>' +
+      '<div><div class="mst-sum-k">INTERPLANO</div><div class="mst-sum-v">' + (d.legends.length ? mstEsc(nm(d.legends)) : '—') + '<small>una por sesión</small></div></div>' +
+      '</div>';
+  }
+
+  /* raíz */
+  var rootOn = !!d.own[tr.root.id];
+  var rootCan = !ro && (rootOn || free > 0);
+  h += '<div class="mst-root' + (rootOn ? ' on' : (rootCan ? ' can' : '')) + '"' +
+       (rootCan ? ' data-action="mastery-toggle" data-id="' + pid + '" data-node="' + tr.root.id + '"' : '') + '>';
+  h += '<span class="mst-tick" style="margin-top:3px">' + (rootOn ? '✓' : '') + '</span>';
+  h += '<div class="mst-root-body"><div class="mst-root-name">' + mstEsc(tr.root.name) +
+       ' <span class="pl pl-' + tr.root.plane + '">' + MST_PLANE[tr.root.plane] + '</span>' +
+       ' <span class="mst-tag">RAÍZ</span></div>';
+  h += '<div class="mst-root-eff">' + mstEsc(tr.root.eff) + '</div></div>';
+  h += '<div style="text-align:right;flex:none"><div class="mst-sum-k">' + mstEsc(tr.sub) + '</div>' +
+       '<div class="mst-sum-v">' + tr.root.dice + 'd12</div></div></div>';
+
+  /* ramas */
+  h += '<div class="mst-cols" style="grid-template-columns:repeat(' + tr.branches.length + ',1fr)">';
+  tr.branches.forEach(function(br){
+    var st = d.branches[br.id];
+    h += '<div class="mst-col' + (rootOn ? '' : ' locked') + '">';
+    h += '<div class="mst-col-head"><div class="mst-col-name">' + mstEsc(br.name) + '</div>' +
+         '<div class="mst-col-sub">' + mstEsc(br.sub || '') + '</div>' +
+         '<div class="mst-col-chips"><span class="mst-chip' + (st.owned ? ' gold' : '') + '">' + st.owned + ' nodos</span>' +
+         '<span class="mst-chip' + (st.mastery ? ' gold' : '') + '">' + (st.mastery ? '3d12' : (rootOn ? '2d12' : '1d12')) + '</span>' +
+         '<span class="mst-chip' + (st.owned ? ' gold' : '') + '">firma ' + mstEsc(br.die) + '</span></div></div>';
+    if(st.owned && br.low)
+      h += '<div class="mst-low"><b>BANDA 1-4 · GRATIS</b>' + mstEsc(br.low.name) + ' — ' + mstEsc(br.low.eff) + '</div>';
+    br.tiers.forEach(function(ti, ix){
+      var t = st.tiers[ix];
+      h += '<div class="mst-tier"><div class="mst-tier-head">' +
+           '<span class="mst-tier-t">' + mstEsc(ti.t) + '</span>' +
+           '<span class="mst-gate' + (t.done ? ' open' : '') + '">' + gateLabel(ti) + (t.done ? ' ✓' : '') + '</span></div>';
+      ti.nodes.forEach(function(n){ h += mstNodeHtml(pid, d, tr, br, ix, n, ro) });
+      h += '</div>';
+    });
+    h += '</div>';
+  });
+  return h + '</div>';
+}
+
+/* ── despachador compartido: la página anfitriona lo llama desde su click handler ── */
+function mstHandleAction(a, el){
+  if(a === 'mastery-trunk'){ MST_TRUNK[el.getAttribute('data-id')] = el.getAttribute('data-trunk'); MSTH.rerender(); return true }
+  if(a === 'mastery-toggle'){ masteryToggle(el.getAttribute('data-id'), el.getAttribute('data-node')); return true }
+  if(a === 'add-mark'){ adjustMarks(el.getAttribute('data-id'), 1); return true }
+  if(a === 'sub-mark'){ adjustMarks(el.getAttribute('data-id'), -1); return true }
+  return false;
+}
+
+
+/* ══════ IMPORTAR UN HÉROE DEL CREADOR ══════ */
+var HERO_BG=['#2858a0','#b02828','#247038','#6030a0','#a06010','#7a5c3e','#1c1d2e','#8a6f0a'];
+function openHeroImport(){
+  var h='<div class="modal-overlay"><div class="modal modal-lg"><div class="modal-title">Importar personaje</div>'+
+   '<div style="font-size:13px;color:var(--ink3);line-height:1.6;margin-bottom:10px">Sube el archivo <code>.json</code> que te mandó el jugador, o pega el código.</div>'+
+   '<input type="file" id="hero-import-file" accept=".json,application/json" style="width:100%;font-size:13px;padding:10px;border:1px dashed var(--border);border-radius:var(--r);background:var(--surface2);margin-bottom:10px">'+
+   '<textarea id="hero-import-code" placeholder="…o pega aquí el código EQ1. / el JSON" style="width:100%;height:96px;font-family:var(--font-mono,monospace);font-size:11px;padding:10px;border:1px solid var(--border);border-radius:var(--r);background:var(--surface2);color:var(--ink2);resize:vertical"></textarea>'+
+   '<div id="hero-import-msg" style="font-size:12.5px;margin-top:8px;min-height:18px"></div>'+
+   '<div class="modal-actions"><button class="btn" data-action="close-modal">Cancelar</button>'+
+   '<button class="btn btn-primary" data-action="hero-import-do">Importar</button></div></div></div>';
+  document.getElementById('modal-root').innerHTML=h;
+  var f=document.getElementById('hero-import-file');
+  if(f)f.addEventListener('change',function(){
+    var file=f.files&&f.files[0]; if(!file)return;
+    var rd=new FileReader();
+    rd.onload=function(){ document.getElementById('hero-import-code').value=rd.result; heroImportDo() };
+    rd.onerror=function(){ heroImportMsg('No se pudo leer el archivo.') };
+    rd.readAsText(file);
+  });
+}
+function heroImportMsg(t,ok){
+  var m=document.getElementById('hero-import-msg'); if(!m)return;
+  m.style.color=ok?'var(--green)':'var(--red)'; m.textContent=(ok?'\u2713 ':'\u2715 ')+t;
+}
+function heroImportDecode(raw){
+  var s=String(raw||'').trim();
+  var o=null;
+  if(s.charAt(0)==='{'){ try{o=JSON.parse(s)}catch(e){return{err:'El JSON no se pudo leer.'}} }
+  else {
+    s=s.replace(/[ \t\r\n]+/g,'');
+    if(s.indexOf('EQ1.')!==0)return{err:'Esperaba un archivo .json o un código que empiece con EQ1.'};
+    try{o=JSON.parse(decodeURIComponent(escape(atob(s.slice(4)))))}
+    catch(e){return{err:'El código está incompleto o mal copiado.'}}
+  }
+  if(!o||typeof o!=='object')return{err:'No contiene un personaje.'};
+  if(!o.name)return{err:'El personaje no trae nombre.'};
+  var faltan=[];
+  if(o.classId&&!G.classes.some(function(c){return c.id===o.classId}))faltan.push('clase '+o.classId);
+  if(o.kitId&&!G.kits.some(function(k){return k.id===o.kitId}))faltan.push('kit '+o.kitId);
+  if(o.factionId&&!G.factions.some(function(f){return f.id===o.factionId}))faltan.push('facción '+o.factionId);
+  if(faltan.length)return{err:'Tu data.js no tiene: '+faltan.join(', ')+'. ¿Están en la misma versión?'};
+  var ids={};
+  mstTrunks().forEach(function(tr){ ids[tr.root.id]=1;
+    tr.branches.forEach(function(br){ br.tiers.forEach(function(ti){
+      ti.nodes.forEach(function(n){ ids[n.id]=1 }) }) }) });
+  var marks=(o.marks||[]).filter(function(m){return ids[m]});
+  return {hero:o, marks:marks, perdidas:(o.marks||[]).length-marks.length};
+}
+function heroImportDo(){
+  var ta=document.getElementById('hero-import-code');
+  var r=heroImportDecode(ta?ta.value:'');
+  if(r.err){ heroImportMsg(r.err); return }
+  var o=r.hero, n=o.name, ini=(n.charAt(0)||'?').toUpperCase();
+  var bg=HERO_BG[(n.charCodeAt(0)+n.length)%HERO_BG.length];
+  dbCreate('players',{name:n,initial:ini,bg:bg,fg:'#fff',img:o.img||'',
+    classId:o.classId||null, subclassId:o.subclassId||null, kitId:o.kitId||null,
+    factionId:o.factionId||null, featChosen:(o.featChosen==null?null:o.featChosen),
+    marks:r.marks, marksTotal:(o.marksTotal==null?r.marks.length:o.marksTotal),
+    echo:null, backstory:o.backstory||''});
+  closeModal();
+  var pls=dbGetAll('players'); window.selectedPlayerId=pls[pls.length-1].id;
+  renderPlayers();
+  if(r.perdidas)setTimeout(function(){alert('Importado. '+r.perdidas+' marca(s) del código no existen en tu data.js y se descartaron.')},50);
+}
+
+function renderPlayers(){var el=document.getElementById('players-content');if(!el)return;var pls=dbGetAll('players');if(!pls.length){el.innerHTML='<div class="empty-state"><div class="empty-state-title">No hay jugadores</div><div class="empty-state-desc">Agrega a los h\u00e9roes de tu mesa.</div><div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center"><button class="btn btn-primary" data-action="open-modal" data-type="players">+ Agregar jugador</button><a class="btn" href="creador-personaje.html" target="_blank" rel="noopener" style="text-decoration:none">\uD83E\uDDD9 Crear personaje (jugador)</a><button class="btn" data-action="hero-import">\uD83D\uDCE5 Importar</button></div></div>';return}
   if(!window.selectedPlayerId||!pls.some(function(p){return p.id===window.selectedPlayerId}))window.selectedPlayerId=pls[0].id;
   var sel=dbGetById('players',window.selectedPlayerId)||pls[0];
   var railOpen=!!window.playerRailOpen;
   var h='<div class="section-label">PERSONAJES</div>';
-  h+='<div style="margin-bottom:12px;display:flex;gap:8px;flex-wrap:wrap"><button class="btn btn-primary" data-action="open-modal" data-type="players">+ Agregar jugador</button><a class="btn" href="creador-personaje.html" target="_blank" rel="noopener" style="text-decoration:none">\uD83E\uDDD9 Crear personaje (jugador)</a></div>';
+  h+='<div style="margin-bottom:12px;display:flex;gap:8px;flex-wrap:wrap"><button class="btn btn-primary" data-action="open-modal" data-type="players">+ Agregar jugador</button><a class="btn" href="creador-personaje.html" target="_blank" rel="noopener" style="text-decoration:none">\uD83E\uDDD9 Crear personaje (jugador)</a><button class="btn" data-action="hero-import">\uD83D\uDCE5 Importar</button></div>';
   h+='<div class="pv-wrap">';
   h+='<div class="pv-sheet">'+playerSheetHtml(sel)+'</div>';
   h+='<div class="pv-rail'+(railOpen?' open':'')+'"><button class="pv-rail-toggle" data-action="toggle-player-rail" title="Expandir/colapsar lista">'+(railOpen?'\u00bb':'\u00ab')+'</button>';

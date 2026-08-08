@@ -6,12 +6,113 @@
 <title>Crea tu Héroe — Epic Quest</title>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚔️</text></svg>">
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Gloock&family=Crimson+Pro:ital,wght@0,400;0,600;0,700;1,400&display=swap');
 :root{
   --bg:#faf8f4; --surface:#fff; --border:#e0dcd3; --ink:#2a2620; --ink2:#5a5449; --ink3:#8a8478;
   --accent:#7a5c3e; --accent-light:#f0e9df; --gold:#b8935a; --radius:10px;
+  /* ── alineado con index.html ── */
+  --ink4:#a8a294; --surface2:#f9f8f5; --gold-pale:#f8f5e8; --gold-light:#f0ead0; --gold-ink:#8a6f0a;
+  --serif:'Gloock',Georgia,serif;
+  --font:'Crimson Pro',Georgia,'Times New Roman',serif;
+  --green:#247038; --green-light:#e4f2ea;
+  --blue:#2858a0;  --blue-light:#e6eefc;
+  --purple:#6030a0;--purple-light:#ede6fa;
+  --red:#b02828;   --red-light:#fae8e8;
+  --r:8px; --r-lg:12px;
 }
+h1,h2,.result-name{font-family:var(--serif);font-weight:400;letter-spacing:.01em}
+.sheet,.sheet *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.wrap.wide{max-width:1180px}
+.home-card{background:var(--surface);border:2px solid var(--gold);border-radius:var(--r-lg);padding:22px;margin-bottom:16px}
+.home-name{font-family:var(--serif);font-size:30px;line-height:1.1;margin-bottom:4px}
+.home-sub{font-size:14px;color:var(--ink3);margin-bottom:14px}
+.home-stats{display:flex;gap:10px;flex-wrap:wrap}
+.home-stat{flex:1;min-width:96px;border:1px solid var(--border);border-radius:var(--r);padding:10px 12px;text-align:center;background:var(--surface2)}
+.home-stat .k{font-size:10px;letter-spacing:.8px;color:var(--ink3);font-weight:700}
+.home-stat .v{font-family:var(--serif);font-size:24px;color:var(--ink)}
+.node-pick{width:100%;text-align:left;cursor:pointer}
+.pick-hint{font-size:12.5px;color:var(--gold-ink);font-weight:600;margin:10px 0 4px}
+/* ══════ MAESTRÍAS — compartido entre index.html y creador-personaje.html ══════ */
+.mst{margin-top:26px}
+.mst-top{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:14px}
+.mst-tabs{display:flex;gap:6px;flex-wrap:wrap}
+.mst-tab{padding:7px 14px;border:1px solid var(--border);border-radius:20px;background:var(--surface);
+  font-size:12px;font-weight:700;letter-spacing:.4px;color:var(--ink3);cursor:pointer;white-space:nowrap}
+.mst-tab .n{font-size:10px;color:var(--ink4);font-weight:600;margin-left:5px}
+.mst-tab.active{background:var(--gold-pale);border-color:var(--gold);color:var(--gold)}
+.mst-tab.owned{border-color:var(--gold)}
+.mst-marks{display:flex;align-items:center;gap:8px;padding:6px 12px;background:var(--gold-pale);
+  border:1px solid var(--gold);border-radius:20px;margin-left:auto}
+.mst-marks-l{font-size:10px;font-weight:700;color:var(--gold);letter-spacing:.6px}
+.mst-marks-v{font-family:var(--serif);font-size:17px;font-weight:700;color:var(--ink)}
+.mst-mbtn{border:1px solid var(--gold);background:var(--surface);color:var(--gold);border-radius:50%;
+  width:24px;height:24px;font-size:13px;line-height:1;cursor:pointer;padding:0}
+
+.mst-root{display:flex;gap:14px;align-items:flex-start;padding:13px 15px;border-radius:var(--r-lg);
+  border:1px solid var(--border);background:var(--surface2);margin-bottom:16px}
+.mst-root.on{border-color:var(--gold);background:var(--gold-pale)}
+.mst-root.can{cursor:pointer;border-style:dashed}
+.mst-root-body{flex:1;min-width:0}
+.mst-root-name{font-family:var(--serif);font-size:16px;font-weight:700;color:var(--ink)}
+.mst-root-eff{font-size:12.5px;color:var(--ink3);line-height:1.55;margin-top:3px}
+
+.mst-cols{display:grid;gap:14px}
+.mst-col{border:1px solid var(--border);border-radius:var(--r-lg);background:var(--surface);overflow:hidden;
+  display:flex;flex-direction:column}
+.mst-col.locked{opacity:.42}
+.mst-col-head{padding:11px 13px;background:var(--surface2);border-bottom:1px solid var(--border)}
+.mst-col-name{font-family:var(--serif);font-size:16px;font-weight:700;color:var(--ink);line-height:1.15}
+.mst-col-sub{font-size:11px;color:var(--ink4);font-style:italic}
+.mst-col-chips{display:flex;gap:5px;flex-wrap:wrap;margin-top:7px}
+.mst-chip{font-size:9.5px;font-weight:700;letter-spacing:.4px;padding:2px 7px;border-radius:9px;
+  background:var(--surface);border:1px solid var(--border);color:var(--ink3)}
+.mst-chip.gold{background:var(--gold-pale);border-color:var(--gold);color:var(--gold)}
+.mst-low{font-size:11px;color:var(--ink3);line-height:1.45;padding:8px 13px;border-bottom:1px solid var(--border);
+  background:var(--gold-pale)}
+.mst-low b{color:var(--gold);font-size:10px;letter-spacing:.5px;display:block;margin-bottom:2px}
+
+.mst-tier{padding:9px 13px;border-bottom:1px solid var(--border)}
+.mst-tier:last-child{border-bottom:0}
+.mst-tier-head{display:flex;align-items:baseline;gap:7px;margin-bottom:7px}
+.mst-tier-t{font-size:10.5px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;color:var(--ink4)}
+.mst-gate{font-size:9px;font-weight:700;padding:1px 6px;border-radius:8px;background:var(--surface2);
+  border:1px solid var(--border);color:var(--ink4);white-space:nowrap}
+.mst-gate.open{border-color:var(--gold);color:var(--gold);background:var(--gold-pale)}
+
+.mst-node{border:1px solid var(--border);border-radius:var(--r);padding:8px 10px;margin-bottom:6px;
+  background:var(--surface2);cursor:not-allowed;position:relative}
+.mst-node:last-child{margin-bottom:0}
+.mst-node.can{cursor:pointer;background:var(--surface);border-style:dashed}
+.mst-node.can:hover{border-color:var(--gold);background:var(--gold-pale)}
+.mst-node.own{background:var(--gold-pale);border-color:var(--gold);cursor:pointer}
+.mst-node.lock{opacity:.45}
+.mst-node-head{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.mst-node-name{font-size:13px;font-weight:700;color:var(--ink);flex:1;min-width:90px}
+.mst-node-eff{font-size:11.5px;color:var(--ink3);line-height:1.5;margin-top:3px}
+.mst-node-fire{font-size:11px;color:var(--ink2);line-height:1.45;margin-top:5px;padding:5px 7px;
+  border-radius:6px;background:var(--surface);border-left:2px solid var(--gold)}
+.mst-node-fire b{color:var(--gold);font-size:9.5px;letter-spacing:.5px}
+.mst-tick{width:16px;height:16px;border-radius:50%;border:1.5px solid var(--border);flex:none;
+  display:flex;align-items:center;font-size:9px;justify-content:center;color:#fff}
+.mst-node.own .mst-tick,.mst-root.on .mst-tick{background:var(--gold);border-color:var(--gold)}
+
+.pl{font-size:8.5px;font-weight:700;letter-spacing:.5px;padding:1px 6px;border-radius:8px;flex:none}
+.pl-avelir{background:var(--green-light);color:var(--green)}
+.pl-veil{background:var(--blue-light);color:var(--blue)}
+.pl-hold{background:var(--purple-light);color:var(--purple)}
+.pl-inter{background:var(--red-light);color:var(--red)}
+.mst-tag{font-size:8.5px;font-weight:700;letter-spacing:.5px;padding:1px 6px;border-radius:8px;
+  background:var(--ink);color:#fff;flex:none}
+
+.mst-sum{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+  padding:12px 14px;border:1px solid var(--gold);border-radius:var(--r-lg);background:var(--gold-pale);margin-bottom:16px}
+.mst-sum-k{font-size:9.5px;font-weight:700;letter-spacing:.7px;color:var(--gold)}
+.mst-sum-v{font-family:var(--serif);font-size:15px;color:var(--ink);line-height:1.35;margin-top:2px}
+.mst-sum-v small{font-family:var(--font);font-size:11.5px;color:var(--ink3);display:block}
+@media(max-width:900px){.mst-cols{grid-template-columns:1fr!important}}
+
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:var(--bg);color:var(--ink);line-height:1.5;-webkit-text-size-adjust:100%}
+body{font-family:var(--font);background:var(--bg);color:var(--ink);line-height:1.5;-webkit-text-size-adjust:100%}
 .wrap{max-width:640px;margin:0 auto;padding:20px 16px 60px}
 .progress{height:4px;background:var(--border);border-radius:2px;margin-bottom:24px;overflow:hidden}
 .progress-fill{height:100%;background:var(--gold);transition:width .3s}
@@ -107,7 +208,7 @@ input[type=text]:focus{outline:none;border-color:var(--gold)}
 </style>
 </head>
 <body>
-<div class="wrap">
+<div class="wrap" id="wrap">
   <div class="progress no-print"><div class="progress-fill" id="progress"></div></div>
   <div id="app" class="screen"></div>
 </div>
@@ -116,7 +217,7 @@ input[type=text]:focus{outline:none;border-color:var(--gold)}
 <script>
 /* ══════════ ESTADO ══════════ */
 // Reglas de economía traídas del Hub (fuente de verdad; no hardcodear en el texto)
-GAMEDATA.rules = { hpBase:10, aenPerTurn:2, actionsPerTurn:2, movementPerTurn:1 };
+GAMEDATA.rules = Object.assign({ hpBase:10, aenPerTurn:2, actionsPerTurn:2, movementPerTurn:1 }, GAMEDATA.rules||{});
 
 var state = {
   step: 0,
@@ -124,8 +225,10 @@ var state = {
   factionScores: {}, factionId: null, factionFeatIdx: null,
   classScores: {}, classId: null,
   kitScores: {}, kitId: null,
+  trunkId: null, marks: [], marksTotal: 1,
   _edit: null
 };
+var MARCAS_AL_NACER = 1;
 
 /* ══════════ DEFINICIÓN DEL TEST ══════════ */
 // F1: qué guía a tu personaje → apunta a facción
@@ -322,15 +425,21 @@ function classAbilitiesHtml(c){
 /* ══════════ FLUJO DE PASOS ══════════ */
 // Pasos: 0=bienvenida 1=nombre 2=facción-q1 3=facción-feat 4=facción-result
 //        5..8=clase-q(4) 9=clase-result 10..12=kit-q(3) 13=kit-result 14=resumen
-var TOTAL_STEPS = 17;
+var TOTAL_STEPS = 19;
 
 function render(){
   var el=document.getElementById('app');
   var s=state.step;
-  if(s!==16)state._edit=null;
-  var pct=Math.round((s/(TOTAL_STEPS-1))*100);
-  document.getElementById('progress').style.width=pct+'%';
+  if(s!==18)state._edit=null;
+  var bar=document.getElementById('progress').parentNode;
+  var wrap=document.getElementById('wrap');
+  var lineal=(typeof s==='number');
+  bar.style.display=lineal?'':'none';
+  if(lineal)document.getElementById('progress').style.width=Math.round((s/(TOTAL_STEPS-1))*100)+'%';
+  wrap.className='wrap'+(s==='tree'?' wide':'');
   var h='';
+  if(s==='home'){el.innerHTML=renderHome();window.scrollTo(0,0);return}
+  if(s==='tree'){el.innerHTML=renderPlayerTree();window.scrollTo(0,0);return}
   if(s===0) h=renderWelcome();
   else if(s===1) h=renderName();
   else if(s===2) h=renderFactionQ1();
@@ -340,7 +449,9 @@ function render(){
   else if(s===9) h=renderClassResult();
   else if(s>=10&&s<=14) h=renderKitQ(s-10);
   else if(s===15) h=renderKitResult();
-  else if(s===16) h=renderSummary();
+  else if(s===16) h=renderTrunkQ();
+  else if(s===17) h=renderTrunkResult();
+  else if(s===18) h=renderSummary();
   el.innerHTML=h;
   window.scrollTo(0,0);
 }
@@ -534,16 +645,471 @@ function renderKitResult(){
       '</div>';
   });
   h+='</details>'+
-    '<div class="btn-row"><button class="btn btn-ghost" onclick="go(10)">← Rehacer test</button><button class="btn" onclick="go(16)">Ver mi héroe →</button></div>';
+    '<div class="btn-row"><button class="btn btn-ghost" onclick="go(10)">← Rehacer test</button><button class="btn" onclick="go(16)">Cómo peleas →</button></div>';
   return h;
 }
 function switchKit(id){state.kitId=id;render()}
+
+
+/* ══════════ PUENTE PARA EL MOTOR COMPARTIDO ══════════ */
+var MSTH = {
+  data:     function(){ return GAMEDATA },
+  esc:      function(s){ return esc(s) },
+  get:      function(){ return {marks:state.marks, marksTotal:state.marksTotal} },
+  set:      function(pid, obj){
+              if(obj.marks !== undefined) state.marks = obj.marks;
+              if(obj.marksTotal !== undefined) state.marksTotal = obj.marksTotal;
+              saveHero();
+            },
+  rerender: function(){ render() }
+};
+
+/* ══════════════════════════════════════════════════════════════════════
+   MOTOR DE MAESTRÍAS — compartido entre index.html y creador-personaje.html
+   La página anfitriona define MSTH antes de este bloque:
+     MSTH.data()        -> GAMEDATA
+     MSTH.get(pid)      -> {marks:[ids], marksTotal:n}
+     MSTH.set(pid,obj)  -> guarda {marks} y/o {marksTotal}
+     MSTH.rerender()    -> vuelve a pintar
+     MSTH.esc(s)        -> escapa html
+   ══════════════════════════════════════════════════════════════════════ */
+var MST_TRUNK = {};
+var MST_PLANE = {avelir:'AVELIR', veil:'VELO', hold:'CUENCO', inter:'INTERPLANO'};
+
+function mstTrunks(){ var g = MSTH.data(); return (g && g.masteryTrunks) ? g.masteryTrunks : [] }
+function mstEsc(s){ return MSTH.esc(s) }
+
+/* ── puertas ── */
+function gateOk(tier, own){
+  var have = 0;
+  tier.nodes.forEach(function(n){ if(own[n.id]) have++ });
+  if(tier.gate === 'all') return have === tier.nodes.length;
+  if(tier.gate === 'any') return have >= 1;
+  return have >= Number(tier.gate);
+}
+function gateLabel(tier){
+  if(tier.gate === 'all') return tier.nodes.length === 1 ? '1 de 1' : 'los ' + tier.nodes.length;
+  if(tier.gate === 'any') return '1 de ' + tier.nodes.length;
+  return tier.gate + ' de ' + tier.nodes.length;
+}
+
+/* ── localizar un nodo por id ── */
+function mstFind(nodeId){
+  var hit = null;
+  mstTrunks().forEach(function(tr){
+    if(tr.root.id === nodeId){ hit = {tr:tr, root:1}; return }
+    tr.branches.forEach(function(br){
+      br.tiers.forEach(function(ti, ix){
+        ti.nodes.forEach(function(n){ if(n.id === nodeId) hit = {tr:tr, br:br, ti:ti, ix:ix, n:n} });
+      });
+    });
+  });
+  return hit;
+}
+
+/* ── estado derivado ── */
+function deriveMastery(rec){
+  rec = rec || {};
+  var own = {};
+  (rec.marks || []).forEach(function(id){ own[id] = 1 });
+  var out = { own:own, spent:Object.keys(own).length,
+              total:(rec.marksTotal == null ? 0 : rec.marksTotal),
+              roots:{}, branches:{}, dice:{}, lows:[], reacts:[], legends:[], actives:[] };
+  mstTrunks().forEach(function(tr){
+    var rootOn = !!own[tr.root.id];
+    if(rootOn) out.roots[tr.id] = 1;
+    tr.branches.forEach(function(br){
+      var st = { open:rootOn, owned:0, tiers:[], mastery:0, die:br.die, low:null };
+      var prevOk = rootOn;
+      br.tiers.forEach(function(ti){
+        var unlocked = prevOk;
+        ti.nodes.forEach(function(n){
+          if(!own[n.id]) return;
+          st.owned++;
+          if(n.mast)   st.mastery = 1;
+          if(n.react)  out.reacts.push({b:br.name, n:n});
+          if(n.legend) out.legends.push({b:br.name, n:n});
+          if(n.active) out.actives.push({b:br.name, n:n});
+        });
+        st.tiers.push({ unlocked:unlocked, done:gateOk(ti, own) });
+        prevOk = unlocked && gateOk(ti, own);
+      });
+      if(st.owned > 0){ st.low = br.low; out.lows.push({b:br.name, low:br.low, die:br.die}) }
+      out.branches[br.id] = st;
+      if(st.mastery)   out.dice[br.id] = '3d12';
+      else if(rootOn)  out.dice[br.id] = '2d12';
+    });
+  });
+  return out;
+}
+
+/* ── ¿comprable ahora? ── */
+function canBuy(d, tr, br, ix){
+  if(!br) return !d.own[tr.root.id];
+  if(!d.own[tr.root.id]) return false;
+  return d.branches[br.id].tiers[ix].unlocked;
+}
+
+/* ── comprar / soltar, con cascada ── */
+function masteryToggle(pid, nodeId){
+  var rec = MSTH.get(pid);
+  if(!rec) return;
+  var marks = (rec.marks || []).slice();
+  var i = marks.indexOf(nodeId);
+  if(i > -1){
+    marks.splice(i, 1);
+    var guard = 0;
+    while(guard++ < 60){
+      var d = deriveMastery({marks:marks, marksTotal:rec.marksTotal});
+      var drop = null;
+      mstTrunks().forEach(function(tr){
+        if(!d.own[tr.root.id]){
+          tr.branches.forEach(function(br){ br.tiers.forEach(function(ti){
+            ti.nodes.forEach(function(n){ if(d.own[n.id] && !drop) drop = n.id }) }) });
+        } else {
+          tr.branches.forEach(function(br){
+            var st = d.branches[br.id];
+            br.tiers.forEach(function(ti, ix){
+              if(st.tiers[ix].unlocked) return;
+              ti.nodes.forEach(function(n){ if(d.own[n.id] && !drop) drop = n.id });
+            });
+          });
+        }
+      });
+      if(!drop) break;
+      marks.splice(marks.indexOf(drop), 1);
+    }
+  } else {
+    var d0 = deriveMastery(rec);
+    if(d0.total - d0.spent <= 0) return;
+    var f = mstFind(nodeId);
+    if(!f) return;
+    if(!canBuy(d0, f.tr, f.br, f.ix)) return;
+    marks.push(nodeId);
+  }
+  MSTH.set(pid, {marks:marks});
+  MSTH.rerender();
+}
+function adjustMarks(pid, delta){
+  var rec = MSTH.get(pid);
+  if(!rec) return;
+  var t = Math.max(0, Math.min(60, (rec.marksTotal == null ? 0 : rec.marksTotal) + delta));
+  if(delta < 0 && t < (rec.marks || []).length) return;
+  MSTH.set(pid, {marksTotal:t});
+  MSTH.rerender();
+}
+
+/* ── un nodo ── */
+function mstNodeHtml(pid, d, tr, br, ix, n, ro){
+  var owned = !!d.own[n.id];
+  var open  = canBuy(d, tr, br, ix);
+  var can   = !owned && open && (d.total - d.spent) > 0;
+  var cls   = 'mst-node' + (owned ? ' own' : (open ? ' can' : ' lock'));
+  var act   = (!ro && (owned || can))
+            ? ' data-action="mastery-toggle" data-id="' + pid + '" data-node="' + n.id + '"' : '';
+  var h = '<div class="' + cls + '"' + act + '>';
+  h += '<div class="mst-node-head"><span class="mst-tick">' + (owned ? '✓' : '') + '</span>';
+  h += '<span class="mst-node-name">' + mstEsc(n.name) + '</span>';
+  if(n.react)  h += '<span class="mst-tag">REACCIÓN</span>';
+  if(n.mast)   h += '<span class="mst-tag">MAESTRÍA</span>';
+  if(n.legend) h += '<span class="mst-tag">LEGENDARIA</span>';
+  h += '<span class="pl pl-' + n.plane + '">' + (MST_PLANE[n.plane] || n.plane) + '</span></div>';
+  h += '<div class="mst-node-eff">' + mstEsc(n.eff) + '</div>';
+  if(n.fire)   h += '<div class="mst-node-fire"><b>AL 12 · ' + mstEsc(n.die || '') + '</b><br>' + mstEsc(n.fire) + '</div>';
+  if(n.active) h += '<div class="mst-node-fire"><b>ACTIVA</b><br>' + mstEsc(n.active) + '</div>';
+  if(n.bet)    h += '<div class="mst-node-fire"><b>LA APUESTA</b><br>' + mstEsc(n.bet) + '</div>';
+  if(n.edge)   h += '<div class="mst-node-fire"><b>BORDE</b><br>No saca de combate a criaturas duras ni a jefes: pierden una acción.</div>';
+  return h + '</div>';
+}
+
+/* ── el árbol completo ──
+   opts: {readonly, showMarks, showTabs, trunkId} */
+function masteryTreeHtml(pid, opts){
+  opts = opts || {};
+  if(!mstTrunks().length) return '';
+  var rec = MSTH.get(pid);
+  if(!rec) return '';
+  var ro  = !!opts.readonly;
+  var d   = deriveMastery(rec);
+  var tid = opts.trunkId || MST_TRUNK[pid] || mstTrunks()[0].id;
+  var tr  = mstTrunks().filter(function(t){ return t.id === tid })[0] || mstTrunks()[0];
+  var free = d.total - d.spent;
+  var h = '';
+
+  if(opts.showTabs !== false){
+    h += '<div class="mst-top"><div class="mst-tabs">';
+    mstTrunks().forEach(function(t){
+      var cnt = d.own[t.root.id] ? 1 : 0;
+      t.branches.forEach(function(b){ cnt += d.branches[b.id].owned });
+      h += '<div class="mst-tab' + (t.id === tr.id ? ' active' : '') + (cnt ? ' owned' : '') +
+           '" data-action="mastery-trunk" data-id="' + pid + '" data-trunk="' + t.id + '">' +
+           mstEsc(t.name) + '<span class="n">' + (cnt || '') + '</span></div>';
+    });
+    h += '</div>';
+    h += '<div class="mst-marks"><span class="mst-marks-l">MARCAS LIBRES</span>' +
+         '<span class="mst-marks-v">' + free + '</span>';
+    if(opts.showMarks){
+      h += '<button class="mst-mbtn" data-action="sub-mark" data-id="' + pid + '">−</button>' +
+           '<button class="mst-mbtn" data-action="add-mark" data-id="' + pid + '">+</button>';
+    } else {
+      h += '<span style="font-size:11px;color:var(--ink3)">de ' + d.total + '</span>';
+    }
+    h += '</div></div>';
+  }
+
+  /* resumen de lo que cambió en la mesa */
+  if(d.spent){
+    var dice = [];
+    mstTrunks().forEach(function(t){
+      if(!d.own[t.root.id]) return;
+      var m = [];
+      t.branches.forEach(function(b){ if(d.branches[b.id].mastery) m.push(b.name + ' 3d12 · firma ' + b.die) });
+      dice.push(t.name + ' 2d12' + (m.length ? ' → ' + m.join(' • ') : ''));
+    });
+    var lows = d.lows.map(function(l){ return l.low.name + ' (' + l.b + ')' });
+    var nm = function(a){ return a.map(function(x){ return x.n.name }).join(' • ') };
+    h += '<div class="mst-sum">' +
+      '<div><div class="mst-sum-k">DADOS DE ATAQUE</div><div class="mst-sum-v">' + (dice.length ? mstEsc(dice.join(' • ')) : '1d12') + '</div></div>' +
+      '<div><div class="mst-sum-k">FIRMAS DE BANDA 1-4</div><div class="mst-sum-v">' + (lows.length ? mstEsc(lows.join(' • ')) : '—') + '</div></div>' +
+      '<div><div class="mst-sum-k">REACCIONES</div><div class="mst-sum-v">' + (d.reacts.length ? mstEsc(nm(d.reacts)) : '—') + '<small>una por ronda, gratis</small></div></div>' +
+      '<div><div class="mst-sum-k">INTERPLANO</div><div class="mst-sum-v">' + (d.legends.length ? mstEsc(nm(d.legends)) : '—') + '<small>una por sesión</small></div></div>' +
+      '</div>';
+  }
+
+  /* raíz */
+  var rootOn = !!d.own[tr.root.id];
+  var rootCan = !ro && (rootOn || free > 0);
+  h += '<div class="mst-root' + (rootOn ? ' on' : (rootCan ? ' can' : '')) + '"' +
+       (rootCan ? ' data-action="mastery-toggle" data-id="' + pid + '" data-node="' + tr.root.id + '"' : '') + '>';
+  h += '<span class="mst-tick" style="margin-top:3px">' + (rootOn ? '✓' : '') + '</span>';
+  h += '<div class="mst-root-body"><div class="mst-root-name">' + mstEsc(tr.root.name) +
+       ' <span class="pl pl-' + tr.root.plane + '">' + MST_PLANE[tr.root.plane] + '</span>' +
+       ' <span class="mst-tag">RAÍZ</span></div>';
+  h += '<div class="mst-root-eff">' + mstEsc(tr.root.eff) + '</div></div>';
+  h += '<div style="text-align:right;flex:none"><div class="mst-sum-k">' + mstEsc(tr.sub) + '</div>' +
+       '<div class="mst-sum-v">' + tr.root.dice + 'd12</div></div></div>';
+
+  /* ramas */
+  h += '<div class="mst-cols" style="grid-template-columns:repeat(' + tr.branches.length + ',1fr)">';
+  tr.branches.forEach(function(br){
+    var st = d.branches[br.id];
+    h += '<div class="mst-col' + (rootOn ? '' : ' locked') + '">';
+    h += '<div class="mst-col-head"><div class="mst-col-name">' + mstEsc(br.name) + '</div>' +
+         '<div class="mst-col-sub">' + mstEsc(br.sub || '') + '</div>' +
+         '<div class="mst-col-chips"><span class="mst-chip' + (st.owned ? ' gold' : '') + '">' + st.owned + ' nodos</span>' +
+         '<span class="mst-chip' + (st.mastery ? ' gold' : '') + '">' + (st.mastery ? '3d12' : (rootOn ? '2d12' : '1d12')) + '</span>' +
+         '<span class="mst-chip' + (st.owned ? ' gold' : '') + '">firma ' + mstEsc(br.die) + '</span></div></div>';
+    if(st.owned && br.low)
+      h += '<div class="mst-low"><b>BANDA 1-4 · GRATIS</b>' + mstEsc(br.low.name) + ' — ' + mstEsc(br.low.eff) + '</div>';
+    br.tiers.forEach(function(ti, ix){
+      var t = st.tiers[ix];
+      h += '<div class="mst-tier"><div class="mst-tier-head">' +
+           '<span class="mst-tier-t">' + mstEsc(ti.t) + '</span>' +
+           '<span class="mst-gate' + (t.done ? ' open' : '') + '">' + gateLabel(ti) + (t.done ? ' ✓' : '') + '</span></div>';
+      ti.nodes.forEach(function(n){ h += mstNodeHtml(pid, d, tr, br, ix, n, ro) });
+      h += '</div>';
+    });
+    h += '</div>';
+  });
+  return h + '</div>';
+}
+
+/* ── despachador compartido: la página anfitriona lo llama desde su click handler ── */
+function mstHandleAction(a, el){
+  if(a === 'mastery-trunk'){ MST_TRUNK[el.getAttribute('data-id')] = el.getAttribute('data-trunk'); MSTH.rerender(); return true }
+  if(a === 'mastery-toggle'){ masteryToggle(el.getAttribute('data-id'), el.getAttribute('data-node')); return true }
+  if(a === 'add-mark'){ adjustMarks(el.getAttribute('data-id'), 1); return true }
+  if(a === 'sub-mark'){ adjustMarks(el.getAttribute('data-id'), -1); return true }
+  return false;
+}
+
+
+document.addEventListener('click', function(e){
+  var t = e.target;
+  var el = t && t.closest ? t.closest('[data-action]') : null;
+  if(!el) return;
+  mstHandleAction(el.getAttribute('data-action'), el);
+});
+
+/* ══════════ PERSISTENCIA — el creador es la app del jugador ══════════ */
+var HERO_KEY = 'eq_hero_v1';
+function heroPayload(){
+  return { v:1, name:state.name||'', factionId:state.factionId, featChosen:state.factionFeatIdx,
+           classId:state.classId, kitId:state.kitId, trunkId:state.trunkId,
+           marks:state.marks.slice(), marksTotal:state.marksTotal };
+}
+function saveHero(){ try{ localStorage.setItem(HERO_KEY, JSON.stringify(heroPayload())) }catch(e){} }
+function loadHero(){ try{ var s=localStorage.getItem(HERO_KEY); return s?JSON.parse(s):null }catch(e){ return null } }
+function applyHero(o){
+  if(!o) return false;
+  state.name = o.name||''; state.factionId = o.factionId||null;
+  state.factionFeatIdx = (o.featChosen==null?null:o.featChosen);
+  state.classId = o.classId||null; state.kitId = o.kitId||null; state.trunkId = o.trunkId||null;
+  state.marks = o.marks||[]; state.marksTotal = (o.marksTotal==null?MARCAS_AL_NACER:o.marksTotal);
+  return true;
+}
+function nuevoHeroe(){
+  if(!confirm('Esto borra a ' + (state.name||'tu héroe') + ' de este navegador. ¿Descargaste tu .json?')) return;
+  try{ localStorage.removeItem(HERO_KEY) }catch(e){}
+  state.name=''; state.factionId=null; state.factionFeatIdx=null; state.classId=null; state.kitId=null;
+  state.trunkId=null; state.marks=[]; state.marksTotal=MARCAS_AL_NACER;
+  state.factionScores={}; state.classScores={}; state.kitScores={};
+  state._classAns=null; state._kitAns=null;
+  go(0);
+}
+function descargarHeroe(){
+  var o = heroPayload();
+  var blob = new Blob([JSON.stringify(o,null,2)], {type:'application/json'});
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = (state.name||'heroe').normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-zA-Z0-9_-]+/g,'_') + '.json';
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  setTimeout(function(){ URL.revokeObjectURL(a.href) }, 1500);
+}
+
+/* ══════════ PASO 5 · ESPECIALIZACIÓN DE ARMA ══════════ */
+var TRUNK_ES = {
+  grip: {t:'Armas de mano', d:'Espada, hacha, escudo, martillo. Lo que se sostiene y se blande.'},
+  aim:  {t:'Armas a distancia', d:'Arco, lanzamiento, emboscada. Lo que sale de tus manos y llega lejos.'},
+  form: {t:'El cuerpo como arma', d:'Puños, agilidad, canalización interna. No cargas nada porque no lo necesitas.'},
+  focus:{t:'Canalización', d:'Bastón, varita, instrumento. Un objeto que no golpea: conduce.'}
+};
+var TRUNK_BY_KIT = {asalto:'grip',filo:'grip',dagas:'grip',corsario:'grip',bastion:'grip',
+  gladiador:'grip',berserker_kit:'grip',juramento:'grip',
+  halcon:'aim',cuervo:'aim', colmillo:'form',zen:'form',
+  conducto:'focus',crisol:'focus',raiz:'focus'};
+var TRUNK_BY_CLASS = {fury:'grip',knight:'grip',shadow:'grip',
+  archer:'aim',inventor:'aim', monk:'form',
+  wizard:'focus',warlock:'focus',druid:'focus',bard:'focus'};
+function getTrunk(id){ return mstTrunks().filter(function(t){return t.id===id})[0] }
+function suggestedTrunk(){ return TRUNK_BY_KIT[state.kitId] || TRUNK_BY_CLASS[state.classId] || 'grip' }
+/* todos los nodos comprados, agrupados por rama */
+function nodosComprados(){
+  var t = getTrunk(state.trunkId); if(!t) return [];
+  var out = [];
+  t.branches.forEach(function(br){
+    br.tiers.forEach(function(ti){ ti.nodes.forEach(function(n){
+      if(state.marks.indexOf(n.id) > -1) out.push({br:br, n:n});
+    })});
+  });
+  return out;
+}
+
+function renderTrunkQ(){
+  var sug = suggestedTrunk();
+  var h = '<div class="step-label">Paso 5 · Cómo peleas</div><h2>¿Qué llevas en las manos?</h2>'+
+    '<div class="teach">Tu héroe ya tiene un <strong>ataque base gratis</strong>: no cuesta Aen, no falla nunca. Tiras <strong>1d12</strong> y lees la banda. '+
+    'Especializarte cambia ese dado a <strong>2d12 quedándote con el mejor</strong>, para siempre. '+
+    'Es la única decisión de maestría que tomas hoy: naces con <strong>1 marca</strong> y se va entera en el tronco. '+
+    'Las ramas se abren jugando.</div>';
+  mstTrunks().forEach(function(t){
+    var es = TRUNK_ES[t.id]||{t:t.sub,d:''};
+    var ramas = t.branches.map(function(b){return b.name}).join(' · ');
+    h += '<button class="opt'+(state.trunkId===t.id?' sel':'')+'" onclick="pickTrunk(\''+t.id+'\')"><strong>'+esc(t.name)+'</strong> — '+esc(es.t)+
+         (t.id===sug?' <span class="tag">te queda</span>':'')+
+         '<span class="opt-sub">'+esc(es.d)+'<br><span style="color:var(--gold-ink);font-weight:600">Ramas: '+esc(ramas)+'</span></span></button>';
+  });
+  h += '<div class="btn-row"><button class="btn btn-ghost" onclick="go(15)">← Atrás</button></div>';
+  return h;
+}
+function pickTrunk(id){
+  var t = getTrunk(id); if(!t) return;
+  state.trunkId = id; state.marks = [t.root.id]; state.marksTotal = MARCAS_AL_NACER;
+  go(17);
+}
+
+function branchCardHtml(br){
+  var n1 = (br.tiers && br.tiers[0] && br.tiers[0].nodes) ? br.tiers[0].nodes : [];
+  var h = '<div class="explore-item"><div class="explore-item-name">'+esc(br.name)+
+    '<span class="affinity">firma '+esc(br.die)+'</span></div>'+
+    '<div class="explore-item-desc">'+esc(br.sub||'')+'</div>';
+  if(br.low) h += '<div class="concept"><strong>Banda 1-4 · gratis al entrar a esta rama:</strong> '+esc(br.low.name)+' — '+esc(br.low.eff)+'</div>';
+  if(n1.length){
+    h += '<div class="abil-mini" style="margin-top:6px">Primer escalón · '+esc(br.tiers[0].t)+'</div>';
+    n1.forEach(function(n){
+      var mio = state.marks.indexOf(n.id) > -1;
+      h += '<div class="abil" style="margin-top:6px;padding:9px 11px'+(mio?';border-color:var(--gold);background:var(--gold-pale)':'')+'">'+
+        '<div class="abil-head"><span class="abil-name">'+esc(n.name)+'</span>'+
+        '<span class="abil-tag base">'+(MST_PLANE[n.plane]||n.plane)+'</span>'+
+        (mio?'<span class="abil-tag heroica">✓ TUYO</span>':'')+'</div>'+
+        '<div class="abil-desc">'+esc(n.eff)+'</div></div>';
+    });
+  }
+  return h + '</div>';
+}
+function renderTrunkResult(){
+  var t = getTrunk(state.trunkId);
+  if(!t){ state.trunkId = suggestedTrunk(); t = getTrunk(state.trunkId); state.marks=[t.root.id] }
+  var es = TRUNK_ES[t.id]||{t:t.sub,d:''};
+  var h = '<div class="step-label">Paso 5 · ¡Tu tronco!</div>'+
+    '<div class="result"><div class="result-icon">⚔️</div>'+
+    '<div class="result-name">'+esc(t.root.name)+'</div>'+
+    '<div class="result-desc">'+esc(t.name)+' — '+esc(es.t)+'</div>'+
+    '<div class="result-meta">Ataque base: 2d12, te quedas con el mejor</div></div>'+
+    '<div class="concept"><strong>Ahí se fue tu única marca.</strong> Un héroe nuevo empieza con 1. '+
+    'Las demás las da tu Story Master en la mesa, y con ellas se compran los nodos de las ramas.</div>'+
+    '<h2 style="margin-top:24px">El camino que tienes enfrente</h2>'+
+    '<p class="lead">Todavía no eliges rama. Esto es lo que se abre cuando tengas más marcas.</p>';
+  t.branches.forEach(function(br){ h += branchCardHtml(br) });
+  h += '<details class="explore"><summary>Ver los otros troncos</summary>';
+  mstTrunks().forEach(function(o){
+    if(o.id === t.id) return;
+    var oes = TRUNK_ES[o.id]||{t:o.sub,d:''};
+    h += '<div class="explore-item"><div class="explore-item-name">'+esc(o.name)+' <span style="font-weight:400;font-size:12px">'+esc(oes.t)+'</span></div>'+
+         '<div class="explore-item-desc">'+esc(o.root.eff)+'</div>'+
+         '<div class="abil-mini">Ramas: '+esc(o.branches.map(function(b){return b.name}).join(' · '))+'</div>'+
+         '<button class="btn btn-ghost" style="margin-top:8px;width:100%" onclick="pickTrunk(\''+o.id+'\')">Elegir '+esc(o.name)+'</button></div>';
+  });
+  h += '</details><div class="btn-row"><button class="btn btn-ghost" onclick="go(16)">← Cambiar tronco</button>'+
+       '<button class="btn" onclick="go(18)">Ver mi héroe →</button></div>';
+  return h;
+}
+function switchTrunk(id){ pickTrunk(id); state.step=18; render() }
+
+/* ══════════ LA APP DEL JUGADOR ══════════ */
+function renderHome(){
+  var c = getClass(state.classId), k = getKit(state.kitId), fac = getFaction(state.factionId), t = getTrunk(state.trunkId);
+  var d = deriveMastery(MSTH.get());
+  var totalHP = (GAMEDATA.rules.hpBase||10) + (k?(k.hpBonus||0):0);
+  var h = '<div class="home-card"><div class="home-name">'+esc(state.name||'Tu héroe')+'</div>'+
+    '<div class="home-sub">'+(c?esc(c.name):'—')+(k?' · '+esc(k.name):'')+(fac?' · '+esc(fac.icon)+' '+esc(fac.name):'')+'</div>'+
+    '<div class="home-stats">'+
+      '<div class="home-stat"><div class="k">HP</div><div class="v">'+totalHP+'</div></div>'+
+      '<div class="home-stat"><div class="k">AEN</div><div class="v">+'+GAMEDATA.rules.aenPerTurn+'</div></div>'+
+      '<div class="home-stat"><div class="k">ATAQUE BASE</div><div class="v">'+(t?'2d12':'1d12')+'</div></div>'+
+      '<div class="home-stat"><div class="k">MARCAS LIBRES</div><div class="v">'+(d.total-d.spent)+'</div></div>'+
+    '</div></div>';
+  if(t){
+    h += '<div class="teach"><strong>'+esc(t.name)+' · '+esc(t.root.name)+'</strong><br>'+esc(t.root.eff)+'</div>';
+  }
+  if(d.total - d.spent > 0){
+    h += '<div class="concept"><strong>Tienes '+(d.total-d.spent)+' marca(s) sin gastar.</strong> Entra a tu árbol y compra lo que se te abrió.</div>';
+  }
+  h += '<div class="btn-row">'+
+       '<button class="btn" onclick="go(\'tree\')">🌳 Mi árbol</button>'+
+       '<button class="btn btn-ghost" onclick="go(18)">📋 Mi hoja</button></div>'+
+       '<div class="btn-row"><button class="btn btn-ghost" onclick="descargarHeroe()">⬇ Descargar .json</button>'+
+       '<button class="btn btn-ghost" onclick="nuevoHeroe()">↺ Otro héroe</button></div>'+
+       '<p class="hint" style="margin-top:14px">Tu héroe vive en este navegador. Si cambias de aparato, descarga el .json y ábrelo desde allá — o mándaselo a tu Story Master.</p>';
+  return h;
+}
+function renderPlayerTree(){
+  var t = getTrunk(state.trunkId);
+  var d = deriveMastery(MSTH.get());
+  var h = '<div class="step-label">Tu árbol</div><h2>'+esc(state.name||'Tu héroe')+'</h2>'+
+    '<p class="lead">Cuando tu Story Master te dé marcas nuevas, súbelas con el <strong>+</strong> y gástalas aquí. '+
+    'Puedes soltar un nodo con otro clic — lo que dependía de él se suelta también.</p>'+
+    masteryTreeHtml('me', {showMarks:true, trunkId:state.trunkId||undefined})+
+    '<div class="btn-row"><button class="btn btn-ghost" onclick="go(\'home\')">← Volver</button>'+
+    '<button class="btn btn-ghost" onclick="descargarHeroe()">⬇ Descargar .json</button></div>';
+  return h;
+}
 
 /* ══════════ RESUMEN ══════════ */
 function renderSummary(){
   var fac=getFaction(state.factionId), c=getClass(state.classId), k=getKit(state.kitId);
   var ft=fac?fac.feats[state.factionFeatIdx]:null;
-  var totalHP=10+(k?(k.hpBonus||0):0);
+  var totalHP=(GAMEDATA.rules.hpBase||10)+(k?(k.hpBonus||0):0);
   var ed=state._edit||null;
   var h='<div class="step-label">¡Terminaste!</div><h1>🎉 '+esc(state.name||'Tu héroe')+'</h1>'+
     (c?'<div style="text-align:center;margin:6px 0 4px">'+classArt(c,'cart-md')+'</div>':'')+
@@ -594,7 +1160,19 @@ function renderSummary(){
     h+='<button class="btn btn-ghost" style="width:100%;margin-top:8px" onclick="toggleEdit(\'kit\')">Listo</button></div>';
   }
 
-  h+=row('HP total', totalHP+' <span class="hint">(10 base + '+(k?k.hpBonus||0:0)+' del kit)</span>')+
+  // ── Especialización (editable) ──
+  var _t=getTrunk(state.trunkId), _nc=nodosComprados();
+  h+=editRow('Arma', _t?esc(_t.name)+' <span class="hint">'+esc((TRUNK_ES[_t.id]||{}).t||'')+'</span>':'—', 'trunk');
+  if(ed==='trunk'){
+    h+='<div class="edit-panel">';
+    mstTrunks().forEach(function(o){
+      var cur=o.id===state.trunkId?' current':'';
+      h+='<div class="explore-item'+cur+'" onclick="switchTrunk(\''+o.id+'\')"><div class="explore-item-name">'+esc(o.name)+' <span class="hint">'+esc((TRUNK_ES[o.id]||{}).t||'')+'</span>'+(o.id===state.trunkId?'<span class="tag">actual</span>':'')+'</div><div class="explore-item-desc">'+esc(o.root.eff)+'</div></div>';
+    });
+    h+='<button class="btn btn-ghost" style="width:100%;margin-top:8px" onclick="toggleEdit(\'trunk\')">Listo</button></div>';
+  }
+  h+=row('Maestrías', _nc.length?_nc.map(function(x){return esc(x.n.name)+' <span class="hint">'+esc(x.br.name)+'</span>'}).join(', '):'solo la Raíz');
+  h+=row('HP total', totalHP+' <span class="hint">('+(GAMEDATA.rules.hpBase||10)+' base + '+(k?k.hpBonus||0:0)+' del kit)</span>')+
     row('Aen por turno', GAMEDATA.rules.aenPerTurn+' <span class="hint">(igual para todas las clases · se llama '+esc(c?c.resource:'Aen')+')</span>')+
     '</div>';
 
@@ -608,8 +1186,15 @@ function renderSummary(){
   h+=classAbilitiesHtml(c);
   h+=kitAbilHtml(k);
 
-  h+='<div class="teach">Tu hoja está lista. Toca <strong>Descargar / Imprimir</strong>, guárdala como PDF y mándasela a tu Story Master. Él te ayudará con el resto en la mesa.</div>'+
-    '<div class="btn-row"><button class="btn btn-ghost" onclick="go(0)">↺ Empezar de nuevo</button><button class="btn" onclick="printSheet()">📄 Descargar / Imprimir</button></div>';
+  if(_t){
+    h+='<h2 style="margin-top:26px">Tu especialización</h2>'+
+      '<p class="lead">Tu ataque base con '+esc((TRUNK_ES[_t.id]||{}).t||_t.sub)+' tira <strong>2d12</strong> y te quedas con el mejor. Estas son las ramas que se abrirán.</p>';
+    _t.branches.forEach(function(br){h+=branchCardHtml(br)});
+  }
+  h+='<div class="teach">Tu hoja está lista. <strong>Descarga el .json</strong> y mándaselo a tu Story Master — él lo sube a su herramienta y no tiene que teclear nada. Guarda también el PDF para la mesa.</div>'+
+    '<div class="btn-row"><button class="btn" onclick="descargarHeroe()">⬇ Descargar .json</button>'+
+    '<button class="btn btn-ghost" onclick="printSheet()">📄 Imprimir</button></div>'+
+    '<div class="btn-row"><button class="btn btn-ghost" onclick="finalizar()">✓ Guardar y ver mi app</button></div>';
   return h;
 }
 function row(k,v){return '<div class="summary-row"><div class="summary-key">'+k+'</div><div class="summary-val">'+v+'</div></div>'}
@@ -624,89 +1209,115 @@ function printSheet(){
   window.print();
 }
 /* Habilidad para la hoja imprimible (compacta, legible, sin cortes de página) */
+/* ══════════ HOJA IMPRIMIBLE — la paleta del juego ══════════ */
 var PBAND={b1:'1–4',b2:'5–8',b3:'9–11',b12:'12'};
+var SH={ink:'#2a2620',ink2:'#5a5449',ink3:'#8a8478',bd:'#e0dcd3',gold:'#b8935a',gink:'#8a6f0a',pale:'#f8f5e8',light:'#f0ead0'};
+function shSec(t){return '<div style="font-size:11px;letter-spacing:2px;color:'+SH.gink+';border-bottom:2px solid '+SH.gold+';padding-bottom:4px;margin:0 0 10px;font-weight:bold;font-family:Georgia,serif">'+t+'</div>'}
+function shCard(inner,strong){return '<div style="border:1px solid '+(strong?SH.gold:SH.bd)+';border-radius:8px;padding:10px 12px;margin-bottom:8px;page-break-inside:avoid;break-inside:avoid'+(strong?';background:'+SH.pale:'')+'">'+inner+'</div>'}
 function sheetBands(a){
+  if(!a.bandas)return '';
   var s='<table style="width:100%;border-collapse:collapse;margin-top:6px;font-size:11px">';
   ['b1','b2','b3','b12'].forEach(function(kk){
-    if(!a.bandas||!a.bandas[kk])return;
+    if(!a.bandas[kk])return;
     var hi=kk==='b12';
-    s+='<tr><td style="width:38px;text-align:center;font-weight:bold;border:1px solid #ccc;padding:3px 4px;'+(hi?'background:#333;color:#fff':'background:#f0f0f0;color:#555')+'">'+PBAND[kk]+'</td><td style="border:1px solid #ccc;padding:3px 6px'+(hi?';font-weight:bold':'')+'">'+esc(a.bandas[kk])+'</td></tr>';
+    s+='<tr><td style="width:40px;text-align:center;font-weight:bold;border:1px solid '+SH.bd+';padding:3px 4px;'+(hi?'background:'+SH.gink+';color:#fff':'background:'+SH.pale+';color:'+SH.ink2)+'">'+PBAND[kk]+'</td><td style="border:1px solid '+SH.bd+';padding:3px 6px;color:'+(hi?SH.ink+';font-weight:bold':SH.ink2)+'">'+esc(a.bandas[kk])+'</td></tr>';
   });
   s+='</table>';
-  if(a.tabla&&a.bandas)s+='<div style="font-size:10px;font-style:italic;color:#8a3a6a;margin-top:3px">Empuje: gasta 1 carga, d20 + Echo vs 15 / 17 / 20; si te quedas corto, paga el faltante en Vitalidad o conserva tu banda.</div>';
+  if(a.tabla&&a.bandas)s+='<div style="font-size:10px;font-style:italic;color:'+SH.ink3+';margin-top:3px">Empuje: gasta 1 carga, d20 + Echo vs 15 / 17 / 20; si te quedas corto, paga el faltante en Vitalidad o conserva tu banda.</div>';
   return s;
 }
 function sheetAbil(a){
-  var badge=a.type==='Heroica'?'#8a3a6a':'#5a6a3a';
-  var h='<div style="border:1px solid #ccc;border-radius:6px;padding:10px 12px;margin-bottom:10px;page-break-inside:avoid;break-inside:avoid">';
-  h+='<div style="font-weight:bold;font-size:14px">'+esc(a.name)+' <span style="font-size:10px;font-weight:bold;color:#fff;background:'+badge+';padding:1px 6px;border-radius:8px;vertical-align:middle">'+esc((a.type||'').toUpperCase())+'</span> <span style="font-weight:normal;font-size:11px;color:#666">'+esc(a.cost||'')+'</span></div>';
-  h+='<div style="font-size:12.5px;color:#333;margin-top:3px">'+esc(a.desc||'')+'</div>';
+  var h='<div style="font-weight:bold;font-size:14px;color:'+SH.ink+'">'+esc(a.name)+' <span style="font-size:9.5px;font-weight:bold;letter-spacing:.5px;color:'+SH.gink+';background:'+SH.light+';padding:1px 7px;border-radius:8px;vertical-align:middle">'+esc((a.type||'').toUpperCase())+'</span> <span style="font-weight:normal;font-size:11px;color:'+SH.ink3+'">'+esc(a.cost||'')+'</span></div>';
+  h+='<div style="font-size:12.5px;color:'+SH.ink2+';margin-top:3px">'+esc(a.desc||'')+'</div>';
   if(a.tabla)h+=sheetBands(a);
-  return h+'</div>';
+  return shCard(h);
 }
 function buildSheet(){
   var fac=getFaction(state.factionId), c=getClass(state.classId), k=getKit(state.kitId);
   var ft=fac?fac.feats[state.factionFeatIdx]:null;
-  var totalHP=10+(k?(k.hpBonus||0):0);
-  var blank='<span style="display:inline-block;border-bottom:1px solid #999;min-width:120px">&nbsp;</span>';
-  var h='<div style="font-family:Georgia,serif;color:#111;max-width:720px;margin:0 auto;padding:24px">';
-  h+='<div style="text-align:center;border-bottom:3px double #333;padding-bottom:12px;margin-bottom:20px"><div style="font-size:13px;letter-spacing:3px;color:#666">EPIC QUEST · AVELIR</div><div style="font-size:30px;font-weight:bold;margin-top:4px">'+esc(state.name||'________________')+'</div></div>';
-  // Retrato de clase (respaldo a emoji si falta)
-  if(c){h+='<div style="text-align:center;margin-bottom:18px;page-break-inside:avoid;break-inside:avoid">'+classArt(c,'cart-md')+'</div>';}
-  // Bloque de identidad
-  h+='<table style="width:100%;border-collapse:collapse;margin-bottom:20px;font-size:15px">';
-  h+='<tr><td style="padding:8px;border:1px solid #ccc;background:#f5f5f5;font-weight:bold;width:130px">Facción</td><td style="padding:8px;border:1px solid #ccc">'+(fac?esc(fac.icon)+' '+esc(fac.name):'')+'</td></tr>';
-  h+='<tr><td style="padding:8px;border:1px solid #ccc;background:#f5f5f5;font-weight:bold">Clase</td><td style="padding:8px;border:1px solid #ccc">'+(c?esc(c.name):'')+'</td></tr>';
-  h+='<tr><td style="padding:8px;border:1px solid #ccc;background:#f5f5f5;font-weight:bold">Kit</td><td style="padding:8px;border:1px solid #ccc">'+(k?esc(k.name)+' ('+esc(k.fantasy||'')+')':'')+'</td></tr>';
-  h+='</table>';
-  // Stats principales
-  h+='<div style="display:flex;gap:12px;margin-bottom:20px;text-align:center">';
-  h+='<div style="flex:1;border:2px solid #333;border-radius:8px;padding:12px"><div style="font-size:11px;color:#666;letter-spacing:1px">HP TOTAL</div><div style="font-size:32px;font-weight:bold">'+totalHP+'</div></div>';
-  h+='<div style="flex:1;border:2px solid #333;border-radius:8px;padding:12px"><div style="font-size:11px;color:#666;letter-spacing:1px">AEN / TURNO</div><div style="font-size:32px;font-weight:bold">+'+GAMEDATA.rules.aenPerTurn+'</div>'+(c?'<div style="font-size:9px;color:#999;margin-top:2px">tu clase lo llama '+esc(c.resource)+'</div>':'')+'</div>';
+  var totalHP=(GAMEDATA.rules.hpBase||10)+(k?(k.hpBonus||0):0);
+  var tk=getTrunk(state.trunkId);
   var _em=(c?((c.echoBase)||(c.type==='Magic'?2:1)):1)+((k&&k.aenBonus)?k.aenBonus:0);var _cm=_em<=2?2:(_em<=4?3:4);
-  h+='<div style="flex:1;border:2px solid #333;border-radius:8px;padding:12px"><div style="font-size:11px;color:#666;letter-spacing:1px">ECHO</div><div style="font-size:32px;font-weight:bold">+'+_em+'</div><div style="font-size:9px;color:#999;margin-top:2px">skill checks y empujes</div></div>';
-  h+='<div style="flex:1;border:2px solid #333;border-radius:8px;padding:12px"><div style="font-size:11px;color:#666;letter-spacing:1px">CARGAS</div><div style="font-size:32px;font-weight:bold">'+_cm+'</div><div style="font-size:9px;color:#999;margin-top:2px">vuelven al cerrar sesión</div></div>';
-  h+='</div>';
-  function sheetHead(t){return '<div style="font-weight:bold;font-size:12px;letter-spacing:1px;color:#555;border-bottom:2px solid #333;padding-bottom:3px;margin:0 0 10px">'+t+'</div>';}
-  // Feat de facción
-  if(ft){
-    h+='<div style="margin-bottom:18px;page-break-inside:avoid;break-inside:avoid">'+sheetHead('FEAT DE FACCIÓN')+
-      '<div style="border:1px solid #ccc;border-radius:6px;padding:10px 12px"><div style="font-weight:bold;font-size:14px">✨ '+esc(ft.name)+' <span style="font-weight:normal;font-size:11px;color:#666">('+esc(ft.attr)+')</span></div><div style="font-size:12.5px;color:#333;margin-top:3px">'+esc(ft.desc)+'</div></div></div>';
+  var h='<div style="font-family:Georgia,serif;color:'+SH.ink+';max-width:720px;margin:0 auto;padding:24px">';
+  h+='<div style="text-align:center;border-bottom:3px double '+SH.gold+';padding-bottom:14px;margin-bottom:18px">'+
+     '<div style="font-size:12px;letter-spacing:4px;color:'+SH.gink+'">EPIC QUEST · AVELIR</div>'+
+     '<div style="font-size:34px;margin-top:6px">'+esc(state.name||'________________')+'</div>'+
+     '<div style="font-size:13px;color:'+SH.ink3+';margin-top:4px">'+(fac?esc(fac.icon)+' '+esc(fac.name):'')+(c?' · '+esc(c.name):'')+(k?' · '+esc(k.name):'')+'</div></div>';
+  if(c){h+='<div style="text-align:center;margin-bottom:16px;page-break-inside:avoid;break-inside:avoid">'+classArt(c,'cart-md')+'</div>';}
+  function stat(kk,v,sub){return '<div style="flex:1;border:1.5px solid '+SH.gold+';background:'+SH.pale+';border-radius:8px;padding:10px 6px;text-align:center"><div style="font-size:10px;color:'+SH.gink+';letter-spacing:1px;font-weight:bold">'+kk+'</div><div style="font-size:28px;font-weight:bold;margin-top:2px">'+v+'</div>'+(sub?'<div style="font-size:8.5px;color:'+SH.ink3+';margin-top:2px">'+sub+'</div>':'')+'</div>'}
+  h+='<div style="display:flex;gap:10px;margin-bottom:18px">'+
+     stat('HP',totalHP,'')+
+     stat('AEN / TURNO','+'+GAMEDATA.rules.aenPerTurn,(c?'tu clase lo llama '+esc(c.resource):''))+
+     stat('ECHO','+'+_em,'skill checks y empujes')+
+     stat('CARGAS',_cm,'vuelven al cerrar sesión')+
+     stat('ATAQUE BASE',(tk?'2d12':'1d12'),(tk?'quédate con el mejor':'sin especializar'))+
+     '</div>';
+  var BA=GAMEDATA.baseAttack;
+  if(BA&&BA.bands){
+    var inner='<div style="font-size:12px;color:'+SH.ink2+'">Gratis, sin Aen, con cualquier arma. Tira '+(tk?'<strong>2d12 y quédate con el mejor</strong>':'<strong>1d12</strong>')+' y lee la banda. Carril mundano: no se empuja con Echo.</div>'+
+      '<table style="width:100%;border-collapse:collapse;margin-top:6px;font-size:11px">';
+    BA.bands.forEach(function(b){
+      var hi=!!b.signature;
+      inner+='<tr><td style="width:40px;text-align:center;font-weight:bold;border:1px solid '+SH.bd+';padding:3px 4px;'+(hi?'background:'+SH.gink+';color:#fff':'background:'+SH.pale+';color:'+SH.ink2)+'">'+esc(b.dice)+'</td><td style="border:1px solid '+SH.bd+';padding:3px 6px;color:'+SH.ink2+'">'+b.dmg+' de daño'+(hi?' — y aquí dispara tu dado de firma, si tienes Maestría':'')+'</td></tr>';
+    });
+    inner+='</table>';
+    h+='<div style="margin-bottom:18px;page-break-inside:avoid;break-inside:avoid">'+shSec('ATAQUE BASE')+shCard(inner)+'</div>';
   }
-  // Habilidades de clase (las 3)
+  if(tk){
+    var es=(TRUNK_ES[tk.id]||{});
+    var bl='';
+    bl+=shCard('<div style="font-weight:bold;font-size:14px">⚔️ '+esc(tk.root.name)+' <span style="font-weight:normal;font-size:11px;color:'+SH.ink3+'">Raíz · '+esc(tk.name)+'</span></div><div style="font-size:12.5px;color:'+SH.ink2+';margin-top:3px">'+esc(tk.root.eff)+'</div>',true);
+    mstTrunks().forEach(function(tr){
+      tr.branches.forEach(function(br){
+        var tocada=false;
+        br.tiers.forEach(function(ti){ti.nodes.forEach(function(n){
+          if(state.marks.indexOf(n.id)===-1)return;
+          if(!tocada&&br.low){bl+=shCard('<div style="font-size:11.5px;color:'+SH.ink2+'"><strong style="color:'+SH.gink+'">BANDA 1–4 · '+esc(br.name).toUpperCase()+' (GRATIS)</strong> — '+esc(br.low.name)+': '+esc(br.low.eff)+'</div>');tocada=true}
+          bl+=shCard('<div style="font-weight:bold;font-size:13.5px">◆ '+esc(n.name)+' <span style="font-weight:normal;font-size:11px;color:'+SH.ink3+'">'+esc(br.name)+(n.react?' · REACCIÓN':'')+(n.mast?' · MAESTRÍA':'')+(n.legend?' · LEGENDARIA':'')+'</span></div><div style="font-size:12px;color:'+SH.ink2+';margin-top:2px">'+esc(n.eff)+'</div>'+(n.fire?'<div style="font-size:11px;color:'+SH.ink2+';margin-top:4px;border-left:2px solid '+SH.gold+';padding-left:7px"><strong style="color:'+SH.gink+'">AL 12 · '+esc(n.die||'')+'</strong> '+esc(n.fire)+'</div>':'')+(n.active?'<div style="font-size:11px;color:'+SH.ink2+';margin-top:4px;border-left:2px solid '+SH.gold+';padding-left:7px"><strong style="color:'+SH.gink+'">ACTIVA</strong> '+esc(n.active)+'</div>':''));
+        })});
+      });
+    });
+    bl+='<div style="font-size:10.5px;color:'+SH.ink3+';margin:8px 0 5px">Ramas de '+esc(tk.name)+' — se abren con marcas:</div><table style="width:100%;border-collapse:collapse;font-size:11px">';
+    tk.branches.forEach(function(b){
+      bl+='<tr><td style="border:1px solid '+SH.bd+';padding:4px 7px;font-weight:bold;width:100px;background:'+SH.pale+'">'+esc(b.name)+'</td><td style="border:1px solid '+SH.bd+';padding:4px 7px;color:'+SH.ink2+'">'+esc(b.sub||'')+' · firma '+esc(b.die)+'</td></tr>';
+    });
+    bl+='</table>';
+    h+='<div style="margin-bottom:18px;page-break-inside:avoid;break-inside:avoid">'+shSec('ESPECIALIZACIÓN — '+esc(tk.name).toUpperCase()+(es.t?' · '+esc(es.t).toUpperCase():''))+bl+'</div>';
+  }
+  if(ft){h+='<div style="margin-bottom:18px;page-break-inside:avoid;break-inside:avoid">'+shSec('FEAT DE FACCIÓN')+shCard('<div style="font-weight:bold;font-size:14px">✨ '+esc(ft.name)+' <span style="font-weight:normal;font-size:11px;color:'+SH.ink3+'">('+esc(ft.attr)+')</span></div><div style="font-size:12.5px;color:'+SH.ink2+';margin-top:3px">'+esc(ft.desc)+'</div>')+'</div>';}
   if(c&&c.abilities&&c.abilities.length){
-    h+='<div style="margin-bottom:18px">'+sheetHead('HABILIDADES DE CLASE — '+esc(c.name).toUpperCase()+' · ENERGÍA: '+esc(c.resource))+
-      '<div style="font-size:10.5px;color:#777;margin:-6px 0 10px">Las habilidades con tabla se resuelven tirando 1d12: banda 1–4 · 5–8 · 9–11 · 12 (efecto máximo).</div>';
-    c.abilities.forEach(function(a){h+=sheetAbil(a);});
+    h+='<div style="margin-bottom:18px">'+shSec('HABILIDADES DE CLASE — '+esc(c.name).toUpperCase()+' · ENERGÍA: '+esc(c.resource))+
+       '<div style="font-size:10.5px;color:'+SH.ink3+';margin:-4px 0 8px">Las habilidades con tabla se resuelven tirando 1d12: banda 1–4 · 5–8 · 9–11 · 12 (efecto máximo).</div>';
+    c.abilities.forEach(function(a){h+=sheetAbil(a)});
     h+='</div>';
   }
-  // Kit: arte (concept, ~65%) + habilidad
   if(k){
-    h+='<div style="margin-bottom:18px;page-break-inside:avoid;break-inside:avoid">'+sheetHead('KIT — '+esc(k.name).toUpperCase()+(k.fantasy?' · '+esc(k.fantasy):''))+
+    h+='<div style="margin-bottom:18px;page-break-inside:avoid;break-inside:avoid">'+shSec('KIT — '+esc(k.name).toUpperCase()+(k.fantasy?' · '+esc(k.fantasy).toUpperCase():''))+
       '<div style="width:65%;margin:2px auto 12px">'+kitArt(k)+'</div>'+
-      (k.ability?'<div style="border:1px solid #ccc;border-radius:6px;padding:10px 12px"><div style="font-weight:bold;font-size:14px">🎒 '+esc(k.ability.name)+' <span style="font-weight:normal;font-size:11px;color:#666">'+esc(k.ability.cost||'')+'</span></div><div style="font-size:12.5px;color:#333;margin-top:3px">'+esc(k.ability.desc||'')+(k.ability.drawback?'<br><em style="color:#a33">Desventaja: '+esc(k.ability.drawback)+'</em>':'')+'</div></div>':'')+
+      (k.ability?shCard('<div style="font-weight:bold;font-size:14px">🎒 '+esc(k.ability.name)+' <span style="font-weight:normal;font-size:11px;color:'+SH.ink3+'">'+esc(k.ability.cost||'')+'</span></div><div style="font-size:12.5px;color:'+SH.ink2+';margin-top:3px">'+esc(k.ability.desc||'')+(k.ability.drawback?'<br><em style="color:#b02828">Desventaja: '+esc(k.ability.drawback)+'</em>':'')+'</div>'):'')+
       '</div>';
   }
-  // Secciones en blanco para escribir
   function blankSection(title,lines){
-    var s='<div style="margin-bottom:18px;page-break-inside:avoid;break-inside:avoid"><div style="font-weight:bold;font-size:13px;letter-spacing:1px;color:#555;border-bottom:2px solid #333;padding-bottom:3px;margin-bottom:8px">'+title+'</div>';
-    for(var i=0;i<lines;i++)s+='<div style="border-bottom:1px solid #ddd;height:26px"></div>';
+    var s='<div style="margin-bottom:18px;page-break-inside:avoid;break-inside:avoid">'+shSec(title);
+    for(var i=0;i<lines;i++)s+='<div style="border-bottom:1px dotted '+SH.gold+';height:26px"></div>';
     return s+'</div>';
   }
   h+=blankSection('APARIENCIA Y PERSONALIDAD',4);
   h+=blankSection('TRASFONDO / HISTORIA',5);
   h+=blankSection('INVENTARIO',5);
   h+=blankSection('NOTAS',5);
-  h+='<div style="text-align:center;font-size:11px;color:#999;margin-top:24px;border-top:1px solid #ccc;padding-top:8px">Creado con el Generador de Héroes · Epic Quest</div>';
+  h+='<div style="text-align:center;font-size:11px;color:'+SH.ink3+';margin-top:24px;border-top:1px solid '+SH.bd+';padding-top:8px">Creado con el Generador de Héroes · Epic Quest</div>';
   h+='</div>';
   document.getElementById('sheet').innerHTML=h;
 }
 
+
 /* ══════════ ARRANQUE + LINK DIRECTO ══════════ */
+function finalizar(){ saveHero(); go('home') }
 function init(){
-  // El link directo abre el creador. Si hay ?crear o #crear, arranca en bienvenida (paso 0).
-  // (En el futuro, integrado al index, este parámetro saltará directo al creador.)
-  state.step=0;
+  var guardado = loadHero();
+  if(guardado && guardado.name && applyHero(guardado)) state.step = 'home';
+  else state.step = 0;
   render();
 }
 init();
