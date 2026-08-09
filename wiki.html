@@ -21,6 +21,230 @@ a{color:inherit}
 button{font-family:var(--sans);cursor:pointer}
 .eyebrow{font-family:var(--sans);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink3)}
 
+
+/* ═══════════════════════════════════════════════════════════════════
+   EL PERSONAJE — puente de estilo hacia el motor de maestrías.
+   El motor pide 23 variables que este archivo no tenía. Se mapean a la
+   paleta del Archivo, con esquinas cuadradas para que no se sienta
+   pegado de otra app.
+   ═══════════════════════════════════════════════════════════════════ */
+:root{
+  --surface:var(--card); --surface2:#FBFAF7; --border:var(--line); --ink4:#A8ADB4;
+  --gold:#B9A55C; --gold-ink:#7E6C28; --gold-pale:#FAF6E9; --gold-light:#F1E9CE;
+  --green:#3D6B4A; --green-light:#E9F0EA;
+  --blue:#3A5E86;  --blue-light:#E9EEF4;
+  --purple:#5F4A7A;--purple-light:#EFEBF4;
+  --red:#8E4040;   --red-light:#F4EAEA;
+  --font:var(--sans); --r:2px; --r-lg:3px;
+}
+
+/* cabecera del héroe */
+.pc-head{border:1px solid var(--line);background:var(--card);padding:22px 24px;margin-bottom:1px}
+.pc-name{font-size:clamp(28px,4vw,40px);font-weight:300;letter-spacing:-.02em;line-height:1.05;margin:0 0 6px}
+.pc-sub{font-family:var(--sans);font-size:13.5px;color:var(--ink2)}
+.pc-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:1px;background:var(--line);
+  border:1px solid var(--line);border-top:0;margin-bottom:30px;font-family:var(--sans)}
+.pc-stat{background:var(--card);padding:13px 15px}
+.pc-stat b{display:block;font-size:25px;font-weight:500;font-family:var(--serif);line-height:1.15}
+.pc-stat span{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink3)}
+.pc-stat small{display:block;font-size:11px;color:var(--ink3);margin-top:2px;text-transform:none;letter-spacing:0}
+
+/* estado vacío */
+.pc-empty{border:1px solid var(--line);background:var(--card);padding:34px 30px;max-width:60ch}
+.pc-empty h2{font-weight:300;font-size:28px;margin:0 0 10px;letter-spacing:-.01em}
+.pc-empty p{color:var(--ink2);margin:0 0 18px;font-size:17px}
+.pc-btn{display:inline-block;font-family:var(--sans);font-size:14px;text-decoration:none;
+  border:1px solid var(--ink);background:var(--ink);color:var(--paper);padding:10px 20px;border-radius:2px}
+.pc-btn:hover{background:#000}
+.pc-btn.ghost{background:transparent;color:var(--ink);border-color:var(--line2)}
+.pc-btn.ghost:hover{border-color:var(--ink3);background:#F8F7F3}
+.pc-file{position:absolute;width:1px;height:1px;opacity:0;pointer-events:none}
+.pc-msg{font-family:var(--sans);font-size:13.5px;margin-top:12px}
+
+/* lo que sigue */
+.nx{border:1px solid var(--line);background:var(--card);margin-bottom:1px;padding:15px 18px;font-family:var(--sans)}
+.nx-t{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink3);margin-bottom:9px}
+.nx-row{display:flex;gap:11px;align-items:baseline;padding:6px 0;border-bottom:1px solid var(--line);font-size:14px}
+.nx-row:last-child{border-bottom:0}
+.nx-row b{font-weight:500;color:var(--ink)}
+.nx-row .br{font-size:11.5px;color:var(--ink3);margin-left:auto;white-space:nowrap}
+.nx-cost{font-family:var(--mono);font-size:11.5px;color:var(--gold-ink);background:var(--gold-pale);
+  border:1px solid var(--gold-light);border-radius:2px;padding:1px 7px;white-space:nowrap}
+.nx-none{font-size:14px;color:var(--ink2);font-style:italic}
+
+/* habilidades */
+.ab{border:1px solid var(--line);background:var(--card);padding:16px 19px;margin-bottom:1px}
+.ab-h{display:flex;align-items:baseline;gap:9px;flex-wrap:wrap;margin-bottom:5px}
+.ab-n{font-size:19px;font-weight:400}
+.ab-tag{font-family:var(--sans);font-size:10px;letter-spacing:.11em;text-transform:uppercase;
+  border:1px solid var(--line2);border-radius:100px;padding:2px 9px;color:var(--ink3)}
+.ab-cost{font-family:var(--mono);font-size:12px;color:var(--ink3);margin-left:auto}
+.ab-d{font-size:15.5px;color:var(--ink2);line-height:1.6}
+.ab-tb{width:100%;border-collapse:collapse;margin-top:10px;font-family:var(--sans);font-size:13px}
+.ab-tb td{padding:4px 9px;border-top:1px solid var(--line)}
+.ab-tb td.bd{width:62px;text-align:center;font-weight:500;color:var(--ink2);background:#FAFAF8}
+.ab-tb tr.hi td{background:var(--gold-pale)}
+.ab-tb tr.hi td.bd{color:var(--gold-ink)}
+.ab-note{font-size:12px;color:var(--ink3);font-style:italic;margin-top:6px}
+
+/* reglas y compendio */
+.rg{border:1px solid var(--line);background:var(--card);padding:17px 20px;margin-bottom:1px}
+.rg h3{font-family:var(--sans);font-weight:500;font-size:12px;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--ink3);margin:0 0 10px}
+.rg p{margin:0 0 10px;font-size:15.5px;color:var(--ink2)}
+.rg p:last-child{margin-bottom:0}
+.rg-tb{width:100%;border-collapse:collapse;font-family:var(--sans);font-size:13.5px}
+.rg-tb th{text-align:left;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink3);
+  font-weight:500;padding:5px 9px;border-bottom:1px solid var(--line2)}
+.rg-tb td{padding:5px 9px;border-bottom:1px solid var(--line);color:var(--ink2)}
+.rg-tb td.k{color:var(--ink);font-weight:500;width:34%}
+.rg-tb tr.hi td{background:var(--gold-pale);color:var(--ink)}
+.cmp{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:1px;background:var(--line);
+  border:1px solid var(--line)}
+.cmp-c{background:var(--card);padding:15px 17px}
+.cmp-c h4{margin:0 0 3px;font-size:18px;font-weight:400}
+.cmp-c .r{font-family:var(--sans);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink3)}
+.cmp-c p{margin:6px 0 0;font-size:14px;color:var(--ink2);line-height:1.55}
+.cmp-c.mine{background:var(--gold-pale)}
+.cmp-c.mine h4{color:var(--gold-ink)}
+
+/* el árbol dentro del Archivo */
+.mst-wrap{margin-top:6px}
+.pc-tabs{display:flex;gap:0;border:1px solid var(--line);border-bottom:0;font-family:var(--sans);flex-wrap:wrap}
+.pc-tab{flex:1;min-width:110px;background:var(--card);border:0;border-right:1px solid var(--line);
+  padding:11px 8px;font-size:13px;color:var(--ink2)}
+.pc-tab:last-child{border-right:0}
+.pc-tab.on{background:var(--ink);color:var(--paper)}
+.pc-tab:not(.on):hover{background:#F8F7F3;color:var(--ink)}
+@media(max-width:760px){
+  .pc-stats{grid-template-columns:repeat(2,1fr)}
+  .nx-row{flex-wrap:wrap}
+  .nx-row .br{margin-left:0}
+}
+
+/* ── el botón de nota, anclado a cualquier cosa ── */
+.nbtn{background:none;border:1px solid var(--line2);border-radius:2px;width:24px;height:24px;
+  font-size:12px;line-height:1;color:var(--ink3);padding:0;flex:none;font-family:var(--sans)}
+.nbtn:hover{border-color:var(--ink3);color:var(--ink);background:#F8F7F3}
+.nbtn.on{border-color:var(--notedge);background:var(--note);color:#6B5A18}
+.nbtn-slot{margin-left:auto;display:inline-flex}
+.ab-h .nbtn{margin-left:8px}
+.mst-node-head .nbtn-slot{margin-left:auto}
+.pc-head{position:relative}
+.pc-head .nbtn{position:absolute;top:18px;right:18px;width:30px;height:30px;font-size:14px}
+@media print{
+  .top,.sb,#notes,.nbtn,.pc-btn,.pc-tabs{display:none!important}
+  .main{margin:0!important;padding:0!important;max-width:none!important}
+  .ab,.rg,.nx{break-inside:avoid;page-break-inside:avoid}
+}
+
+/* ── la hoja imprimible dentro del Archivo ── */
+.sheet-wrap{background:#fff;border:1px solid var(--line)}
+.sheet-wrap,.sheet-wrap *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+@media print{
+  .no-print{display:none!important}
+  .sheet-wrap{border:0}
+  body{background:#fff}
+}
+
+/* ══════ MAESTRÍAS — compartido entre index.html y creador-personaje.html ══════ */
+.mst{margin-top:26px}
+.mst-top{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:14px}
+.mst-tabs{display:flex;gap:6px;flex-wrap:wrap}
+.mst-tab{padding:7px 14px;border:1px solid var(--border);border-radius:20px;background:var(--surface);
+  font-size:12px;font-weight:700;letter-spacing:.4px;color:var(--ink3);cursor:pointer;white-space:nowrap}
+.mst-tab .n{font-size:10px;color:var(--ink4);font-weight:600;margin-left:5px}
+.mst-tab.active{background:var(--gold-pale);border-color:var(--gold);color:var(--gold)}
+.mst-tab.owned{border-color:var(--gold)}
+.mst-marks{display:flex;align-items:center;gap:8px;padding:6px 12px;background:var(--gold-pale);
+  border:1px solid var(--gold);border-radius:20px;margin-left:auto}
+.mst-marks-l{font-size:10px;font-weight:700;color:var(--gold);letter-spacing:.6px}
+.mst-marks-v{font-family:var(--serif);font-size:17px;font-weight:700;color:var(--ink)}
+.mst-mbtn{border:1px solid var(--gold);background:var(--surface);color:var(--gold);border-radius:50%;
+  width:24px;height:24px;font-size:13px;line-height:1;cursor:pointer;padding:0}
+
+.mst-root{display:flex;gap:14px;align-items:flex-start;padding:13px 15px;border-radius:var(--r-lg);
+  border:1px solid var(--border);background:var(--surface2);margin-bottom:16px}
+.mst-root.on{border-color:var(--gold);background:var(--gold-pale)}
+.mst-root.can{cursor:pointer;border-style:dashed}
+.mst-root-body{flex:1;min-width:0}
+.mst-root-name{font-family:var(--serif);font-size:16px;font-weight:700;color:var(--ink)}
+.mst-root-eff{font-size:12.5px;color:var(--ink3);line-height:1.55;margin-top:3px}
+
+.mst-cols{display:grid;gap:14px}
+.mst-col{border:1px solid var(--border);border-radius:var(--r-lg);background:var(--surface);overflow:hidden;
+  display:flex;flex-direction:column}
+.mst-col.locked{opacity:.42}
+.mst-col-head{padding:11px 13px;background:var(--surface2);border-bottom:1px solid var(--border)}
+.mst-col-name{font-family:var(--serif);font-size:16px;font-weight:700;color:var(--ink);line-height:1.15}
+.mst-col-sub{font-size:11px;color:var(--ink4);font-style:italic}
+.mst-col-chips{display:flex;gap:5px;flex-wrap:wrap;margin-top:7px}
+.mst-chip{font-size:9.5px;font-weight:700;letter-spacing:.4px;padding:2px 7px;border-radius:9px;
+  background:var(--surface);border:1px solid var(--border);color:var(--ink3)}
+.mst-chip.gold{background:var(--gold-pale);border-color:var(--gold);color:var(--gold)}
+.mst-low{font-size:11px;color:var(--ink3);line-height:1.45;padding:8px 13px;border-bottom:1px solid var(--border);
+  background:var(--gold-pale)}
+.mst-low b{color:var(--gold);font-size:10px;letter-spacing:.5px;display:block;margin-bottom:2px}
+
+.mst-tier{padding:9px 13px;border-bottom:1px solid var(--border)}
+.mst-tier:last-child{border-bottom:0}
+.mst-tier-head{display:flex;align-items:baseline;gap:7px;margin-bottom:7px}
+.mst-tier-t{font-size:10.5px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;color:var(--ink4)}
+.mst-gate{font-size:9px;font-weight:700;padding:1px 6px;border-radius:8px;background:var(--surface2);
+  border:1px solid var(--border);color:var(--ink4);white-space:nowrap}
+.mst-gate.open{border-color:var(--gold);color:var(--gold);background:var(--gold-pale)}
+
+.mst-node{border:1px solid var(--border);border-radius:var(--r);padding:8px 10px;margin-bottom:6px;
+  background:var(--surface2);cursor:not-allowed;position:relative}
+.mst-node:last-child{margin-bottom:0}
+.mst-node.can{cursor:pointer;background:var(--surface);border-style:dashed}
+.mst-node.can:hover{border-color:var(--gold);background:var(--gold-pale)}
+.mst-node.own{background:var(--gold-pale);border-color:var(--gold);cursor:pointer}
+.mst-node.lock{opacity:.45}
+.mst-node-head{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.mst-node-name{font-size:13px;font-weight:700;color:var(--ink);flex:1;min-width:90px}
+.mst-node-eff{font-size:11.5px;color:var(--ink3);line-height:1.5;margin-top:3px}
+.mst-node-fire{font-size:11px;color:var(--ink2);line-height:1.45;margin-top:5px;padding:5px 7px;
+  border-radius:6px;background:var(--surface);border-left:2px solid var(--gold)}
+.mst-node-fire b{color:var(--gold);font-size:9.5px;letter-spacing:.5px}
+.mst-tick{width:16px;height:16px;border-radius:50%;border:1.5px solid var(--border);flex:none;
+  display:flex;align-items:center;font-size:9px;justify-content:center;color:#fff}
+.mst-node.own .mst-tick,.mst-root.on .mst-tick{background:var(--gold);border-color:var(--gold)}
+
+.pl{font-size:8.5px;font-weight:700;letter-spacing:.5px;padding:1px 6px;border-radius:8px;flex:none}
+.pl-avelir{background:var(--green-light);color:var(--green)}
+.pl-veil{background:var(--blue-light);color:var(--blue)}
+.pl-hold{background:var(--purple-light);color:var(--purple)}
+.pl-inter{background:var(--red-light);color:var(--red)}
+.mst-tag{font-size:8.5px;font-weight:700;letter-spacing:.5px;padding:1px 6px;border-radius:8px;
+  background:var(--ink);color:#fff;flex:none}
+
+.mst-sum{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+  padding:12px 14px;border:1px solid var(--gold);border-radius:var(--r-lg);background:var(--gold-pale);margin-bottom:16px}
+.mst-sum-k{font-size:9.5px;font-weight:700;letter-spacing:.7px;color:var(--gold)}
+.mst-sum-v{font-family:var(--serif);font-size:15px;color:var(--ink);line-height:1.35;margin-top:2px}
+.mst-sum-v small{font-family:var(--font);font-size:11.5px;color:var(--ink3);display:block}
+@media(max-width:900px){.mst-cols{grid-template-columns:1fr!important}}
+
+/* ── tabla de ataque base ── */
+.mst-base{border:1.5px solid var(--gold);border-radius:var(--r-lg);background:var(--gold-pale);padding:14px 16px;margin-bottom:14px}
+.mst-base-hd{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:9px}
+.mst-base-t{font-size:11px;letter-spacing:1.4px;font-weight:700;color:var(--gold-ink)}
+.mst-base-n{font-size:11.5px;color:var(--ink3);font-style:italic}
+.mst-base-tb{width:100%;border-collapse:collapse;font-size:12.5px}
+.mst-base-tb th{font-size:10px;letter-spacing:.6px;color:var(--ink3);font-weight:700;text-align:center;padding:3px 6px;border-bottom:1px solid var(--gold)}
+.mst-base-tb th small{display:block;font-size:9.5px;letter-spacing:0;font-weight:400;color:var(--ink4);text-transform:none}
+.mst-base-tb td{padding:4px 6px;border-bottom:1px solid var(--border);text-align:center}
+.mst-base-tb td.bd{font-weight:700;color:var(--ink2);width:74px}
+.mst-base-tb td.dm{font-family:var(--serif);font-size:16px;color:var(--ink);width:52px}
+.mst-base-tb td.pc{color:var(--ink2);font-variant-numeric:tabular-nums}
+.mst-base-tb tr.hi td{background:var(--gold-light)}
+.mst-base-tb tr.hi td.bd,.mst-base-tb tr.hi td.dm{color:var(--gold-ink);font-weight:700}
+.mst-base-tb tr.sig td{text-align:left;font-size:11.5px;color:var(--ink2);background:transparent;border-bottom:none;padding-top:5px}
+.mst-base-mods{margin-top:9px;padding-top:8px;border-top:1px dashed var(--gold);font-size:11.5px;color:var(--ink2);line-height:1.65}
+.mst-base-mods b{color:var(--gold-ink);font-weight:700}
+.mst-base-mods small{color:var(--ink3)}
+
 /* ═══ barra superior ═══ */
 .top{position:fixed;top:0;left:0;right:0;height:var(--topbar);z-index:40;background:var(--paper);border-bottom:1px solid var(--line);display:flex;align-items:center;gap:14px;padding:0 16px}
 .burger{display:none;background:none;border:1px solid var(--line2);border-radius:2px;width:34px;height:34px;font-size:16px;color:var(--ink2)}
@@ -214,6 +438,7 @@ body.sb-open .overlay{display:block}
   </div>
 </aside>
 
+<script src="data.js"></script>
 <script src="lore.js"></script>
 <script>
 if(typeof LORE==='undefined'){
@@ -250,8 +475,12 @@ var NK='avelir_notas_v1',HAS_LS=true,MEM={};
 try{localStorage.setItem('_t','1');localStorage.removeItem('_t')}catch(e){HAS_LS=false}
 function nload(){if(!HAS_LS)return MEM;try{return JSON.parse(localStorage.getItem(NK)||'{}')}catch(e){return{}}}
 function nsave(d){MEM=d;if(HAS_LS)try{localStorage.setItem(NK,JSON.stringify(d))}catch(e){}}
-function noteKey(){var r=curRoute();return BY_SLUG[r]?r:'_generales'}
-function noteLabel(k){return k==='_generales'?'Generales':(BY_SLUG[k]?BY_SLUG[k].title:k)}
+function noteKey(){ if(NOTE_TARGET) return NOTE_TARGET; var r=curRoute(); return BY_SLUG[r]?r:'_generales' }
+function noteLabel(k){
+  var a = (typeof noteAnchorLabel==='function') ? noteAnchorLabel(k) : null;
+  if(a) return a;
+  return k==='_generales'?'Generales':(BY_SLUG[k]?BY_SLUG[k].title:k);
+}
 
 /* ── markdown + enlaces ── */
 function inline(t){
@@ -289,6 +518,15 @@ LORE.types.forEach(function(t){SB_OPEN[t.id]=true});
 function renderSidebar(){
   var r=curRoute(),notes=nload(),h='';
   h+='<div class="sb-sec">';
+  h+='<div class="sb-h" style="margin-top:0;pointer-events:none">Tu personaje</div>';
+  h+='<a class="sb-static'+(r==='personaje'?' on':'')+'" href="#personaje">'+(hasHero()?esc(HERO.name):'Mi héroe')+'</a>';
+  h+='<a class="sb-static'+(r==='habilidades'?' on':'')+'" href="#habilidades">Mis habilidades</a>';
+  h+='<a class="sb-static'+(r==='hoja'?' on':'')+'" href="#hoja">Mi hoja imprimible</a>';
+  var _nn=Object.keys(nload()).filter(function(x){return nload()[x]&&nload()[x].text}).length;
+  h+='<a class="sb-static'+(r==='notas'?' on':'')+'" href="#notas">Mis notas'+(_nn?' · '+_nn:'')+'</a>';
+  h+='<a class="sb-static'+(r==='reglas'?' on':'')+'" href="#reglas">Reglas</a>';
+  h+='<a class="sb-static'+(r==='compendio'?' on':'')+'" href="#compendio">Compendio</a>';
+  h+='<div class="sb-h" style="pointer-events:none">El Archivo</div>';
   h+='<a class="sb-static'+(r==='inicio'?' on':'')+'" href="#inicio">Estado del mundo</a>';
   h+='<a class="sb-static'+(r==='indice'?' on':'')+'" href="#indice">Índice y búsqueda</a>';
   var nd=Object.keys(DEAD).length;
@@ -312,6 +550,18 @@ function renderSidebar(){
 }
 
 /* ── vistas ── */
+function homeHeroCard(){
+  if(!G()) return '';
+  if(!hasHero()) return '<a class="cell" href="#personaje" style="--c:#B9A55C;border:1px solid var(--line);margin-bottom:38px;display:block">' +
+    '<div class="rule" style="background:#B9A55C"></div><h3>Crea tu héroe</h3>' +
+    '<p>Tu ficha, tu árbol de maestrías y todo lo que puedes llegar a hacer, aquí mismo.</p></a>';
+  var d = deriveMastery(MSTH.get()), libres = d.total - d.spent;
+  return '<a class="cell" href="#personaje" style="--c:#B9A55C;border:1px solid var(--line);margin-bottom:38px;display:block">' +
+    '<div class="rule" style="background:#B9A55C"></div><h3>' + esc(HERO.name) + '</h3>' +
+    '<p>' + (libres > 0
+      ? 'Tienes <b>' + libres + '</b> marca' + (libres===1?'':'s') + ' sin gastar — mira qué puedes tomar.'
+      : 'Tu ficha, tu árbol y lo que sigue en tu camino.') + '</p></a>';
+}
 function viewHome(){
   var chars=LORE.pages.filter(function(p){return p.type==='character'}).length;
   var places=LORE.pages.filter(function(p){return p.type==='place'}).length;
@@ -455,7 +705,7 @@ function refreshNotesUI(){
     ks.sort(function(a,b){return (d[b].updated||0)-(d[a].updated||0)});
     ks.forEach(function(x){
       h+='<div class="nitem"><button class="del" data-del="'+esc(x)+'">borrar</button>'
-       +'<a href="'+(x==='_generales'?'#inicio':'#'+x)+'">'+esc(noteLabel(x))+'</a>'
+       +'<a href="'+((typeof noteRoute==='function')?noteRoute(x):(x==='_generales'?'#inicio':'#'+x))+'">'+esc(noteLabel(x))+'</a>'
        +'<p>'+esc(clip(d[x].text,140))+'</p></div>';
     });
   }
@@ -487,12 +737,997 @@ document.getElementById('notes-export').addEventListener('click',function(){
 
 /* ── enrutador ── */
 function curRoute(){var raw=(location.hash||'#inicio').slice(1);return raw.split('|')[0]||'inicio'}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   NOTAS ANCLADAS
+   El Archivo ya guardaba una nota por página de lore. Aquí esa misma
+   libreta aprende a pegarse a cosas más chicas: un nodo del árbol, una
+   habilidad, un arma, tu propio personaje. Misma clave de almacenamiento,
+   mismo panel, misma exportación — solo cambia a qué se ancla.
+   ═══════════════════════════════════════════════════════════════════════ */
+var NOTE_TARGET = null;   /* si está puesto, manda sobre la ruta actual */
+
+/* de dónde vino la nota → a dónde regresa */
+function noteRoute(k){
+  if(k === 'pj' || k.indexOf('nodo:') === 0) return '#personaje';
+  if(k.indexOf('hab:') === 0) return '#habilidades';
+  if(k.indexOf('kit:') === 0 || k.indexOf('clase:') === 0 || k.indexOf('arma:') === 0) return '#compendio';
+  if(k === '_generales') return '#inicio';
+  return '#' + k;
+}
+/* cómo se llama esa nota en la lista */
+function noteAnchorLabel(k){
+  var g = (typeof GAMEDATA !== 'undefined') ? GAMEDATA : null;
+  if(k === 'pj') return (typeof HERO !== 'undefined' && HERO && HERO.name) ? HERO.name : 'Mi personaje';
+  if(k.indexOf('nodo:') === 0){
+    var id = k.slice(5), hit = null;
+    if(g) g.masteryTrunks.forEach(function(t){
+      if(t.root.id === id) hit = t.root.name + ' · ' + t.name;
+      t.branches.forEach(function(b){ b.tiers.forEach(function(ti){ ti.nodes.forEach(function(n){
+        if(n.id === id) hit = n.name + ' · ' + b.name }) }) });
+    });
+    return hit || id;
+  }
+  if(k.indexOf('hab:')   === 0) return k.slice(4);
+  if(k.indexOf('arma:')  === 0){ var w = g && g.weapons.find(function(x){return x.id===k.slice(5)}); return w?w.name:k.slice(5) }
+  if(k.indexOf('kit:')   === 0){ var kk = g && g.kits.find(function(x){return x.id===k.slice(4)}); return kk?kk.name:k.slice(4) }
+  if(k.indexOf('clase:') === 0){ var c = g && g.classes.find(function(x){return x.id===k.slice(6)}); return c?c.name:k.slice(6) }
+  return null;
+}
+/* el grupo al que pertenece, para la vista Mis notas */
+function noteGroup(k){
+  if(k === 'pj') return 'Mi personaje';
+  if(k.indexOf('nodo:') === 0) return 'Nodos del árbol';
+  if(k.indexOf('hab:')  === 0) return 'Habilidades';
+  if(k.indexOf('arma:') === 0 || k.indexOf('kit:') === 0 || k.indexOf('clase:') === 0) return 'Compendio';
+  if(k === '_generales') return 'Generales';
+  return 'El Archivo';
+}
+
+/* abre el panel apuntando a una cosa concreta */
+function noteOn(key){
+  NOTE_TARGET = key;
+  document.body.classList.add('notes-open');
+  refreshNotesUI();
+}
+function noteClear(){ NOTE_TARGET = null }
+
+/* ¿esta ancla ya tiene nota escrita? */
+function hasNote(key){
+  var d = nload();
+  return !!(d[key] && d[key].text && d[key].text.trim());
+}
+/* el botoncito */
+function noteBtn(key, titulo){
+  var on = hasNote(key);
+  return '<button class="nbtn' + (on ? ' on' : '') + '" onclick="noteOn(&quot;' + esc(key) + '&quot;)" ' +
+         'title="' + esc(on ? 'Tienes una nota aquí' : (titulo || 'Escribir una nota aquí')) + '">✎</button>';
+}
+
+/* los nodos del árbol los pinta el motor compartido; el botón se cuelga
+   después, en el DOM, para no tocar el motor que index.html también usa */
+function anclarNotasEnNodos(){
+  var cont = document.querySelector('.mst-wrap');
+  if(!cont) return;
+  cont.querySelectorAll('.mst-node').forEach(function(el){
+    if(el.querySelector('.nbtn')) return;
+    var nombre = el.querySelector('.mst-node-name');
+    if(!nombre) return;
+    var id = el.getAttribute('data-node');
+    if(!id){                                     /* los bloqueados no traen data-node */
+      var txt = nombre.textContent.trim(), g = (typeof GAMEDATA!=='undefined') ? GAMEDATA : null;
+      if(g) g.masteryTrunks.forEach(function(t){ t.branches.forEach(function(b){
+        b.tiers.forEach(function(ti){ ti.nodes.forEach(function(n){ if(n.name === txt) id = n.id }) }) }) });
+    }
+    if(!id) return;
+    var head = el.querySelector('.mst-node-head');
+    if(!head) return;
+    var b = document.createElement('span');
+    b.innerHTML = noteBtn('nodo:' + id, 'Nota sobre ' + nombre.textContent.trim());
+    b.className = 'nbtn-slot';
+    /* el nodo entero es cliqueable para comprar: que el botón no dispare eso */
+    b.addEventListener('click', function(ev){ ev.stopPropagation() });
+    head.appendChild(b);
+  });
+}
+
+/* ── vista: Mis notas ── */
+function viewNotes(){
+  var d = nload();
+  var ks = Object.keys(d).filter(function(k){ return d[k] && d[k].text && d[k].text.trim() });
+  var h = '<div class="crumb"><a href="#inicio">Archivo</a> › Mis notas</div>';
+  h += '<h1 class="ptitle">Mis notas</h1>';
+  if(!ks.length){
+    h += '<div class="pc-empty"><h2>Todavía no has escrito nada</h2>' +
+         '<p>Busca el ✎ junto a una habilidad, un nodo de tu árbol o una página del Archivo. ' +
+         'Lo que escribas se queda pegado ahí, y se reúne todo en esta página.</p></div>';
+    return h;
+  }
+  h += '<p style="color:var(--ink2);max-width:58ch;margin:-10px 0 24px">' + ks.length +
+       ' nota' + (ks.length===1?'':'s') + ' en este navegador. Descárgalas de vez en cuando: son tuyas y solo viven aquí.</p>';
+  h += '<div style="display:flex;gap:9px;flex-wrap:wrap;margin-bottom:26px">' +
+       '<button class="pc-btn ghost" onclick="notasDescargar()">Descargar todas (.md)</button>' +
+       '<button class="pc-btn ghost" onclick="notasImprimir()">Imprimir</button></div>';
+
+  var grupos = {};
+  ks.forEach(function(k){ var g = noteGroup(k); (grupos[g] = grupos[g] || []).push(k) });
+  ['Mi personaje','Nodos del árbol','Habilidades','Compendio','El Archivo','Generales'].forEach(function(g){
+    if(!grupos[g]) return;
+    grupos[g].sort(function(a,b){ return (d[b].updated||0) - (d[a].updated||0) });
+    h += '<div class="sechead"><div class="eyebrow">' + esc(g) + ' · ' + grupos[g].length + '</div></div>';
+    grupos[g].forEach(function(k){
+      var etq = noteAnchorLabel(k) || noteLabel(k);
+      h += '<div class="ab"><div class="ab-h"><span class="ab-n">' + esc(etq) + '</span>' +
+           '<span class="ab-cost"><a href="' + noteRoute(k) + '" style="color:var(--ink3);text-decoration:none">ir ahí →</a></span></div>' +
+           '<div class="ab-d" style="white-space:pre-wrap">' + esc(d[k].text) + '</div></div>';
+    });
+  });
+  return h;
+}
+function notasDescargar(){
+  var d = nload(), lineas = ['# Mis notas de Avelir', ''];
+  var grupos = {};
+  Object.keys(d).forEach(function(k){ if(!d[k] || !d[k].text) return; var g = noteGroup(k); (grupos[g]=grupos[g]||[]).push(k) });
+  ['Mi personaje','Nodos del árbol','Habilidades','Compendio','El Archivo','Generales'].forEach(function(g){
+    if(!grupos[g]) return;
+    lineas.push('', '## ' + g, '');
+    grupos[g].forEach(function(k){
+      lineas.push('### ' + (noteAnchorLabel(k) || noteLabel(k)), '', d[k].text, '');
+    });
+  });
+  var b = new Blob([lineas.join('\n')], {type:'text/markdown'});
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(b); a.download = 'avelir-mis-notas.md'; a.click();
+  setTimeout(function(){ URL.revokeObjectURL(a.href) }, 500);
+}
+function notasImprimir(){ window.print() }
+
+
+/* ═══════════════════════════════════════════════════════════════════════
+   TU PERSONAJE DENTRO DEL ARCHIVO
+   Lee el héroe que creaste en creador-personaje.html. Los dos archivos
+   viven en el mismo sitio, así que comparten el mismo almacén del
+   navegador: lo que creas allá aparece aquí solo.
+   ═══════════════════════════════════════════════════════════════════════ */
+var HERO_KEY = 'eq_hero_v1';
+var HERO = null;
+var PC_MSG = '';
+
+function heroLoad(){
+  try{ var s = localStorage.getItem(HERO_KEY); return s ? JSON.parse(s) : null }catch(e){ return null }
+}
+function heroSave(){
+  try{ localStorage.setItem(HERO_KEY, JSON.stringify(HERO)) }catch(e){}
+}
+function hasHero(){ return !!(HERO && HERO.name) }
+function G(){ return (typeof GAMEDATA !== 'undefined') ? GAMEDATA : null }
+function gClass(){ var g=G(); if(!g||!HERO)return null; return g.classes.find(function(c){return c.id===HERO.classId})||null }
+function gSub(){ var g=G(); if(!g||!HERO||!HERO.subclassId)return null; var f=null;
+  g.classes.forEach(function(c){ (c.subclasses||[]).forEach(function(s){ if(s.id===HERO.subclassId) f=s }) }); return f }
+function gKit(){ var g=G(); if(!g||!HERO)return null; return g.kits.find(function(k){return k.id===HERO.kitId})||null }
+function gFaction(){ var g=G(); if(!g||!HERO)return null; return g.factions.find(function(f){return f.id===HERO.factionId})||null }
+function gTrunk(id){ var g=G(); if(!g)return null; return g.masteryTrunks.find(function(t){return t.id===id})||null }
+
+/* el puente que el motor de maestrías espera */
+var MSTH = {
+  data:     function(){ return G() },
+  esc:      function(s){ return esc(s) },
+  get:      function(){ return HERO ? {marks:HERO.marks||[], marksTotal:(HERO.marksTotal==null?1:HERO.marksTotal)} : {marks:[],marksTotal:0} },
+  set:      function(pid, obj){
+              if(!HERO) return;
+              if(obj.marks !== undefined) HERO.marks = obj.marks;
+              if(obj.marksTotal !== undefined) HERO.marksTotal = obj.marksTotal;
+              heroSave();
+            },
+  rerender: function(){ route() }
+};
+
+/* ── importar / traer de otro dispositivo ── */
+function heroFromText(txt){
+  var o;
+  try{ o = JSON.parse(txt) }catch(e){ return {error:'Eso no parece un archivo .json.'} }
+  if(!o || typeof o !== 'object' || Array.isArray(o)) return {error:'El archivo no tiene forma de héroe.'};
+  if(!o.name) return {error:'Al archivo le falta el nombre del héroe.'};
+  var g = G();
+  if(g){
+    var faltan = [];
+    if(o.classId && !g.classes.some(function(c){return c.id===o.classId})) faltan.push('la clase «'+o.classId+'»');
+    if(o.kitId   && !g.kits.some(function(k){return k.id===o.kitId}))      faltan.push('el kit «'+o.kitId+'»');
+    if(o.trunkId && !g.masteryTrunks.some(function(t){return t.id===o.trunkId})) faltan.push('el tronco «'+o.trunkId+'»');
+    if(faltan.length) return {error:'Tu héroe usa '+faltan.join(' y ')+', que no existe en esta versión.'};
+  }
+  return {hero:o};
+}
+function heroImportText(txt){
+  var r = heroFromText(txt);
+  if(r.error){ PC_MSG = '<span style="color:var(--red)">✗ '+esc(r.error)+'</span>'; route(); return false }
+  HERO = r.hero; heroSave(); PC_MSG=''; location.hash = '#personaje'; route(); return true;
+}
+function heroImportFile(input){
+  var f = input.files && input.files[0]; if(!f) return;
+  var rd = new FileReader();
+  rd.onload = function(ev){ heroImportText(String(ev.target.result)) };
+  rd.readAsText(f); input.value = '';
+}
+function heroDownload(){
+  if(!HERO) return;
+  var b = new Blob([JSON.stringify(HERO,null,2)], {type:'application/json'});
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(b);
+  var base = (HERO.name||'heroe').normalize('NFD').split('').filter(function(ch){
+    var c = ch.charCodeAt(0); return c < 768 || c > 879;   /* fuera los diacríticos combinantes */
+  }).join('').replace(/[^a-zA-Z0-9_-]+/g,'_');
+  a.download = base + '.json';
+  a.click();
+}
+function pcPickFile(){ var i=document.getElementById('pc-file'); if(i)i.click() }
+function pcPasteImport(){ var t=document.getElementById('pc-paste'); if(t)heroImportText(t.value) }
+
+/* ── vista: sin héroe todavía ── */
+function viewNoHero(titulo){
+  var h = '<div class="crumb"><a href="#inicio">Archivo</a> › '+esc(titulo)+'</div>';
+  h += '<div class="pc-empty"><h2>Todavía no hay un héroe aquí</h2>' +
+       '<p>Crea tu personaje en el generador y volverá solo a esta página — los dos viven en el mismo sitio ' +
+       'y comparten la memoria de tu navegador.</p>' +
+       '<div style="display:flex;gap:9px;flex-wrap:wrap">' +
+       '<a class="pc-btn" href="creador-personaje.html">Crear mi héroe →</a>' +
+       '<button class="pc-btn ghost" onclick="pcPickFile()">Ya tengo un .json</button></div>' +
+       '<input type="file" id="pc-file" class="pc-file" accept="application/json,.json" onchange="heroImportFile(this)">' +
+       '<details style="margin-top:16px"><summary style="cursor:pointer;font-family:var(--sans);font-size:13px;color:var(--ink3)">o pega el texto del archivo</summary>' +
+       '<textarea id="pc-paste" style="width:100%;min-height:88px;margin-top:9px;font-family:var(--mono);font-size:12px;' +
+       'border:1px solid var(--line2);border-radius:2px;padding:8px" placeholder="pega aquí el contenido"></textarea>' +
+       '<div style="margin-top:8px"><button class="pc-btn ghost" onclick="pcPasteImport()">Cargar</button></div></details>' +
+       (PC_MSG ? '<div class="pc-msg">'+PC_MSG+'</div>' : '') +
+       '</div>';
+  return h;
+}
+function needData(titulo){
+  return '<div class="crumb"><a href="#inicio">Archivo</a> › '+esc(titulo)+'</div>' +
+    '<div class="pc-empty"><h2>Faltan las reglas del juego</h2>' +
+    '<p>Esta sección necesita <code>data.js</code> junto a este archivo. El Archivo de lore funciona igual sin él.</p></div>';
+}
+
+/* ── vista: mi personaje ── */
+function viewChar(){
+  if(!G()) return needData('Mi personaje');
+  if(!hasHero()) return viewNoHero('Mi personaje');
+  var c=gClass(), k=gKit(), fac=gFaction(), sub=gSub();
+  var g=G();
+  var d = deriveMastery(MSTH.get());
+  var hp = (g.rules.hpBase||10) + (k?(k.hpBonus||0):0);
+  var echo = (c?((c.echoBase)||(c.type==='Magic'?2:1)):1) + ((k&&k.aenBonus)?k.aenBonus:0);
+  var cargas = echo<=2?2:(echo<=4?3:4);
+  var tr = gTrunk(HERO.trunkId);
+  var dados = tr ? (d.roots[tr.id] ? '2d12' : '1d12') : '1d12';
+  var mejor = null;
+  if(tr) tr.branches.forEach(function(b){ if(d.branches[b.id] && d.branches[b.id].mastery) mejor='3d12' });
+  if(mejor) dados = mejor;
+
+  var h = '<div class="crumb"><a href="#inicio">Archivo</a> › Mi personaje</div>';
+  h += '<div class="pc-head"><div class="eyebrow">'+(fac?esc(fac.name):'Sin facción')+'</div>' +
+       '<h1 class="pc-name">'+esc(HERO.name)+'</h1>' +
+       '<div class="pc-sub">'+(c?esc(c.name):'—')+(sub?' · '+esc(sub.name):'')+(k?' · '+esc(k.name):'')+
+       (tr?' · '+esc(tr.name):'')+'</div>'+noteBtn('pj','Notas sobre tu personaje')+'</div>';
+  function st(kk,v,sub){ return '<div class="pc-stat"><span>'+kk+'</span><b>'+v+'</b>'+(sub?'<small>'+sub+'</small>':'')+'</div>' }
+  h += '<div class="pc-stats">' +
+       st('Vitalidad', hp, '') +
+       st('Aen / turno', '+'+g.rules.aenPerTurn, c?esc(c.resource):'') +
+       st('Echo', '+'+echo, 'pruebas y empujes') +
+       st('Cargas', cargas, 'vuelven al cerrar sesión') +
+       st('Ataque base', dados, 'quédate con el mejor') +
+       st('Marcas libres', (d.total-d.spent)+' / '+d.total, '') +
+       '</div>';
+
+  h += lqSigue(d, tr);
+
+  /* el árbol — el motor trae sus propias pestañas de tronco */
+  h += '<div class="sechead"><div class="eyebrow">Tu árbol de maestrías</div></div>';
+  h += '<div class="mst-wrap">' + masteryTreeHtml('me', {showMarks:true}) + '</div>';
+
+  h += '<div class="sechead" style="margin-top:34px"><div class="eyebrow">Tu personaje en otros lados</div></div>';
+  h += '<div class="rg"><p style="font-size:14.5px">Tu héroe vive en este navegador. Para llevarlo a otro teléfono, ' +
+       'descarga el archivo y cárgalo allá.</p>' +
+       '<div style="display:flex;gap:9px;flex-wrap:wrap;margin-top:4px">' +
+       '<button class="pc-btn ghost" onclick="heroDownload()">Descargar mi .json</button>' +
+       '<a class="pc-btn ghost" href="creador-personaje.html">Abrir el generador</a>' +
+       '<button class="pc-btn ghost" onclick="pcPickFile()">Cargar otro héroe</button></div>' +
+       '<input type="file" id="pc-file" class="pc-file" accept="application/json,.json" onchange="heroImportFile(this)">' +
+       (PC_MSG ? '<div class="pc-msg">'+PC_MSG+'</div>' : '') + '</div>';
+  return h;
+}
+
+/* ── bloque: lo que sigue ── */
+function lqSigue(d, tr){
+  var libres = d.total - d.spent;
+  var h = '<div class="nx"><div class="nx-t">Lo que sigue</div>';
+
+  /* qué puede comprar ahora mismo */
+  var listos = [];
+  var miTronco = tr ? tr.id : null;
+  mstTrunks().forEach(function(t){
+    var mio = (t.id === miTronco);
+    if(!d.own[t.root.id]){ listos.push({n:t.root.name, br:t.name+' · Raíz', mio:mio, otro:!mio}); return }
+    t.branches.forEach(function(b){
+      b.tiers.forEach(function(ti, ix){
+        if(!d.branches[b.id].tiers[ix].unlocked) return;
+        ti.nodes.forEach(function(n){ if(!d.own[n.id]) listos.push({n:n.name, br:t.name+' · '+b.name, mio:mio, otro:!mio}) });
+      });
+    });
+  });
+  /* lo de tu propio tronco primero: abrir otro tronco es una decisión distinta */
+  listos.sort(function(a,b){ return (a.mio===b.mio) ? 0 : (a.mio ? -1 : 1) });
+  if(libres > 0 && listos.length){
+    h += '<div style="font-size:13.5px;color:var(--ink2);margin-bottom:7px">Con '+libres+
+         (libres===1?' marca libre puedes tomar':' marcas libres puedes tomar')+':</div>';
+    var mostrados = listos.slice(0,8), yaOtro = false;
+    mostrados.forEach(function(x){
+      if(x.otro && !yaOtro){ yaOtro = true;
+        h += '<div class="nx-row" style="border-bottom:0;padding-bottom:2px"><span style="font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink3)">O empezar otro tronco</span></div>';
+      }
+      h += '<div class="nx-row"><b>'+esc(x.n)+'</b><span class="br">'+esc(x.br)+'</span></div>';
+    });
+    if(listos.length>8) h += '<div class="nx-row" style="color:var(--ink3)">y '+(listos.length-8)+' más en el árbol</div>';
+  } else if(libres > 0){
+    h += '<div class="nx-none">Tienes '+libres+' marca(s) libre(s), pero no hay nada abierto todavía.</div>';
+  } else {
+    h += '<div class="nx-none">No tienes marcas libres. Tu Story Master te dará más al avanzar la historia.</div>';
+  }
+
+  /* camino a la próxima Maestría */
+  if(tr){
+    var caminos = [];
+    tr.branches.forEach(function(b){
+      var st = d.branches[b.id];
+      if(!st || st.mastery) return;
+      var faltan = 0, nombre = null;
+      b.tiers.forEach(function(ti){
+        ti.nodes.forEach(function(n){
+          if(!d.own[n.id]) faltan++;
+          if(n.mast && !nombre) nombre = n.name;
+        });
+      });
+      if(nombre) caminos.push({b:b.name, n:nombre, faltan:faltan, die:b.die});
+    });
+    caminos.sort(function(a,b){ return a.faltan - b.faltan });
+    if(caminos.length){
+      h += '<div class="nx-t" style="margin-top:16px">Camino a tu próxima Maestría</div>';
+      caminos.forEach(function(c){
+        h += '<div class="nx-row"><b>'+esc(c.n)+'</b>' +
+             '<span class="nx-cost">'+c.faltan+' marca'+(c.faltan===1?'':'s')+'</span>' +
+             '<span class="br">'+esc(c.b)+' · 3d12 · firma '+esc(c.die)+'</span></div>';
+      });
+    }
+  }
+  h += '</div>';
+  return h;
+}
+
+/* ── vista: mis habilidades ── */
+var PBAND = {b1:'1–4', b2:'5–8', b3:'9–11', b12:'12'};
+function abilHtml(a, clave){
+  var h = '<div class="ab"><div class="ab-h"><span class="ab-n">'+esc(a.name)+'</span>' +
+          (a.type?'<span class="ab-tag">'+esc(a.type)+'</span>':'') +
+          (a.cost?'<span class="ab-cost">'+esc(a.cost)+'</span>':'') +
+          (clave?noteBtn(clave,'Nota sobre '+a.name):'') + '</div>';
+  if(a.desc) h += '<div class="ab-d">'+esc(a.desc)+'</div>';
+  if(a.drawback) h += '<div class="ab-d" style="color:var(--red)"><em>Desventaja: '+esc(a.drawback)+'</em></div>';
+  if(a.bandas){
+    h += '<table class="ab-tb">';
+    ['b1','b2','b3','b12'].forEach(function(k){
+      if(!a.bandas[k]) return;
+      h += '<tr'+(k==='b12'?' class="hi"':'')+'><td class="bd">'+PBAND[k]+'</td><td>'+esc(a.bandas[k])+'</td></tr>';
+    });
+    h += '</table>';
+    if(a.tabla) h += '<div class="ab-note">Empuje: gasta 1 carga, d20 + Echo contra 15 / 17 / 20. Si te quedas corto, pagas el faltante en Vitalidad o conservas tu banda.</div>';
+  }
+  return h + '</div>';
+}
+function viewAbil(){
+  if(!G()) return needData('Mis habilidades');
+  if(!hasHero()) return viewNoHero('Mis habilidades');
+  var c=gClass(), sub=gSub(), k=gKit();
+  var h = '<div class="crumb"><a href="#inicio">Archivo</a> › Mis habilidades</div>';
+  h += '<h1 class="ptitle">Mis habilidades</h1>';
+  if(c){
+    h += '<div class="sechead"><div class="eyebrow">'+esc(c.name)+' · energía: '+esc(c.resource||'—')+'</div></div>';
+    (c.abilities||[]).forEach(function(a){ h += abilHtml(a, 'hab:'+a.name) });
+  }
+  if(sub && sub.abilities && sub.abilities.length){
+    h += '<div class="sechead" style="margin-top:30px"><div class="eyebrow">Subclase · '+esc(sub.name)+'</div></div>';
+    sub.abilities.forEach(function(a){ h += abilHtml(a, 'hab:'+a.name) });
+  }
+  if(k && k.ability){
+    h += '<div class="sechead" style="margin-top:30px"><div class="eyebrow">Kit · '+esc(k.name)+'</div></div>';
+    h += abilHtml(k.ability, 'hab:'+k.ability.name);
+  }
+  return h;
+}
+
+/* ── vista: reglas ── */
+function viewRules(){
+  if(!G()) return needData('Reglas');
+  var g = G(), BA = g.baseAttack;
+  var h = '<div class="crumb"><a href="#inicio">Archivo</a> › Reglas</div>';
+  h += '<h1 class="ptitle">Reglas</h1>';
+
+  if(BA && BA.bands){
+    h += '<div class="sechead"><div class="eyebrow">Ataque base</div></div>';
+    h += '<div class="rg"><p>Gratis, sin Aen, con cualquier arma. Tiras <b>1d12</b> y lees la banda. ' +
+         'Con la Raíz de un tronco tiras <b>2d12</b> y te quedas con el mejor; con una Maestría, <b>3d12</b> con esa arma. ' +
+         'Es carril mundano: no se empuja con Echo.</p>';
+    h += '<table class="rg-tb"><tr><th>Tirada</th><th>Daño</th></tr>';
+    BA.bands.forEach(function(b){
+      h += '<tr'+(b.signature?' class="hi"':'')+'><td class="k">'+esc(b.dice)+'</td><td>'+b.dmg+
+           (b.signature?' — y aquí dispara tu dado de firma, si tienes Maestría':'')+'</td></tr>';
+    });
+    h += '</table></div>';
+  }
+  if(g.masteryRules){
+    var mr = g.masteryRules;
+    h += '<div class="sechead" style="margin-top:30px"><div class="eyebrow">Maestrías</div></div><div class="rg">';
+    ['marks','dice','signature','lowBand','reaction'].forEach(function(k){
+      if(mr[k]) h += '<p>'+esc(mr[k])+'</p>';
+    });
+    if(mr.interplane && mr.interplane.length){
+      h += '<h3 style="margin-top:14px">Interplano</h3>';
+      mr.interplane.forEach(function(s){ h += '<p>'+esc(s)+'</p>' });
+    }
+    h += '</div>';
+  }
+  if(g.pushBands && g.pushBands.length){
+    h += '<div class="sechead" style="margin-top:30px"><div class="eyebrow">Empujar con Echo</div></div>';
+    h += '<div class="rg"><p>En una habilidad con tabla puedes gastar 1 carga de Echo para subir de banda: ' +
+         'tira d20 + tu Echo contra la dificultad. Si te quedas corto, pagas el faltante en Vitalidad o conservas tu banda.</p>';
+    h += '<table class="rg-tb"><tr><th>Subir a la banda</th><th>Sacas en d20 + Echo</th></tr>';
+    g.pushBands.forEach(function(p){
+      h += '<tr><td class="k">'+esc(p.dice)+'</td><td>'+esc(String(p.reach))+' o más</td></tr>';
+    });
+    h += '</table></div>';
+  }
+  if(g.conditions && g.conditions.length){
+    h += '<div class="sechead" style="margin-top:30px"><div class="eyebrow">Condiciones · '+g.conditions.length+'</div></div>';
+    h += '<div class="rg"><table class="rg-tb">';
+    g.conditions.forEach(function(c){
+      h += '<tr><td class="k">'+esc(c.name||c.id)+'</td><td>'+esc(c.desc||c.effect||'')+'</td></tr>';
+    });
+    h += '</table></div>';
+  }
+  return h;
+}
+
+/* ── vista: compendio ── */
+function viewCompendium(){
+  if(!G()) return needData('Compendio');
+  var g = G();
+  var h = '<div class="crumb"><a href="#inicio">Archivo</a> › Compendio</div>';
+  h += '<h1 class="ptitle">Compendio</h1>';
+  h += '<p style="color:var(--ink2);max-width:58ch;margin:-10px 0 26px">Todo lo que existe en Avelir para un héroe. ' +
+       'Lo tuyo aparece resaltado.</p>';
+
+  h += '<div class="sechead"><div class="eyebrow">Clases · '+g.classes.length+'</div></div><div class="cmp">';
+  g.classes.forEach(function(c){
+    var mine = HERO && c.id===HERO.classId;
+    h += '<div class="cmp-c'+(mine?' mine':'')+'"><div class="r">'+esc(c.type||'')+(c.role?' · '+esc(c.role):'')+
+         '<span style="float:right">'+noteBtn('clase:'+c.id,'Nota sobre '+c.name)+'</span></div>' +
+         '<h4>'+esc(c.name)+'</h4><p>Energía: '+esc(c.resource||'—')+' · '+(c.abilities?c.abilities.length:0)+' habilidades'+
+         ((c.subclasses&&c.subclasses.length)?' · '+c.subclasses.length+' subclases':'')+'</p></div>';
+  });
+  h += '</div>';
+
+  h += '<div class="sechead" style="margin-top:30px"><div class="eyebrow">Kits · '+g.kits.length+'</div></div><div class="cmp">';
+  g.kits.forEach(function(k){
+    var mine = HERO && k.id===HERO.kitId;
+    h += '<div class="cmp-c'+(mine?' mine':'')+'"><div class="r">'+esc(k.archetype||k.fantasy||'')+
+         '<span style="float:right">'+noteBtn('kit:'+k.id,'Nota sobre '+k.name)+'</span></div>' +
+         '<h4>'+esc(k.name)+'</h4><p>'+(k.ability?esc(k.ability.name):'')+
+         (k.hpBonus?' · +'+k.hpBonus+' Vitalidad':'')+(k.aenBonus?' · +'+k.aenBonus+' Aen':'')+'</p></div>';
+  });
+  h += '</div>';
+
+  h += '<div class="sechead" style="margin-top:30px"><div class="eyebrow">Troncos de maestría · '+g.masteryTrunks.length+'</div></div><div class="cmp">';
+  g.masteryTrunks.forEach(function(t){
+    var mine = HERO && t.id===HERO.trunkId;
+    h += '<div class="cmp-c'+(mine?' mine':'')+'"><div class="r">'+esc(t.sub||'')+'</div>' +
+         '<h4>'+esc(t.name)+'</h4><p>'+esc(t.root.name)+' · ramas: '+
+         t.branches.map(function(b){return esc(b.name)}).join(' · ')+'</p></div>';
+  });
+  h += '</div>';
+
+  if(g.weapons && g.weapons.length){
+    var mia = HERO ? g.weapons.filter(function(w){ return w.classAffinity===HERO.classId }) : [];
+    var otras = g.weapons.filter(function(w){ return mia.indexOf(w)===-1 });
+    h += '<div class="sechead" style="margin-top:30px"><div class="eyebrow">Armas legendarias · '+g.weapons.length+'</div></div>';
+    h += '<p style="color:var(--ink2);max-width:58ch;margin:-6px 0 14px;font-size:15px">Una por clase. No se compran: ' +
+         'aparecen en la historia, si aparecen.</p>';
+    if(mia.length){
+      h += '<div class="eyebrow" style="margin-bottom:8px">La de tu clase</div>';
+      mia.forEach(function(w){ h += abilHtml({name:w.name, type:w.rarity, cost:w.aenCost?w.aenCost+' Aen':'',
+        desc:w.flavor||'', bandas:w.bandas, tabla:w.tabla, drawback:w.drawback}, 'arma:'+w.id) });
+      if(mia[0].passive) h += '<div class="rg"><h3>Pasivo</h3><p>'+esc(mia[0].passive)+'</p></div>';
+      h += '<div class="eyebrow" style="margin:22px 0 8px">Las demás</div>';
+    }
+    h += '<div class="cmp">';
+    otras.forEach(function(w){
+      var c = g.classes.find(function(x){return x.id===w.classAffinity});
+      h += '<div class="cmp-c"><div class="r">'+(c?esc(c.name):esc(w.classAffinity||''))+'</div>' +
+           '<h4>'+esc(w.name)+'</h4><p>'+esc(w.flavor||'')+'</p></div>';
+    });
+    h += '</div>';
+  }
+  return h;
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════
+   LA HOJA IMPRIMIBLE
+   La misma ficha que rediseñamos en el generador, leyendo de HERO.
+   Vive aquí para que el jugador imprima sin salir del Archivo.
+   ═══════════════════════════════════════════════════════════════════════ */
+/* ══════════ HOJA IMPRIMIBLE — la paleta del juego ══════════ */
+var PBAND={b1:'1–4',b2:'5–8',b3:'9–11',b12:'12'};
+var SH={ink:'#2a2620',ink2:'#5a5449',ink3:'#8a8478',bd:'#e0dcd3',gold:'#b8935a',gink:'#8a6f0a',pale:'#f8f5e8',light:'#f0ead0'};
+function shSec(t){return '<div style="font-size:11px;letter-spacing:2px;color:'+SH.gink+';border-bottom:2px solid '+SH.gold+';padding-bottom:4px;margin:0 0 10px;font-weight:bold;font-family:Georgia,serif">'+t+'</div>'}
+function shCard(inner,strong){return '<div style="border:1px solid '+(strong?SH.gold:SH.bd)+';border-radius:8px;padding:10px 12px;margin-bottom:8px;page-break-inside:avoid;break-inside:avoid'+(strong?';background:'+SH.pale:'')+'">'+inner+'</div>'}
+function sheetBands(a){
+  if(!a.bandas)return '';
+  var s='<table style="width:100%;border-collapse:collapse;margin-top:6px;font-size:11px">';
+  ['b1','b2','b3','b12'].forEach(function(kk){
+    if(!a.bandas[kk])return;
+    var hi=kk==='b12';
+    s+='<tr><td style="width:40px;text-align:center;font-weight:bold;border:1px solid '+SH.bd+';padding:3px 4px;'+(hi?'background:'+SH.gink+';color:#fff':'background:'+SH.pale+';color:'+SH.ink2)+'">'+PBAND[kk]+'</td><td style="border:1px solid '+SH.bd+';padding:3px 6px;color:'+(hi?SH.ink+';font-weight:bold':SH.ink2)+'">'+esc(a.bandas[kk])+'</td></tr>';
+  });
+  s+='</table>';
+  if(a.tabla&&a.bandas)s+='<div style="font-size:10px;font-style:italic;color:'+SH.ink3+';margin-top:3px">Empuje: gasta 1 carga, d20 + Echo vs 15 / 17 / 20; si te quedas corto, paga el faltante en Vitalidad o conserva tu banda.</div>';
+  return s;
+}
+function sheetAbil(a){
+  var h='<div style="font-weight:bold;font-size:14px;color:'+SH.ink+'">'+esc(a.name)+' <span style="font-size:9.5px;font-weight:bold;letter-spacing:.5px;color:'+SH.gink+';background:'+SH.light+';padding:1px 7px;border-radius:8px;vertical-align:middle">'+esc((a.type||'').toUpperCase())+'</span> <span style="font-weight:normal;font-size:11px;color:'+SH.ink3+'">'+esc(a.cost||'')+'</span></div>';
+  h+='<div style="font-size:12.5px;color:'+SH.ink2+';margin-top:3px">'+esc(a.desc||'')+'</div>';
+  if(a.tabla)h+=sheetBands(a);
+  return shCard(h);
+}
+function buildSheetHTML(){
+  if(!G()||!hasHero()) return '';
+  var fac=gFaction(), c=gClass(), k=gKit();
+  var ft=(fac&&fac.feats&&HERO.featChosen!=null)?fac.feats[HERO.featChosen]:null;
+  var totalHP=(GAMEDATA.rules.hpBase||10)+(k?(k.hpBonus||0):0);
+  var _d=deriveMastery(MSTH.get());
+  var tk=gTrunk(HERO.trunkId);
+  var _em=(c?((c.echoBase)||(c.type==='Magic'?2:1)):1)+((k&&k.aenBonus)?k.aenBonus:0);var _cm=_em<=2?2:(_em<=4?3:4);
+  var h='<div style="font-family:Georgia,serif;color:'+SH.ink+';max-width:720px;margin:0 auto;padding:24px">';
+  h+='<div style="text-align:center;border-bottom:3px double '+SH.gold+';padding-bottom:14px;margin-bottom:18px">'+
+     '<div style="font-size:12px;letter-spacing:4px;color:'+SH.gink+'">EPIC QUEST · AVELIR</div>'+
+     '<div style="font-size:34px;margin-top:6px">'+esc(HERO.name||'________________')+'</div>'+
+     '<div style="font-size:13px;color:'+SH.ink3+';margin-top:4px">'+(fac?esc(fac.icon)+' '+esc(fac.name):'')+(c?' · '+esc(c.name):'')+(k?' · '+esc(k.name):'')+'</div></div>';
+  if(c){}
+  function stat(kk,v,sub){return '<div style="flex:1;border:1.5px solid '+SH.gold+';background:'+SH.pale+';border-radius:8px;padding:10px 6px;text-align:center"><div style="font-size:10px;color:'+SH.gink+';letter-spacing:1px;font-weight:bold">'+kk+'</div><div style="font-size:28px;font-weight:bold;margin-top:2px">'+v+'</div>'+(sub?'<div style="font-size:8.5px;color:'+SH.ink3+';margin-top:2px">'+sub+'</div>':'')+'</div>'}
+  h+='<div style="display:flex;gap:10px;margin-bottom:18px">'+
+     stat('HP',totalHP,'')+
+     stat('AEN / TURNO','+'+GAMEDATA.rules.aenPerTurn,(c?'tu clase lo llama '+esc(c.resource):''))+
+     stat('ECHO','+'+_em,'skill checks y empujes')+
+     stat('CARGAS',_cm,'vuelven al cerrar sesión')+
+     stat('ATAQUE BASE',(tk&&_d.roots[tk.id]?'2d12':'1d12'),(tk&&_d.roots[tk.id]?'quédate con el mejor':'sin especializar'))+
+     '</div>';
+  var BA=GAMEDATA.baseAttack;
+  if(BA&&BA.bands){
+    var inner='<div style="font-size:12px;color:'+SH.ink2+'">Gratis, sin Aen, con cualquier arma. Tira '+(tk&&_d.roots[tk.id]?'<strong>2d12 y quédate con el mejor</strong>':'<strong>1d12</strong>')+' y lee la banda. Carril mundano: no se empuja con Echo.</div>'+
+      '<table style="width:100%;border-collapse:collapse;margin-top:6px;font-size:11px">';
+    BA.bands.forEach(function(b){
+      var hi=!!b.signature;
+      inner+='<tr><td style="width:40px;text-align:center;font-weight:bold;border:1px solid '+SH.bd+';padding:3px 4px;'+(hi?'background:'+SH.gink+';color:#fff':'background:'+SH.pale+';color:'+SH.ink2)+'">'+esc(b.dice)+'</td><td style="border:1px solid '+SH.bd+';padding:3px 6px;color:'+SH.ink2+'">'+b.dmg+' de daño'+(hi?' — y aquí dispara tu dado de firma, si tienes Maestría':'')+'</td></tr>';
+    });
+    inner+='</table>';
+    h+='<div style="margin-bottom:18px;page-break-inside:avoid;break-inside:avoid">'+shSec('ATAQUE BASE')+shCard(inner)+'</div>';
+  }
+  if(tk){
+    var es={t:tk.sub||''};
+    var bl='';
+    bl+=shCard('<div style="font-weight:bold;font-size:14px">⚔️ '+esc(tk.root.name)+' <span style="font-weight:normal;font-size:11px;color:'+SH.ink3+'">Raíz · '+esc(tk.name)+'</span></div><div style="font-size:12.5px;color:'+SH.ink2+';margin-top:3px">'+esc(tk.root.eff)+'</div>',true);
+    mstTrunks().forEach(function(tr){
+      tr.branches.forEach(function(br){
+        var tocada=false;
+        br.tiers.forEach(function(ti){ti.nodes.forEach(function(n){
+          if(!_d.own[n.id])return;
+          if(!tocada&&br.low){bl+=shCard('<div style="font-size:11.5px;color:'+SH.ink2+'"><strong style="color:'+SH.gink+'">BANDA 1–4 · '+esc(br.name).toUpperCase()+' (GRATIS)</strong> — '+esc(br.low.name)+': '+esc(br.low.eff)+'</div>');tocada=true}
+          bl+=shCard('<div style="font-weight:bold;font-size:13.5px">◆ '+esc(n.name)+' <span style="font-weight:normal;font-size:11px;color:'+SH.ink3+'">'+esc(br.name)+(n.react?' · REACCIÓN':'')+(n.mast?' · MAESTRÍA':'')+(n.legend?' · LEGENDARIA':'')+'</span></div><div style="font-size:12px;color:'+SH.ink2+';margin-top:2px">'+esc(n.eff)+'</div>'+(n.fire?'<div style="font-size:11px;color:'+SH.ink2+';margin-top:4px;border-left:2px solid '+SH.gold+';padding-left:7px"><strong style="color:'+SH.gink+'">AL 12 · '+esc(n.die||'')+'</strong> '+esc(n.fire)+'</div>':'')+(n.active?'<div style="font-size:11px;color:'+SH.ink2+';margin-top:4px;border-left:2px solid '+SH.gold+';padding-left:7px"><strong style="color:'+SH.gink+'">ACTIVA</strong> '+esc(n.active)+'</div>':''));
+        })});
+      });
+    });
+    bl+='<div style="font-size:10.5px;color:'+SH.ink3+';margin:8px 0 5px">Ramas de '+esc(tk.name)+' — se abren con marcas:</div><table style="width:100%;border-collapse:collapse;font-size:11px">';
+    tk.branches.forEach(function(b){
+      bl+='<tr><td style="border:1px solid '+SH.bd+';padding:4px 7px;font-weight:bold;width:100px;background:'+SH.pale+'">'+esc(b.name)+'</td><td style="border:1px solid '+SH.bd+';padding:4px 7px;color:'+SH.ink2+'">'+esc(b.sub||'')+' · firma '+esc(b.die)+'</td></tr>';
+    });
+    bl+='</table>';
+    h+='<div style="margin-bottom:18px;page-break-inside:avoid;break-inside:avoid">'+shSec('ESPECIALIZACIÓN — '+esc(tk.name).toUpperCase()+(es.t?' · '+esc(es.t).toUpperCase():''))+bl+'</div>';
+  }
+  if(ft){h+='<div style="margin-bottom:18px;page-break-inside:avoid;break-inside:avoid">'+shSec('FEAT DE FACCIÓN')+shCard('<div style="font-weight:bold;font-size:14px">✨ '+esc(ft.name)+' <span style="font-weight:normal;font-size:11px;color:'+SH.ink3+'">('+esc(ft.attr)+')</span></div><div style="font-size:12.5px;color:'+SH.ink2+';margin-top:3px">'+esc(ft.desc)+'</div>')+'</div>';}
+  if(c&&c.abilities&&c.abilities.length){
+    h+='<div style="margin-bottom:18px">'+shSec('HABILIDADES DE CLASE — '+esc(c.name).toUpperCase()+' · ENERGÍA: '+esc(c.resource))+
+       '<div style="font-size:10.5px;color:'+SH.ink3+';margin:-4px 0 8px">Las habilidades con tabla se resuelven tirando 1d12: banda 1–4 · 5–8 · 9–11 · 12 (efecto máximo).</div>';
+    c.abilities.forEach(function(a){h+=sheetAbil(a)});
+    h+='</div>';
+  }
+  if(k){
+    h+='<div style="margin-bottom:18px;page-break-inside:avoid;break-inside:avoid">'+shSec('KIT — '+esc(k.name).toUpperCase()+(k.fantasy?' · '+esc(k.fantasy).toUpperCase():''))+
+      
+      (k.ability?shCard('<div style="font-weight:bold;font-size:14px">🎒 '+esc(k.ability.name)+' <span style="font-weight:normal;font-size:11px;color:'+SH.ink3+'">'+esc(k.ability.cost||'')+'</span></div><div style="font-size:12.5px;color:'+SH.ink2+';margin-top:3px">'+esc(k.ability.desc||'')+(k.ability.drawback?'<br><em style="color:#b02828">Desventaja: '+esc(k.ability.drawback)+'</em>':'')+'</div>'):'')+
+      '</div>';
+  }
+  function blankSection(title,lines){
+    var s='<div style="margin-bottom:18px;page-break-inside:avoid;break-inside:avoid">'+shSec(title);
+    for(var i=0;i<lines;i++)s+='<div style="border-bottom:1px dotted '+SH.gold+';height:26px"></div>';
+    return s+'</div>';
+  }
+  h+=blankSection('APARIENCIA Y PERSONALIDAD',4);
+  h+=blankSection('TRASFONDO / HISTORIA',5);
+  h+=blankSection('INVENTARIO',5);
+  h+=blankSection('NOTAS',5);
+  h+='<div style="text-align:center;font-size:11px;color:'+SH.ink3+';margin-top:24px;border-top:1px solid '+SH.bd+';padding-top:8px">Creado con el Generador de Héroes · Epic Quest</div>';
+  h+='</div>';
+  return h;
+}
+
+function viewSheet(){
+  if(!G()) return needData('Mi hoja');
+  if(!hasHero()) return viewNoHero('Mi hoja');
+  var h = '<div class="crumb"><a href="#inicio">Archivo</a> › Mi hoja</div>';
+  h += '<div class="no-print" style="display:flex;gap:9px;flex-wrap:wrap;align-items:center;margin-bottom:20px">' +
+       '<button class="pc-btn" onclick="window.print()">Imprimir o guardar en PDF</button>' +
+       '<span style="font-family:var(--sans);font-size:13px;color:var(--ink3)">Se imprime solo la ficha, sin menús.</span></div>';
+  h += '<div class="sheet-wrap">' + buildSheetHTML() + '</div>';
+  return h;
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   MOTOR DE MAESTRÍAS — compartido entre index.html y creador-personaje.html
+   La página anfitriona define MSTH antes de este bloque:
+     MSTH.data()        -> GAMEDATA
+     MSTH.get(pid)      -> {marks:[ids], marksTotal:n}
+     MSTH.set(pid,obj)  -> guarda {marks} y/o {marksTotal}
+     MSTH.rerender()    -> vuelve a pintar
+     MSTH.esc(s)        -> escapa html
+   ══════════════════════════════════════════════════════════════════════ */
+var MST_TRUNK = {};
+var MST_PLANE = {avelir:'AVELIR', veil:'VELO', hold:'CUENCO', inter:'INTERPLANO'};
+
+function mstTrunks(){ var g = MSTH.data(); return (g && g.masteryTrunks) ? g.masteryTrunks : [] }
+function mstEsc(s){ return MSTH.esc(s) }
+
+/* ── puertas ── */
+function gateOk(tier, own){
+  var have = 0;
+  tier.nodes.forEach(function(n){ if(own[n.id]) have++ });
+  if(tier.gate === 'all') return have === tier.nodes.length;
+  if(tier.gate === 'any') return have >= 1;
+  return have >= Number(tier.gate);
+}
+function gateLabel(tier){
+  if(tier.gate === 'all') return tier.nodes.length === 1 ? '1 de 1' : 'los ' + tier.nodes.length;
+  if(tier.gate === 'any') return '1 de ' + tier.nodes.length;
+  return tier.gate + ' de ' + tier.nodes.length;
+}
+
+/* ── localizar un nodo por id ── */
+function mstFind(nodeId){
+  var hit = null;
+  mstTrunks().forEach(function(tr){
+    if(tr.root.id === nodeId){ hit = {tr:tr, root:1}; return }
+    tr.branches.forEach(function(br){
+      br.tiers.forEach(function(ti, ix){
+        ti.nodes.forEach(function(n){ if(n.id === nodeId) hit = {tr:tr, br:br, ti:ti, ix:ix, n:n} });
+      });
+    });
+  });
+  return hit;
+}
+
+
+/* ── tabla de ataque base, derivada para este jugador ── */
+function mstBandPct(n){
+  /* tira n d12 y quédate con el mejor: P(máx ≤ k) = (k/12)^n */
+  var le = function(k){ return Math.pow(k/12, n) };
+  return { b1: le(4), b2: le(8)-le(4), b3: le(11)-le(8), b12: 1-le(11) };
+}
+function mstBaseTable(d, tr){
+  var g = MSTH.data();
+  var BA = g && g.baseAttack;
+  if(!BA || !BA.bands) return '';
+  var rootOn = !!d.own[tr.root.id];
+
+  /* configuraciones de dado dentro de este tronco */
+  var cfgs = [];
+  cfgs.push({ n: rootOn ? 2 : 1, lbl: rootOn ? 'Raíz · ' + mstEsc(tr.sub) : 'sin especializar', die: null });
+  tr.branches.forEach(function(b){
+    if(d.branches[b.id] && d.branches[b.id].mastery)
+      cfgs.push({ n:3, lbl:'Maestría · ' + mstEsc(b.name), die:b.die });
+  });
+
+  var h = '<div class="mst-base">';
+  h += '<div class="mst-base-hd"><span class="mst-base-t">TABLA DE ATAQUE BASE</span>' +
+       '<span class="mst-base-n">' + mstEsc(BA.note || '') + '</span></div>';
+  h += '<table class="mst-base-tb"><tr><th>Tirada 1d12</th><th>Daño</th>' +
+       cfgs.map(function(c){ return '<th>' + c.n + 'd12<small>' + c.lbl + '</small></th>' }).join('') + '</tr>';
+
+  var pcts = cfgs.map(function(c){ return mstBandPct(c.n) });
+  BA.bands.forEach(function(b){
+    var hi = !!b.signature;
+    h += '<tr' + (hi ? ' class="hi"' : '') + '><td class="bd">' + mstEsc(b.dice) + '</td><td class="dm">' + b.dmg + '</td>';
+    cfgs.forEach(function(c, i){
+      h += '<td class="pc">' + (pcts[i][b.band]*100).toFixed(1) + '%</td>';
+    });
+    h += '</tr>';
+    if(hi){
+      var firmas = cfgs.filter(function(c){ return c.die }).map(function(c){ return c.lbl.replace('Maestría · ','') + ' +' + c.die });
+      h += '<tr class="sig"><td colspan="' + (2+cfgs.length) + '">✨ En el 12 dispara tu dado de firma: ' +
+           (firmas.length ? mstEsc(firmas.join(' · ')) : '<em>ninguno todavía — lo da la Maestría de una rama</em>') + '</td></tr>';
+    }
+  });
+  h += '</table>';
+
+  /* qué de lo comprado mueve la tabla */
+  var mods = [];
+  tr.branches.forEach(function(b){
+    b.tiers.forEach(function(ti){ ti.nodes.forEach(function(n){
+      if(!d.own[n.id]) return;
+      var t = (n.eff||'') + ' ' + (n.fire||'') + ' ' + (n.active||'');
+      if(/\bband\b|\bbands\b|banda/i.test(t)) mods.push(n.name + ' <small>(' + b.name + ')</small>');
+    })});
+  });
+  var lows = d.lows.map(function(l){ return l.low.name + ' <small>(' + l.b + ')</small>' });
+  if(mods.length || lows.length){
+    h += '<div class="mst-base-mods">';
+    if(mods.length) h += '<div><b>Mueven tu banda:</b> ' + mods.join(' · ') + '</div>';
+    if(lows.length) h += '<div><b>Rescatan la banda 1-4:</b> ' + lows.join(' · ') + '</div>';
+    h += '</div>';
+  }
+  h += '</div>';
+  return h;
+}
+
+/* ── estado derivado ── */
+function deriveMastery(rec){
+  rec = rec || {};
+  var own = {};
+  (rec.marks || []).forEach(function(id){ own[id] = 1 });
+  var out = { own:own, spent:Object.keys(own).length,
+              total:(rec.marksTotal == null ? 0 : rec.marksTotal),
+              roots:{}, branches:{}, dice:{}, lows:[], reacts:[], legends:[], actives:[] };
+  mstTrunks().forEach(function(tr){
+    var rootOn = !!own[tr.root.id];
+    if(rootOn) out.roots[tr.id] = 1;
+    tr.branches.forEach(function(br){
+      var st = { open:rootOn, owned:0, tiers:[], mastery:0, die:br.die, low:null };
+      var prevOk = rootOn;
+      br.tiers.forEach(function(ti){
+        var unlocked = prevOk;
+        ti.nodes.forEach(function(n){
+          if(!own[n.id]) return;
+          st.owned++;
+          if(n.mast)   st.mastery = 1;
+          if(n.react)  out.reacts.push({b:br.name, n:n});
+          if(n.legend) out.legends.push({b:br.name, n:n});
+          if(n.active) out.actives.push({b:br.name, n:n});
+        });
+        st.tiers.push({ unlocked:unlocked, done:gateOk(ti, own) });
+        prevOk = unlocked && gateOk(ti, own);
+      });
+      if(st.owned > 0){ st.low = br.low; out.lows.push({b:br.name, low:br.low, die:br.die}) }
+      out.branches[br.id] = st;
+      if(st.mastery)   out.dice[br.id] = '3d12';
+      else if(rootOn)  out.dice[br.id] = '2d12';
+    });
+  });
+  return out;
+}
+
+/* ── ¿comprable ahora? ── */
+function canBuy(d, tr, br, ix){
+  if(!br) return !d.own[tr.root.id];
+  if(!d.own[tr.root.id]) return false;
+  return d.branches[br.id].tiers[ix].unlocked;
+}
+
+/* ── comprar / soltar, con cascada ── */
+function masteryToggle(pid, nodeId){
+  var rec = MSTH.get(pid);
+  if(!rec) return;
+  var marks = (rec.marks || []).slice();
+  var i = marks.indexOf(nodeId);
+  if(i > -1){
+    marks.splice(i, 1);
+    var guard = 0;
+    while(guard++ < 60){
+      var d = deriveMastery({marks:marks, marksTotal:rec.marksTotal});
+      var drop = null;
+      mstTrunks().forEach(function(tr){
+        if(!d.own[tr.root.id]){
+          tr.branches.forEach(function(br){ br.tiers.forEach(function(ti){
+            ti.nodes.forEach(function(n){ if(d.own[n.id] && !drop) drop = n.id }) }) });
+        } else {
+          tr.branches.forEach(function(br){
+            var st = d.branches[br.id];
+            br.tiers.forEach(function(ti, ix){
+              if(st.tiers[ix].unlocked) return;
+              ti.nodes.forEach(function(n){ if(d.own[n.id] && !drop) drop = n.id });
+            });
+          });
+        }
+      });
+      if(!drop) break;
+      marks.splice(marks.indexOf(drop), 1);
+    }
+  } else {
+    var d0 = deriveMastery(rec);
+    if(d0.total - d0.spent <= 0) return;
+    var f = mstFind(nodeId);
+    if(!f) return;
+    if(!canBuy(d0, f.tr, f.br, f.ix)) return;
+    marks.push(nodeId);
+  }
+  MSTH.set(pid, {marks:marks});
+  MSTH.rerender();
+}
+function adjustMarks(pid, delta){
+  var rec = MSTH.get(pid);
+  if(!rec) return;
+  var t = Math.max(0, Math.min(60, (rec.marksTotal == null ? 0 : rec.marksTotal) + delta));
+  if(delta < 0 && t < (rec.marks || []).length) return;
+  MSTH.set(pid, {marksTotal:t});
+  MSTH.rerender();
+}
+
+/* ── un nodo ── */
+function mstNodeHtml(pid, d, tr, br, ix, n, ro){
+  var owned = !!d.own[n.id];
+  var open  = canBuy(d, tr, br, ix);
+  var can   = !owned && open && (d.total - d.spent) > 0;
+  var cls   = 'mst-node' + (owned ? ' own' : (open ? ' can' : ' lock'));
+  var act   = (!ro && (owned || can))
+            ? ' data-action="mastery-toggle" data-id="' + pid + '" data-node="' + n.id + '"' : '';
+  var h = '<div class="' + cls + '"' + act + '>';
+  h += '<div class="mst-node-head"><span class="mst-tick">' + (owned ? '✓' : '') + '</span>';
+  h += '<span class="mst-node-name">' + mstEsc(n.name) + '</span>';
+  if(n.react)  h += '<span class="mst-tag">REACCIÓN</span>';
+  if(n.mast)   h += '<span class="mst-tag">MAESTRÍA</span>';
+  if(n.legend) h += '<span class="mst-tag">LEGENDARIA</span>';
+  h += '<span class="pl pl-' + n.plane + '">' + (MST_PLANE[n.plane] || n.plane) + '</span></div>';
+  h += '<div class="mst-node-eff">' + mstEsc(n.eff) + '</div>';
+  if(n.fire)   h += '<div class="mst-node-fire"><b>AL 12 · ' + mstEsc(n.die || '') + '</b><br>' + mstEsc(n.fire) + '</div>';
+  if(n.active) h += '<div class="mst-node-fire"><b>ACTIVA</b><br>' + mstEsc(n.active) + '</div>';
+  if(n.bet)    h += '<div class="mst-node-fire"><b>LA APUESTA</b><br>' + mstEsc(n.bet) + '</div>';
+  if(n.edge)   h += '<div class="mst-node-fire"><b>BORDE</b><br>No saca de combate a criaturas duras ni a jefes: pierden una acción.</div>';
+  return h + '</div>';
+}
+
+/* ── el árbol completo ──
+   opts: {readonly, showMarks, showTabs, trunkId} */
+function masteryTreeHtml(pid, opts){
+  opts = opts || {};
+  if(!mstTrunks().length) return '';
+  var rec = MSTH.get(pid);
+  if(!rec) return '';
+  var ro  = !!opts.readonly;
+  var d   = deriveMastery(rec);
+  var tid = opts.trunkId || MST_TRUNK[pid] || mstTrunks()[0].id;
+  var tr  = mstTrunks().filter(function(t){ return t.id === tid })[0] || mstTrunks()[0];
+  var free = d.total - d.spent;
+  var h = '';
+
+  if(opts.showTabs !== false){
+    h += '<div class="mst-top"><div class="mst-tabs">';
+    mstTrunks().forEach(function(t){
+      var cnt = d.own[t.root.id] ? 1 : 0;
+      t.branches.forEach(function(b){ cnt += d.branches[b.id].owned });
+      h += '<div class="mst-tab' + (t.id === tr.id ? ' active' : '') + (cnt ? ' owned' : '') +
+           '" data-action="mastery-trunk" data-id="' + pid + '" data-trunk="' + t.id + '">' +
+           mstEsc(t.name) + '<span class="n">' + (cnt || '') + '</span></div>';
+    });
+    h += '</div>';
+    h += '<div class="mst-marks"><span class="mst-marks-l">MARCAS LIBRES</span>' +
+         '<span class="mst-marks-v">' + free + '</span>';
+    if(opts.showMarks){
+      h += '<button class="mst-mbtn" data-action="sub-mark" data-id="' + pid + '">−</button>' +
+           '<button class="mst-mbtn" data-action="add-mark" data-id="' + pid + '">+</button>';
+    } else {
+      h += '<span style="font-size:11px;color:var(--ink3)">de ' + d.total + '</span>';
+    }
+    h += '</div></div>';
+  }
+
+  h += mstBaseTable(d, tr);
+
+  /* resumen de lo que cambió en la mesa */
+  if(d.spent){
+    var dice = [];
+    mstTrunks().forEach(function(t){
+      if(!d.own[t.root.id]) return;
+      var m = [];
+      t.branches.forEach(function(b){ if(d.branches[b.id].mastery) m.push(b.name + ' 3d12 · firma ' + b.die) });
+      dice.push(t.name + ' 2d12' + (m.length ? ' → ' + m.join(' • ') : ''));
+    });
+    var lows = d.lows.map(function(l){ return l.low.name + ' (' + l.b + ')' });
+    var nm = function(a){ return a.map(function(x){ return x.n.name }).join(' • ') };
+    h += '<div class="mst-sum">' +
+      '<div><div class="mst-sum-k">DADOS DE ATAQUE</div><div class="mst-sum-v">' + (dice.length ? mstEsc(dice.join(' • ')) : '1d12') + '</div></div>' +
+      '<div><div class="mst-sum-k">FIRMAS DE BANDA 1-4</div><div class="mst-sum-v">' + (lows.length ? mstEsc(lows.join(' • ')) : '—') + '</div></div>' +
+      '<div><div class="mst-sum-k">REACCIONES</div><div class="mst-sum-v">' + (d.reacts.length ? mstEsc(nm(d.reacts)) : '—') + '<small>una por ronda, gratis</small></div></div>' +
+      '<div><div class="mst-sum-k">INTERPLANO</div><div class="mst-sum-v">' + (d.legends.length ? mstEsc(nm(d.legends)) : '—') + '<small>una por sesión</small></div></div>' +
+      '</div>';
+  }
+
+  /* raíz */
+  var rootOn = !!d.own[tr.root.id];
+  var rootCan = !ro && (rootOn || free > 0);
+  h += '<div class="mst-root' + (rootOn ? ' on' : (rootCan ? ' can' : '')) + '"' +
+       (rootCan ? ' data-action="mastery-toggle" data-id="' + pid + '" data-node="' + tr.root.id + '"' : '') + '>';
+  h += '<span class="mst-tick" style="margin-top:3px">' + (rootOn ? '✓' : '') + '</span>';
+  h += '<div class="mst-root-body"><div class="mst-root-name">' + mstEsc(tr.root.name) +
+       ' <span class="pl pl-' + tr.root.plane + '">' + MST_PLANE[tr.root.plane] + '</span>' +
+       ' <span class="mst-tag">RAÍZ</span></div>';
+  h += '<div class="mst-root-eff">' + mstEsc(tr.root.eff) + '</div></div>';
+  h += '<div style="text-align:right;flex:none"><div class="mst-sum-k">' + mstEsc(tr.sub) + '</div>' +
+       '<div class="mst-sum-v">' + tr.root.dice + 'd12</div></div></div>';
+
+  /* ramas */
+  h += '<div class="mst-cols" style="grid-template-columns:repeat(' + tr.branches.length + ',1fr)">';
+  tr.branches.forEach(function(br){
+    var st = d.branches[br.id];
+    h += '<div class="mst-col' + (rootOn ? '' : ' locked') + '">';
+    h += '<div class="mst-col-head"><div class="mst-col-name">' + mstEsc(br.name) + '</div>' +
+         '<div class="mst-col-sub">' + mstEsc(br.sub || '') + '</div>' +
+         '<div class="mst-col-chips"><span class="mst-chip' + (st.owned ? ' gold' : '') + '">' + st.owned + ' nodos</span>' +
+         '<span class="mst-chip' + (st.mastery ? ' gold' : '') + '">' + (st.mastery ? '3d12' : (rootOn ? '2d12' : '1d12')) + '</span>' +
+         '<span class="mst-chip' + (st.owned ? ' gold' : '') + '">firma ' + mstEsc(br.die) + '</span></div></div>';
+    if(st.owned && br.low)
+      h += '<div class="mst-low"><b>BANDA 1-4 · GRATIS</b>' + mstEsc(br.low.name) + ' — ' + mstEsc(br.low.eff) + '</div>';
+    br.tiers.forEach(function(ti, ix){
+      var t = st.tiers[ix];
+      h += '<div class="mst-tier"><div class="mst-tier-head">' +
+           '<span class="mst-tier-t">' + mstEsc(ti.t) + '</span>' +
+           '<span class="mst-gate' + (t.done ? ' open' : '') + '">' + gateLabel(ti) + (t.done ? ' ✓' : '') + '</span></div>';
+      ti.nodes.forEach(function(n){ h += mstNodeHtml(pid, d, tr, br, ix, n, ro) });
+      h += '</div>';
+    });
+    h += '</div>';
+  });
+  return h + '</div>';
+}
+
+/* ── despachador compartido: la página anfitriona lo llama desde su click handler ── */
+function mstHandleAction(a, el){
+  if(a === 'mastery-trunk'){ MST_TRUNK[el.getAttribute('data-id')] = el.getAttribute('data-trunk'); MSTH.rerender(); return true }
+  if(a === 'mastery-toggle'){ masteryToggle(el.getAttribute('data-id'), el.getAttribute('data-node')); return true }
+  if(a === 'add-mark'){ adjustMarks(el.getAttribute('data-id'), 1); return true }
+  if(a === 'sub-mark'){ adjustMarks(el.getAttribute('data-id'), -1); return true }
+  return false;
+}
+
+
+/* el motor pinta nodos con data-action; aquí se despachan */
+document.addEventListener('click', function(e){
+  var el = e.target && e.target.closest ? e.target.closest('[data-action]') : null;
+  if(!el) return;
+  var a = el.getAttribute('data-action');
+  if(a === 'mastery-toggle' || a === 'add-mark' || a === 'sub-mark' || a === 'mastery-trunk'){
+    mstHandleAction(a, el);
+  }
+});
+
 function route(){
   var raw=(location.hash||'#inicio').slice(1),anchor='';
   if(raw.indexOf('|')>-1){var s=raw.split('|');raw=s[0];anchor=s[1]}
   if(!raw)raw='inicio';
   var app=document.getElementById('app');
+  PC_MSG = PC_MSG || '';
+  HERO = heroLoad();
+  noteClear();
   if(raw==='inicio')app.innerHTML=viewHome();
+  else if(raw==='personaje')app.innerHTML=viewChar();
+  else if(raw==='habilidades')app.innerHTML=viewAbil();
+  else if(raw==='reglas')app.innerHTML=viewRules();
+  else if(raw==='compendio')app.innerHTML=viewCompendium();
+  else if(raw==='hoja')app.innerHTML=viewSheet();
+  else if(raw==='notas')app.innerHTML=viewNotes();
   else if(raw==='indice')app.innerHTML=viewIndex();
   else if(raw==='faltantes')app.innerHTML=viewMissing();
   else if(BY_SLUG[raw])app.innerHTML=viewPage(BY_SLUG[raw]);
@@ -507,6 +1742,7 @@ function route(){
       route();
     });
   });
+  anclarNotasEnNodos();
   if(anchor){var el=document.getElementById(anchor);if(el)el.scrollIntoView({behavior:'smooth',block:'start'})}
   else window.scrollTo(0,0);
 }
