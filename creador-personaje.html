@@ -228,14 +228,32 @@ input[type=text]:focus{outline:none;border-color:var(--gold)}
 </head>
 <body>
 <div class="wrap" id="wrap">
+  <div id="sin-datos" style="display:none;border:2px solid #b02828;background:#fae8e8;border-radius:10px;padding:22px 24px;margin:24px 0">
+    <div style="font-size:20px;margin-bottom:8px">No encuentro las reglas del juego</div>
+    <div style="font-size:15px;line-height:1.6;color:#5a5449">
+      Este creador necesita el archivo <code style="font-family:ui-monospace,monospace">data.js</code>
+      en la misma carpeta. Sin él no puede armar ningún personaje.<br><br>
+      Si estás viendo esto en el sitio publicado, falta subir <code style="font-family:ui-monospace,monospace">data.js</code> al repositorio.
+    </div>
+  </div>
   <div class="progress no-print"><div class="progress-fill" id="progress"></div></div>
   <div id="app" class="screen"></div>
 </div>
 <div id="sheet" class="sheet"></div>
-<script src="data-publico.js"></script>
+<script src="data.js"></script>
 <script>
 /* ══════════ ESTADO ══════════ */
 // Reglas de economía traídas del Hub (fuente de verdad; no hardcodear en el texto)
+/* Primero lo primero: si data.js no cargó, nada de lo que sigue puede correr.
+   Antes esto reventaba en la línea de abajo y dejaba la página en blanco. */
+if(typeof GAMEDATA === 'undefined' || !GAMEDATA.classes){
+  var _sd = document.getElementById('sin-datos');
+  if(_sd) _sd.style.display = 'block';
+  var _pb = document.getElementById('progress');   /* #progress, no .progress:
+       el padre de .progress es el wrap entero, y esconderlo tapaba este aviso */
+  if(_pb && _pb.parentNode) _pb.parentNode.style.display = 'none';
+  throw new Error('data.js no cargó');
+}
 GAMEDATA.rules = Object.assign({ hpBase:10, aenPerTurn:2, actionsPerTurn:2, movementPerTurn:1 }, GAMEDATA.rules||{});
 
 var state = {
