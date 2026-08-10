@@ -1,12 +1,12 @@
-/* AVELIR — LORE PUBLICO  v0.8
+/* AVELIR — LORE PUBLICO  v0.10
    Fuente maestra: Avelir_Lore_Compilation.md — todo lo no-secreto vive aquí.
    Lo secreto (DM Only / Campaign Secret) va en la bóveda y NUNCA en este archivo.
    Lo leen index.html y wiki.html. */
 
 var LORE = {
 
-  version: "0.8",
-  exportedAt: "2026-07-25",
+  version: "0.10",
+  exportedAt: "2026-07-28",
 
   types: [
   {
@@ -130,7 +130,22 @@ var LORE = {
   "Las Casas Libres": "faction",
   "Los Navegantes": "faction",
   "Los del Margen": "faction",
-  "Las Compañías": "faction"
+  "Las Compañías": "faction",
+  "Casa Veldrik": "faction",
+  "Casa Ruviel": "faction",
+  "Casa Solmara": "faction",
+  "Casa Thornel": "faction",
+  "Lady Sigrid Veldrik": "character",
+  "El Consejo Ruviel": "concept",
+  "Lord Maren Solmara": "character",
+  "Thane Kael Thornel": "character",
+  "El Rey Valkar": "character",
+  "La Corona del Rey Valkar": "item",
+  "La Hermandad del Sello": "concept",
+  "El Círculo": "faction",
+  "La Siembra": "concept",
+  "Los de la Raíz": "concept",
+  "Casa Erindor": "concept"
 },
 
   pages: [
@@ -138,7 +153,7 @@ var LORE = {
     "id": "wbase-cheran",
     "title": "Teocracia de Cherán",
     "type": "faction",
-    "content": "# Declaración\n\"Nuestro dios es el único. Él proveerá. Los infieles serán purificados. El fuego de [[Engar Ab'Calen]] se esparcirá ante el retumbar de nuestra caballería.\"\n\n*Los Engari — El Pueblo que Ara*\n\n# Historia\nLas tierras del este de Avelir fueron durante siglos casi ingobernables: guerra tribal constante, agricultura pobre, dependencia del [[El Mar del Sur]]. Los **Engari** empezaron como mercenarios fanáticos de la estepa. Su devoción total a [[Engar Ab'Calen]] — el dios que ara la tierra para que brote la vida — fue la herramienta que por fin impuso el orden.\n\nTodo cambió con [[El Milagro Fundacional]]: cuando el primer Ungido llevó un remanente de [[El Bosque de las Luces]] al gran lago entre la cordillera volcánica y el Mar Central, las tierras se volvieron fértiles por primera vez. Fe y capacidad de alimentar a un pueblo quedaron inseparables — y una civilización entera tomó su nombre del acto más humilde: arar.\n\n# Gobierno\nTeocracia. El [[Palan'Nur]] — el Ungido — ejecuta la voluntad divina. El [[Palan'Shar]] — el concilio sagrado — define cuál es esa voluntad. Cuatro facciones compiten dentro del concilio: [[Amin]] los ortodoxos, [[Palan'Umbar]] los gnósticos, [[Amin'Kalam]] los iconoclastas y los [[Sar'Qaim]], los jihadistas — hoy la facción más agresiva, ejecutando purgas hacia el norte.\n\n# Fuerza Militar\nLa ventaja que define a Cherán: la **Caballería Combinada de Estepa**, la fuerza terrestre más rápida y devastadora de Avelir en campo abierto.\n- **[[Los Hermanos del Arado]]** — caballería pesada de choque: armadura laminar, lanzas pesadas y sables curvos. El martillo.\n- **[[Los Hijos del Viento]]** — arqueros a caballo de élite: puntería letal a galope tendido y las clásicas retiradas fingidas. El yunque móvil.\n- De 3 a 5 caballos por jinete, una movilidad estratégica que ni [[Aetharion]] ni [[Urushan]] pueden igualar en terreno abierto.\n\n# Fuerza Económica\nMinería — sobre todo cerca de la cordillera volcánica — y el control de metales y minerales estratégicos.\n\n# Figuras Clave\n- Los cuatro [[Palan'Nur]]: [[Anandëlion]] el Saladino, [[Anandël]] el Ciro, [[Anan'Nur]] el Darío — hoy agonizante — y [[An'Fahal]], el amanecer.\n- [[Temürel]] — **Abu'Amin, \"El Abuelo\"** — la memoria viva del imperio y su general más respetado.\n\n# Situación Geopolítica\nEn su cúspide de poder y, a la vez, en su momento más inestable por la sucesión. Los [[Sar'Qaim]] empujan al norte contra la confederación emergente de [[Arminio El Dorado]]. Adentro, una purificación religiosa avanza. El liderazgo empieza a darse cuenta de que tratar con las [[Casas Isleñas]] del Mar del Sur exige un juego político que no dominan — y, sobre todo, empieza a preparar al pueblo para la amenaza real de largo plazo: [[Aetharion]].",
+    "content": "# Declaración\n\"Nuestro dios es el único. Él proveerá. Los infieles serán purificados. El fuego de [[Engar Ab'Calen]] se esparcirá ante el retumbar de nuestra caballería.\"\n\n*Los Engari — El Pueblo que Ara*\n\n# Historia\nLas tierras del este de Avelir fueron durante siglos casi ingobernables: guerra tribal constante, agricultura pobre, dependencia del [[El Mar del Sur]]. Los **Engari** empezaron como mercenarios fanáticos de la estepa. Su devoción total a [[Engar Ab'Calen]] — el dios que ara la tierra para que brote la vida — fue la herramienta que por fin impuso el orden.\n\nTodo cambió con [[El Milagro Fundacional]]: cuando el primer Ungido llevó un remanente de [[El Bosque de las Luces]] al gran lago entre la cordillera volcánica y el Mar Central, las tierras se volvieron fértiles por primera vez. Fe y capacidad de alimentar a un pueblo quedaron inseparables — y una civilización entera tomó su nombre del acto más humilde: arar.\n\n# Gobierno\nTeocracia. El [[Palan'Nur]] — el Ungido — ejecuta la voluntad divina. El [[Palan'Shar]] — el concilio sagrado — define cuál es esa voluntad. Cuatro facciones compiten dentro del concilio: [[Amin]] los ortodoxos, [[Palan'Umbar]] los gnósticos, [[Amin'Kalam]] los iconoclastas y los [[Sar'Qaim]], los jihadistas — hoy la facción más agresiva, ejecutando purgas hacia el norte.\n\n# Fuerza Militar\nLa ventaja que define a Cherán: la **Caballería Combinada de Estepa**, la fuerza terrestre más rápida y devastadora de Avelir en campo abierto.\n- **[[Los Hermanos del Arado]]** — caballería pesada de choque: armadura laminar, lanzas pesadas y sables curvos. El martillo.\n- **[[Los Hijos del Viento]]** — arqueros a caballo de élite: puntería letal a galope tendido y las clásicas retiradas fingidas. El yunque móvil.\n- De 3 a 5 caballos por jinete, una movilidad estratégica que ni [[Aetharion]] ni [[Urushan]] pueden igualar en terreno abierto.\n\n# Fuerza Económica\nMinería — sobre todo cerca de la cordillera volcánica — y el control de metales y minerales estratégicos.\n\n# Figuras Clave\n- Los cuatro [[Palan'Nur]]: [[Anandëlion]] el Saladino, [[Anandël]] el Ciro, [[Anan'Nur]] el Darío — hoy agonizante — y [[An'Fahal]], el amanecer.\n- [[Temürel]] — **Abu'Amin, \"El Abuelo\"** — la memoria viva del imperio y su general más respetado.\n\n# La Crisis de Sucesión\nLa muerte de [[Anan'Nur]] y la ceremonia de elevación de [[An'Fahal]] detonaron una guerra interna por el alma del imperio — tres fuerzas que no pueden coexistir:\n- **[[La Siembra]]** — la institución colectivista-teocrática emergente. Controla graneros, minería, logística y propaganda. Cree que el poder real debe residir en la estructura colectiva, y el [[Palan'Nur]] ser solo el símbolo sagrado necesario.\n- **[[Los de la Raíz]]** — la reacción. Predican que la verdadera voluntad de [[Engar Ab'Calen]] no puede vivir en asambleas ni concilios, sino solo en el Palan'Nur como avatar viviente. Apoyan a An'Fahal y empujan una revolución cultural-religiosa.\n- **[[Temürel]]** — el Abuelo, en medio. Quiere que el Palan'Nur siga siendo un decisor real, no un símbolo hueco, y protege ferozmente al joven An'Fahal.\n\n# Situación Geopolítica\nEn su cúspide militar y a la vez desgarrada por dentro. Los [[Sar'Qaim]] empujan al norte contra la confederación de [[Arminio El Dorado]]; adentro, [[La Siembra]] y [[Los de la Raíz]] se disputan el futuro. Y los líderes más lúcidos empiezan a ver la amenaza de largo plazo que de verdad importa: si el método de [[Aetharion]] madura, la doctrina de pura caballería no bastará. Dependen cada vez más de [[Casa Vorin]] para armas sofisticadas, información y grano.",
     "tree": {
       "title": "Los Cuatro Palan'Nur",
       "gens": [
@@ -208,13 +223,13 @@ var LORE = {
     "id": "wbase-escarlata",
     "title": "La Orden Escarlata",
     "type": "faction",
-    "content": "# Declaración\n\"No servimos a ningún rey. No tenemos sede. No tenemos ejército. Solo tenemos un código y la voluntad de morir por él. Llegamos cuando nadie más llega.\"\n\n*Las Hermandades — Los que llegan cuando nadie más llega*\n\n# Historia\nLa Orden nació de un acto de desobediencia que fue simultáneamente el más fiel al código que la fundó. **[[Ser Arthantos]]** — uno de los comandantes más honorados de **[[La Corte del Sol]]**, la mesa de caballeros más antigua de Urushan — supo de una invasión inminente a un pueblo completamente desamparado. Desafiando a Urushan, tomó a un grupo de caballeros y marchó a defenderlo.\n\nEn esa batalla enfrentó manifestaciones de [[Tel-Haud]] — ecos de la batalla que sigue ocurriendo en el interplano — e hizo el sacrificio máximo: **[[El Gran Sacrificio]]**. Ese cisma fundó algo que lleva 700 años existiendo sin rey, sin capital, sin ejército. [[Thecia]] se convirtió en La Cuna de la Orden.\n\nNo son muchos. Veinte caballeros de la Orden valen por mil soldados comunes — son multiplicadores de fuerza. Llegan, organizan, entrenan y lideran. Cuando la batalla termina, se van.\n\nEl mundo los considera anacronismos. **El mundo se equivoca.**\n\n# Gobierno\n**Descentralizado.** 17-18 hermandades independientes unidas solo por el **Juramento Escarlata**. Cada hermandad tiene un **Primero de la Mesa**. No hay líder global. Tres corrientes internas definen cómo cada hermandad interpreta el Juramento:\n- **[[Los Tantos]]** — defienden hasta morir. El Juramento no tiene excepciones.\n- **[[Los Platos]]** — negocian. Cuando llegan, algo va a costar.\n- **[[Los Normales]]** — evalúan caso por caso qué acción salva más vidas.\n\n**[[La Mesa Completa]]** — la coalición de todas las hermandades. En 700 años solo ha ocurrido dos veces. Cuando se convoca, el mundo sabe que algo sin precedente está ocurriendo.\n\n# Figuras Clave\n- **[[Ser Arthantos]]** — El fundador. El Galahad de Avelir. El más puro. Hizo el sacrificio máximo hace 700 años.\n- **[[Hemmal]]** — Dios patrono. La Orden lo sostiene como la presencia del Emperador en el plano mortal. Los caballeros lo invocan en combate.\n- **Ser Gianni du Mont** — Primero de la Mesa (Los Normales). Defendió Tol Varen junto a [[Arminio El Dorado]] y partió sin despedirse.\n- **[[El Sobreviviente]]** — Sobrevivió la destrucción de su hermandad. Está convocando La Mesa Completa por tercera vez en la historia. Nadie sabe qué vio esa noche.\n\n# Situación Geopolítica\nLa Orden se desvanece — el mundo político y comercial la dejó obsoleta. Pero en su momento más débil, la batalla entre el Emperador y Tel-Haud está alcanzando un clímax que rompe el interplano. Una hermandad entera fue destruida en una noche por criaturas que no pertenecen a este mundo. La Mesa Completa ha sido convocada."
+    "content": "# Declaración\n\"No servimos a ningún rey. No tenemos sede. No tenemos ejército. Solo tenemos un código y la voluntad de morir por él. Llegamos cuando nadie más llega.\"\n\n*Las Hermandades — Los que llegan cuando nadie más llega*\n\n# Historia\nLa Orden nació de un acto de desobediencia que fue simultáneamente el más fiel al código que la fundó. **[[Ser Arthantos]]** — uno de los comandantes más honorados de **[[La Corte del Sol]]**, la mesa de caballeros más antigua de Urushan — supo de una invasión inminente a un pueblo completamente desamparado. Desafiando a Urushan, tomó a un grupo de caballeros y marchó a defenderlo.\n\nEn esa batalla enfrentó manifestaciones de [[Tel-Haud]] — ecos de la batalla que sigue ocurriendo en el intervelo — e hizo el sacrificio máximo: **[[El Gran Sacrificio]]**. Ese cisma fundó algo que lleva 700 años existiendo sin rey, sin capital, sin ejército. [[Thecia]] se convirtió en La Cuna de la Orden.\n\nNo son muchos. Veinte caballeros de la Orden valen por mil soldados comunes — son multiplicadores de fuerza. Llegan, organizan, entrenan y lideran. Cuando la batalla termina, se van.\n\nEl mundo los considera anacronismos. **El mundo se equivoca.**\n\n# Gobierno\n**Descentralizado.** 17-18 hermandades independientes unidas solo por el **Juramento Escarlata**. Cada hermandad tiene un **Primero de la Mesa**. No hay líder global. Tres corrientes internas definen cómo cada hermandad interpreta el Juramento:\n- **[[Los Tantos]]** — defienden hasta morir. El Juramento no tiene excepciones.\n- **[[Los Platos]]** — negocian. Cuando llegan, algo va a costar.\n- **[[Los Normales]]** — evalúan caso por caso qué acción salva más vidas.\n\n**[[La Mesa Completa]]** — la coalición de todas las hermandades. En 700 años solo ha ocurrido dos veces. Cuando se convoca, el mundo sabe que algo sin precedente está ocurriendo.\n\n# Figuras Clave\n- **[[Ser Arthantos]]** — El fundador. El Galahad de Avelir. El más puro. Hizo el sacrificio máximo hace 700 años.\n- **[[Hemmal]]** — Dios patrono. La Orden lo sostiene como la presencia del Emperador en el plano mortal. Los caballeros lo invocan en combate.\n- **Ser Gianni du Mont** — Primero de la Mesa (Los Normales). Defendió Tol Varen junto a [[Arminio El Dorado]] y partió sin despedirse.\n- **[[El Sobreviviente]]** — Sobrevivió la destrucción de su hermandad. Está convocando La Mesa Completa por tercera vez en la historia. Nadie sabe qué vio esa noche.\n\n# Situación Geopolítica\nLa Orden se desvanece — el mundo político y comercial la dejó obsoleta. Pero en su momento más débil, la batalla entre el Emperador y Tel-Haud está alcanzando un clímax que rompe el intervelo. Una hermandad entera fue destruida en una noche por criaturas que no pertenecen a este mundo. La Mesa Completa ha sido convocada."
   },
   {
     "id": "wbase-aetharion",
     "title": "Aetharion",
     "type": "faction",
-    "content": "# Declaración\n\"Evolución. Táctica. Estrategia. Temple. Magia al servicio de la victoria. El Jardín Eterno no para de crecer.\"\n\n*El Jardín Eterno — Evolución sin fin*\n\n# Historia\nDurante siglos las casas heráldicas que hoy forman Aetharion vivieron fragmentadas y humilladas bajo el peso del Primer Imperio. Generaciones enteras crecieron con la deuda de una derrota que no cometieron. Hasta que **[[Alendi Galathas]]** — Cúmulo de Estrellas, Casa Gal'Calad — vio lo que nadie más podía ver: que la humillación podía convertirse en combustible.\n\nAlendi unificó las casas heráldicas no por conquista sino por legitimidad — era uno de ellos. Junto a **[[Anariel]]** — la Heraldo, arquitecta de su ventaja tecnológica — construyó el ejército más innovador que Avelir ha visto. No ganaron por número ni por territorio — ganaron porque mientras los demás seguían peleando con las mismas tácticas de siempre, **Aetharion estaba reinventando completamente la guerra**.\n\n# Gobierno\n**República Militar.** El **[[Arkhon Galas]]** lidera. **[[Los Primarcas]]** comandan las legiones — cada uno un genio en su dominio, toman decisiones en campo sin esperar órdenes. **[[Los Cónsules]]** representan al pueblo. **[[Heraldin Galas]]** controla la tecnología y la alquimia bélica. Las decisiones se toman en conjunto — pero siempre con la balanza inclinada hacia lo militar.\n\n# Figuras Clave\n- **[[Alendi Galathas]] — Arkhon Galas** — El Cúmulo de Estrellas. Fundador de Aetharion. A los 14 años huyó de la humillación de su familia. Vagó por el mundo hasta convertirse en el arquitecto del Jardín Eterno y de la toma de [[Tol Marin]].\n- **[[Anariel]] — Heraldin Galas** — La Heraldo. Arquitecta de la ventaja tecnológica de Aetharion. Brillante para la magia. Nadie entiende completamente de dónde viene su poder.\n- **[[Los Primarcas]]** — Los generales de Aetharion. Cada uno un genio en su dominio.\n- **[[Los Galadrim]]** — La guardia élite del Arkhon Galas. Hijos e hijas de las casas heráldicas. El entrenamiento más arduo del mundo.\n\n# Identidad Económica\nProtoindustrial. Ingeniería mecánica avanzada, poder de vapor, máquinas complejas y la aplicación sistemática de la magia a la producción y a la guerra. Militarmente brillantes — pero su economía todavía no alcanza a su ejército. Por eso todas las miradas del Jardín apuntan al [[El Mar del Sur]].\n\n# Situación Geopolítica\nLas águilas del Jardín Eterno acaban de tomar **[[Tol Marin]]**. [[Urushan]] fue humillado — por primera vez en siglos alguien le ganó al Primer Imperio en batalla abierta. El equilibrio de poder cambió de manera definitiva. El mundo no volverá a ser el mismo."
+    "content": "# Declaración\n\"Evolución. Táctica. Estrategia. Temple. Magia al servicio de la victoria. El Jardín Eterno no para de crecer.\"\n\n*El Jardín Eterno — Evolución sin fin*\n\n# Historia\nDurante siglos las casas heráldicas que hoy forman Aetharion vivieron fragmentadas y humilladas bajo el peso del Primer Imperio. Generaciones enteras crecieron con la deuda de una derrota que no cometieron. Hasta que **[[Alendi Galathas]]** — Cúmulo de Estrellas, Casa Gal'Calad — vio lo que nadie más podía ver: que la humillación podía convertirse en combustible.\n\nAlendi unificó las casas heráldicas no por conquista sino por legitimidad — era uno de ellos. Junto a **[[Anariel]]** — la Heraldo, arquitecta de su ventaja tecnológica — construyó el ejército más innovador que Avelir ha visto. No ganaron por número ni por territorio — ganaron porque mientras los demás seguían peleando con las mismas tácticas de siempre, **Aetharion estaba reinventando completamente la guerra**.\n\n# Gobierno\n**República Militar.** El **[[Arkhon Galas]]** lidera. **[[Los Primarcas]]** comandan las legiones — cada uno un genio en su dominio, toman decisiones en campo sin esperar órdenes. **[[Los Cónsules]]** representan al pueblo. **[[Heraldin Galas]]** controla la tecnología y la alquimia bélica. Las decisiones se toman en conjunto — pero siempre con la balanza inclinada hacia lo militar.\n\n# Figuras Clave\n- **[[Alendi Galathas]] — Arkhon Galas** — El Cúmulo de Estrellas. Fundador de Aetharion. A los 14 años huyó de la humillación de su familia. Vagó por el mundo hasta convertirse en el arquitecto del Jardín Eterno y de la toma de [[Tol Marin]].\n- **[[Anariel]] — Heraldin Galas** — La Heraldo. Arquitecta de la ventaja tecnológica de Aetharion. Brillante para la magia. Nadie entiende completamente de dónde viene su poder.\n- **[[Los Primarcas]]** — Los generales de Aetharion. Cada uno un genio en su dominio.\n- **[[Los Galadrim]]** — La guardia élite del Arkhon Galas. Hijos e hijas de las casas heráldicas. El entrenamiento más arduo del mundo.\n\n# Identidad Económica\nProtoindustrial. Ingeniería mecánica avanzada, poder de vapor, máquinas complejas y la aplicación sistemática de la magia a la producción y a la guerra. Militarmente brillantes — pero su economía todavía no alcanza a su ejército. Por eso todas las miradas del Jardín apuntan al [[El Mar del Sur]].\n\n# El Umbral\nLo que se demostró en [[La Batalla de Tol Marin]] no fue solo una victoria: fue la primera prueba pública de que la magia puede **sistematizarse y aplicarse industrialmente**. El resto del continente apenas empieza a entender lo que eso significa. Copiar una máquina no basta: sin una fuente equivalente —o sin entender el principio que usa [[Anariel]]— los demás poderes solo pueden imitar la superficie. Por eso los servicios de inteligencia de [[Urushan]], [[Teocracia de Cherán]] y [[Casa Vorin]] ya no roban planos: cazan el **origen** del avance. Y ese origen es Anariel.\n\n# Situación Geopolítica\nA ocho meses de [[La Batalla de Tol Marin]], sostiene la fortaleza y el equilibrio del Mar Central ha cambiado de forma permanente. El tiempo juega a su favor: cada mes sin una coalición amplia en su contra ensancha la brecha tecnológica y de prestigio. Proteger a Anariel y a los cuadros técnicos que entienden su método es ahora prioridad absoluta del Jardín."
   },
   {
     "id": "wbase-urushan",
@@ -340,7 +355,7 @@ var LORE = {
     "id": "wpub-anariel",
     "title": "Anariel",
     "type": "character",
-    "content": "# Quién es\n**[[Heraldin Galas]]** — La Heraldo de [[Aetharion]]. Arquitecta de la ventaja tecnológica del Jardín Eterno: la alquimia bélica, los objetos imbuidos, los [[Cuencos de Poder]] convertidos en instrumento de guerra.\n\nAlta, de piel pálida y luminosa, cabello largo entre plata y oro, ojos gris claro. Una belleza que no parece del todo de este mundo.\n\n# Historia\nNadie sabe de dónde viene. Ha estado junto a la familia Galathas más tiempo del que nadie puede confirmar, y prácticamente solo habla con miembros de ese linaje. Distante — observa el mundo como desde muy lejos.\n\n# Rol actual\nQuienes la han visto de cerca dicen que la muerte de [[Balorin Galathas]] — al que ayudó a criar — la cambió. Nadie sabe decir exactamente cómo."
+    "content": "# Quién es\n**[[Heraldin Galas]]** — La Heraldo de [[Aetharion]]. Arquitecta de la ventaja tecnológica del Jardín Eterno: la alquimia bélica, los objetos imbuidos, los [[Cuencos de Poder]] convertidos en instrumento de guerra.\n\nAlta, de piel pálida y luminosa, cabello largo entre plata y oro, ojos gris claro. Una belleza que no parece del todo de este mundo.\n\n# Historia\nNadie sabe de dónde viene. Ha estado junto a la familia Galathas más tiempo del que nadie puede confirmar, y prácticamente solo habla con miembros de ese linaje. Distante — observa el mundo como desde muy lejos.\n\n# Rol actual\nQuienes la han visto de cerca dicen que la muerte de [[Balorin Galathas]] — al que ayudó a criar — la cambió. Nadie sabe decir exactamente cómo.\n\nTras [[La Batalla de Tol Marin]] dejó de ser \"la consejera misteriosa\" para volverse otra cosa: el activo geopolítico más valioso y más peligroso del continente. Todos los imperios quieren el origen de la ventaja de [[Aetharion]], y ese origen es ella. El Jardín la protege como protegería a nada más."
   },
   {
     "id": "wpub-tolmarin",
@@ -370,7 +385,7 @@ var LORE = {
     "id": "wpub-batalla-tolmarin",
     "title": "La Batalla de Tol Marin",
     "type": "story",
-    "content": "# Qué fue\nLa toma de [[Tol Marin]] por [[Aetharion]] — la primera derrota de [[Urushan]] en batalla abierta en siglos. El evento que rompió el equilibrio del Mar Central.\n\n# Cómo ocurrió\nDos años después del asesinato de [[Balorin Galathas]], Aetharion lanzó una campaña cuidadosamente preparada. No ganaron por número: ganaron por táctica superior, disciplina, y el uso sistemático de la magia como arma de guerra.\n\n# Repercusiones\n- Para Urushan: humillación masiva — acelera el cisma de [[Alarion]] y las purgas de [[Iridel Von Richter]].\n- Para Aetharion: prestigio y momentum enormes.\n- La [[Teocracia de Cherán]] usa la victoria como propaganda: los Aetheri son \"el nuevo demonio\".\n- [[Casa Vorin]] gana con ambos bandos, como siempre."
+    "content": "# Qué fue\nLa toma de [[Tol Marin]] por [[Aetharion]] — la primera derrota de [[Urushan]] en batalla abierta en siglos. El evento que rompió el equilibrio del Mar Central. El presente de Avelir transcurre unos ocho meses después de esta batalla.\n\n# Cómo ocurrió — las tres fases\nDos años después del asesinato de [[Balorin Galathas]], Aetharion lanzó una campaña cuidadosamente preparada. La intención inicial era tomar la fortaleza por medios convencionales y mantener en secreto, el mayor tiempo posible, el alcance real de su tecnología.\n\n**Fase I — El asedio clásico.** Bloqueo convencional y asaltos limitados. Urushan, pese a su larga decadencia, aún poseía el conocimiento más profundo del continente en guerra de fortalezas. Los defensores resistieron; la moral se mantuvo alta. Por orden estricta de [[Alendi Galathas]], los comandantes retuvieron sus máquinas más avanzadas.\n\n**Fase II — La decisión.** Semanas de resistencia dejaron claro que lo clásico no bastaría. El costo político de un fracaso prolongado se volvió inaceptable. Alendi, tras consultar con [[Valen Galathas]] y [[Anariel]], autorizó el despliegue limitado de las máquinas de guerra protoindustriales y la aplicación sistemática de magia que solo Aetharion posee a escala — con la orden de destruir cualquier máquina en riesgo de ser capturada intacta.\n\n**Fase III — La ruptura.** El cambio fue visible y decisivo. Muros que habían resistido siglos cedieron ante motores coordinados de vapor y runas y un fuego mágico-industrial disciplinado. El combate en las brechas fue brutal. Los defensores urushani pelearon con la elegancia y la terquedad de su tradición, pero enfrentaban una forma de guerra que nunca habían visto: repetible, calculada, sistematizada. La fortaleza cayó. Muchos testigos describieron el momento como \"el fin de una era\".\n\n# Repercusiones\n- **Urushan:** humillación masiva — acelera el cisma de [[Alarion]] y las purgas de [[Iridel Von Richter]].\n- **Aetharion:** prestigio y momentum enormes, y la revelación del \"umbral\": la magia hecha industria.\n- **[[Teocracia de Cherán]]:** usa la victoria como propaganda (\"el nuevo demonio\"), pero sus líderes lúcidos ([[Temürel]]) ven la amenaza existencial de largo plazo.\n- **[[Casa Vorin]]:** gana con ambos bandos y desplaza su prioridad de inteligencia hacia el origen del salto tecnológico."
   },
   {
     "id": "wpub-aleria",
@@ -412,7 +427,7 @@ var LORE = {
     "id": "wpub-sobreviviente",
     "title": "El Sobreviviente",
     "type": "character",
-    "content": "# Quién es\nEl único caballero que salió con vida la noche en que una hermandad entera de la Orden Escarlata fue destruida por criaturas que no pertenecen a este mundo. Nadie sabe qué vio.\n\n# Rol actual\nEstá convocando **[[La Mesa Completa]]** — la coalición de todas las hermandades — por tercera vez en 700 años de historia. Las dos anteriores marcaron épocas. Cuando la Mesa se reúne, el mundo entero sabe que algo sin precedente está ocurriendo."
+    "content": "# Quién es\nEl único caballero que salió con vida la noche en que una hermandad entera de la Orden Escarlata fue aniquilada por algo que no pertenece a este mundo. Nadie sabe con certeza qué vio — y él no lo cuenta.\n\n# Lo que se rumora\nQue pertenece a una rama de la Orden de la que casi nadie ha oído hablar. Que aparecen cuando el Velo se rompe de más, hacen su trabajo en silencio y desaparecen. Que ninguno de ellos llega a viejo. Se dice —sin pruebas— que la noche de la aniquilación ocurrió hace unos ocho meses, y que desde entonces él no ha vuelto a dormir una noche entera.\n\n# Rol actual\nEstá convocando [[La Mesa Completa]] — la coalición de todas las hermandades — por tercera vez en 700 años de historia. Las dos anteriores marcaron épocas. Cuando la Mesa se reúne, el mundo entero sabe que algo sin precedente está ocurriendo."
   },
   {
     "id": "wpub-gianni",
@@ -448,7 +463,7 @@ var LORE = {
     "id": "wpub-anfahal",
     "title": "An'Fahal",
     "type": "character",
-    "content": "# Quién es\nEl **Cuarto [[Palan'Nur]]** de la [[Teocracia de Cherán]] — el heredero. Su nombre significa \"el amanecer\": el eco final de un nombre que se ha ido erosionando desde Anandëlion, el fundador, hasta quedar en apenas una sílaba del original.\n\n# Rol actual\nEspera el trono de [[Anan'Nur]] rodeado de generales extraordinarios que cargan el peso que él aún no puede sostener. La pregunta que todo el Palan'Shar se hace en silencio: ¿es el amanecer de algo nuevo — o el eco de algo que se apaga?"
+    "content": "# Quién es\nEl **Cuarto [[Palan'Nur]]** de la [[Teocracia de Cherán]] — el Ungido actual. Elevado al trono a los 14 años tras la muerte de [[Anan'Nur]]. Su nombre significa \"el amanecer\": el eco final de un nombre que se ha erosionado desde [[Anandëlion]], el fundador, hasta quedar en una sílaba.\n\n# Su posición imposible\nLlegó al trono en el peor momento: su ceremonia de elevación fue usada por [[La Siembra]] para subrayar la institución por encima de la persona. [[Los de la Raíz]] lo alzan como bandera. [[Temürel]] lo protege. El niño-Ungido es, a la vez, el símbolo más poderoso del imperio y su pieza más frágil.\n\n# El medio-hermano\nExiste un medio-hermano menor — de siete u ocho años — concebido fuera de la unión sagrada, con una sacerdotisa ferviente y muy dogmática. Al principio An'Fahal lo despreció por la \"mancha\" de su origen; con el tiempo llegó a quererlo de verdad, y hoy lo protege. El niño es más radical y tradicionalista que él — una amenaza latente para [[La Siembra]], y una carga de largo plazo que alguien, algún día, podría querer eliminar."
   },
   {
     "id": "wpub-temurel",
@@ -466,7 +481,7 @@ var LORE = {
     "id": "wpub-rompimiento",
     "title": "El Rompimiento del Velo",
     "type": "concept",
-    "content": "# Qué fue\nEl cataclismo que rehízo el mundo. La guerra que desgarró la barrera entre el mundo mortal y el interplano — y de cuyas cenizas nació la era actual de Avelir.\n\n# Sus huellas\nTodo lo antiguo se mide contra él: [[Urushan]] nació de sus cenizas y heredó la flota del Emperador — naves de antes del Rompimiento que nadie sabe reparar. [[Tol Marin]] y [[Ashlan]] son fortalezas anteriores al cataclismo. Y [[El Mar del Sur]] no era un mar: era el granero del continente, hasta que el Rompimiento lo hundió.\n\n# Lo que se dice\nQue el Velo no terminó de sanar. Que se está desgarrando otra vez. Que las criaturas que destruyeron una hermandad entera de la Orden Escarlata en una sola noche no pertenecen a este mundo — y entraron por alguna parte."
+    "content": "# Qué fue\nEl cataclismo que rehízo el mundo. La guerra que desgarró la barrera entre el mundo mortal y el intervelo — y de cuyas cenizas nació la era actual de Avelir.\n\n# Sus huellas\nTodo lo antiguo se mide contra él: [[Urushan]] nació de sus cenizas y heredó la flota del Emperador — naves de antes del Rompimiento que nadie sabe reparar. [[Tol Marin]] y [[Ashlan]] son fortalezas anteriores al cataclismo. Y [[El Mar del Sur]] no era un mar: era el granero del continente, hasta que el Rompimiento lo hundió.\n\n# Lo que se dice\nQue el Velo no terminó de sanar. Que se está desgarrando otra vez. Que las criaturas que destruyeron una hermandad entera de la Orden Escarlata en una sola noche no pertenecen a este mundo — y entraron por alguna parte."
   },
   {
     "id": "e-anandelion",
@@ -736,13 +751,13 @@ var LORE = {
     "id": "e-emperador",
     "title": "El Emperador",
     "type": "character",
-    "content": "# Quién es\nLa figura que domina todo lo antiguo de Avelir. Suya fue la flota que [[Urushan]] heredó — naves de antes del [[El Rompimiento del Velo]] que nadie sabe reparar. Suyo se dice que fue el trono de [[Ashlan]]. En su nombre creen [[Los Soleados]]; su presencia en el plano mortal, sostiene la Orden Escarlata, es [[Hemmal]]; y [[Alarion]] asegura haberlo visto al borde de la muerte.\n\n# Lo que la Orden sostiene\nQue el Emperador arrastró a [[Tel-Haud]] al interplano y sostiene ahí una batalla eterna — y que esa batalla es lo que mantiene unida la realidad."
+    "content": "# Quién es\nLa figura que domina todo lo antiguo de Avelir. Suya fue la flota que [[Urushan]] heredó — naves de antes del [[El Rompimiento del Velo]] que nadie sabe reparar. Suyo se dice que fue el trono de [[Ashlan]]. En su nombre creen [[Los Soleados]]; su presencia en el plano mortal, sostiene la Orden Escarlata, es [[Hemmal]]; y [[Alarion]] asegura haberlo visto al borde de la muerte.\n\n# Lo que la Orden sostiene\nQue el Emperador arrastró a [[Tel-Haud]] al intervelo y sostiene ahí una batalla eterna — y que esa batalla es lo que mantiene unida la realidad."
   },
   {
     "id": "e-telhaud",
     "title": "Tel-Haud",
     "type": "character",
-    "content": "# Quién es\n**\"El Azote de lo Profundo.\"** El demonio que, según la tradición de la Orden Escarlata, [[El Emperador]] arrastró al interplano — donde ambos libran una batalla que no ha terminado.\n\n# Sus huellas\nSus manifestaciones — ecos de esa batalla filtrándose al mundo — son lo que [[Ser Arthantos]] enfrentó hace 700 años en [[El Gran Sacrificio]]. Y se dice que las criaturas que destruyeron una hermandad entera en una sola noche no pertenecen a este mundo."
+    "content": "# Quién es\n**\"El Azote de lo Profundo.\"** El demonio que, según la tradición de la Orden Escarlata, [[El Emperador]] arrastró al intervelo — donde ambos libran una batalla que no ha terminado.\n\n# Sus huellas\nSus manifestaciones — ecos de esa batalla filtrándose al mundo — son lo que [[Ser Arthantos]] enfrentó hace 700 años en [[El Gran Sacrificio]]. Y se dice que las criaturas que destruyeron una hermandad entera en una sola noche no pertenecen a este mundo."
   },
   {
     "id": "e-cuencos",
@@ -790,7 +805,7 @@ var LORE = {
     "id": "e-casaslibres",
     "title": "Las Casas Libres",
     "type": "faction",
-    "content": "# Qué son\nDucados independientes, ciudades-estado y casas menores del [[El Mundo Entre Imperios]] — territorios que nunca fueron absorbidos por los grandes imperios y sobreviven en las zonas grises que el equilibrio de poder les deja.\n\n# Sus gentes\nNobles menores, diplomáticos, administradores. La política de lo pequeño: sobrevivir jugando a los grandes unos contra otros.\n\n# Lo que falta\nSu desarrollo detallado todavía está por escribirse."
+    "content": "# Qué son\nDucados independientes, ciudades-estado y casas menores del [[El Mundo Entre Imperios]] — territorios que nunca fueron absorbidos por los grandes imperios. Sobreviven por una fórmula simple: ser útiles y caros de conquistar. Cada una tiene su propio nicho económico, su identidad religiosa y su estilo de mando.\n\n# Las Cuatro Casas Principales\n- [[Casa Veldrik]] — el extremo norte: caballos de guerra y pasos de montaña.\n- [[Casa Ruviel]] — el noroeste: archivos, burócratas y nostalgia imperial.\n- [[Casa Solmara]] — la costa suroeste: puertos, sal y deudas con [[Casa Vorin]].\n- [[Casa Thornel]] — el sureste: hierro, carbón y el culto a la Piedra y el Fuego.\n\n# Sus gentes\nNobles menores, diplomáticos, administradores. La política de lo pequeño: sobrevivir jugando a los grandes unos contra otros."
   },
   {
     "id": "e-navegantes",
@@ -809,6 +824,96 @@ var LORE = {
     "title": "Las Compañías",
     "type": "faction",
     "content": "# Qué son\nCompañías mercenarias profesionales y bandas de guerra libres del [[El Mundo Entre Imperios]]. Venden la única cosa que todos los imperios necesitan y ninguno tiene de sobra: soldados sin lealtad de sangre.\n\n# Sus gentes\nMercenarios, oficiales sin estandarte, veteranos. La guerra como oficio, no como causa.\n\n# Lo que falta\nSu desarrollo detallado todavía está por escribirse."
+  },
+  {
+    "id": "e-veldrik",
+    "title": "Casa Veldrik",
+    "type": "faction",
+    "content": "# Descripción\nCasa del extremo norte de [[Las Casas Libres]] — pasos de montaña y altiplanos fríos. Su poder nace del terreno: quien controla los pasos de invierno controla quién pasa y quién no.\n\n# Economía\nLos mejores caballos de guerra de clima frío de todo Avelir, y el control de los pasos de montaña clave en invierno.\n\n# Religión\nCulto local a los Espíritus del Paso y a los ancestros guerreros. Práctico, centrado en la supervivencia, desconfiado de los dioses imperiales.\n\n# Liderazgo\n[[Lady Sigrid Veldrik]], la cabeza actual.\n\n# Situación\nGeográficamente atrapada entre [[Los Pueblos sin Techo]] y el avance norte de la [[Teocracia de Cherán]]. La neutralidad es casi imposible."
+  },
+  {
+    "id": "e-ruviel",
+    "title": "Casa Ruviel",
+    "type": "faction",
+    "content": "# Descripción\nCasa del noroeste de [[Las Casas Libres]] — la frontera cultural con [[Urushan]]. Sobrevive no por las armas sino por el saber: es la casa de los archivos y los administradores.\n\n# Economía\nPericia administrativa, archivos antiguos, y escribas y funcionarios de alta calidad que hasta los poderes más grandes contratan a veces.\n\n# Religión\nVeneración suave y nostálgica de los antiguos ideales imperiales y del [[El Emperador]] como figura civilizadora más que como dios vivo. Fuerte simpatía cultural hacia el movimiento de [[Alarion]].\n\n# Liderazgo\n[[El Consejo Ruviel]] — una mesa pequeña de cinco miembros mayores de la familia. Sin autócrata único: decisiones lentas, rara vez imprudentes.\n\n# Situación\nVarios de sus hijos e hijas más jóvenes han \"desaparecido\" en años recientes — unos hacia la Orden Escarlata, otros hacia [[Los Peregrinos]]. El Consejo está dividido entre la cautela y una callada simpatía idealista por Alarion."
+  },
+  {
+    "id": "e-solmara",
+    "title": "Casa Solmara",
+    "type": "faction",
+    "content": "# Descripción\nCasa de la costa suroeste de [[Las Casas Libres]], de cara al archipiélago del [[El Mar del Sur]]. Un puerto alterno cuando las rutas principales están en disputa.\n\n# Economía\nPuerto secundario, salinas, astilleros menores. Profundamente enredada financieramente con [[Casa Vorin]].\n\n# Religión\nSincretismo costero — viejos espíritus del mar mezclados con la superstición práctica de los marineros sobre el [[El Emperador]]. Fuertemente anti-fanática.\n\n# Liderazgo\n[[Lord Maren Solmara]], un astuto príncipe-mercader.\n\n# Situación\nEndeudada hasta el cuello con [[Casa Vorin]]. Su independencia es real solo mientras Vorin la encuentre más útil viva y autónoma que absorbida."
+  },
+  {
+    "id": "e-thornel",
+    "title": "Casa Thornel",
+    "type": "faction",
+    "content": "# Descripción\nCasa del sureste de [[Las Casas Libres]] — un escarpe mineral cerca del bosque oscuro y la frontera blanda con [[Teocracia de Cherán]]. Dura como la roca de la que vive.\n\n# Economía\nMinas de hierro y carbón de buena calidad. Ubicación estratégica para cualquiera que pelee en el este o el sureste.\n\n# Religión\nCulto austero a la Piedra y el Fuego. La montaña y la fragua son sagradas. Profunda desconfianza de las religiones que conquistan o convierten.\n\n# Liderazgo\n[[Thane Kael Thornel]] y sus dos hermanas — los \"Tres de la Montaña\".\n\n# Situación\nTodos quieren su hierro. Nadie quiere el costo de ocupar permanentemente sus valles fortificados. Venden al mejor postor y fortifican el resto."
+  },
+  {
+    "id": "e-sigrid",
+    "title": "Lady Sigrid Veldrik",
+    "type": "character",
+    "content": "# Quién es\nLa cabeza actual de [[Casa Veldrik]]. Una mujer dura y pragmática cerca de los cincuenta que gobierna sola.\n\n# Rol actual\nIntenta ganar tiempo mientras [[Arminio El Dorado]] y la [[Teocracia de Cherán]] presionan a su casa desde lados opuestos. Sabe que la neutralidad se le acaba — y que elegir mal significa el fin de Veldrik."
+  },
+  {
+    "id": "e-consejoruviel",
+    "title": "El Consejo Ruviel",
+    "type": "concept",
+    "content": "# Qué es\nEl gobierno de [[Casa Ruviel]] — una mesa pequeña de cinco miembros mayores de la familia. No hay autócrata único; las decisiones son lentas pero rara vez imprudentes.\n\n# Rol actual\nEstá dividido: entre la cautela que ha mantenido viva a la casa durante generaciones, y una callada simpatía idealista por [[Alarion]] que crece conforme sus jóvenes se marchan hacia los [[Los Peregrinos]] y la Orden Escarlata."
+  },
+  {
+    "id": "e-maren",
+    "title": "Lord Maren Solmara",
+    "type": "character",
+    "content": "# Quién es\nEl señor de [[Casa Solmara]] — un astuto príncipe-mercader en sus cincuenta. Gobierna con el respaldo de un círculo cerrado de capitanes y acreedores.\n\n# Rol actual\nHace equilibrios sobre una deuda enorme con [[Casa Vorin]]. Cada decisión suya es un cálculo: mantener a su casa lo bastante útil para que a Vorin le convenga más tenerla libre que tragársela."
+  },
+  {
+    "id": "e-kaelthornel",
+    "title": "Thane Kael Thornel",
+    "type": "character",
+    "content": "# Quién es\nEl señor de [[Casa Thornel]], que gobierna junto a sus dos hermanas — el triunvirato duro conocido como los \"Tres de la Montaña\". Las decisiones se toman en conjunto y suelen ser severas.\n\n# Rol actual\nVende hierro al mejor postor y fortifica todo lo demás. No confía en nadie que quiera algo más que comercio — y menos aún en quien quiera convertir a su gente."
+  },
+  {
+    "id": "e-valkar",
+    "title": "El Rey Valkar",
+    "type": "character",
+    "content": "# La leyenda\nEl nombre más antiguo que sobrevive como maldición. En los registros más viejos de la Orden Escarlata, \"Valkar\" no se pronuncia con respeto: se pronuncia como advertencia.\n\n# Lo que cuentan las crónicas\nQue hace unos diez mil años Valkar fue el gobernante más poderoso de su era — un héroe genuino que había unido tribus y consolidaba su poder en las tierras extraordinariamente fértiles del sur, la región que un día sería el [[El Mar del Sur]]. Que buscó un artefacto de poder inmenso y vida extendida. Y que cuando por fin lo obtuvo, algo salió terriblemente mal: enloqueció y desató una matanza aún mayor que todas sus guerras juntas. Se dice que aquella catástrofe desgarró el Velo.\n\n# La Corona\nEl artefacto que buscó — **la Corona del Rey Valkar**, o las Lágrimas del Velo — sigue siendo uno de los objetos más peligrosos que se buscan, o se temen, en el presente. Hay quien la persigue creyendo las viejas promesas de poder. La Orden Escarlata preferiría que nadie la encontrara jamás.\n\n# Lo que se dice\nQue ningún poder se toma sin un precio. Que Valkar pagó el suyo con todo lo que amaba — y que quien busque su Corona pagará el mismo."
+  },
+  {
+    "id": "e-corona-valkar",
+    "title": "La Corona del Rey Valkar",
+    "type": "item",
+    "content": "# Qué es\nEl artefacto que persiguió [[El Rey Valkar]] — también llamado las Lágrimas del Velo. Una corona capaz, según la leyenda, de otorgar un poder inmenso y una vida extendida a quien la porte.\n\n# Su precio\nLas crónicas más viejas de la Orden Escarlata coinciden en una sola cosa: cuando Valkar por fin la usó, enloqueció y desató una catástrofe que se dice desgarró el Velo. El poder llegó. También llegó la ruina.\n\n# En el presente\nSigue siendo uno de los objetos más buscados —y más temidos— de Avelir. Hay quien la persigue creyendo las viejas promesas; la Orden Escarlata preferiría que permaneciera perdida para siempre. Una campaña entera gira alrededor de su legado."
+  },
+  {
+    "id": "e-hermandad-sello",
+    "title": "La Hermandad del Sello",
+    "type": "concept",
+    "content": "# Lo que se rumora\nSe cuenta —a media voz, y casi siempre sin creerlo del todo— que dentro de la Orden Escarlata existe una hermandad de la que casi nadie sabe nada. No pelean guerras. No defienden pueblos. No se les ve en las mesas ni en las asambleas.\n\n# Lo que dicen quienes dicen saber\n- Que aparecen solo cuando algo va muy mal con el Velo — cada una o dos generaciones — y que se van igual de rápido.\n- Que trabajan en silencio, en lugares que nadie más quiere pisar, contra cosas que nadie más quiere nombrar.\n- Que ninguno de sus miembros llega a viejo, y que ellos lo saben desde el día que entran.\n- Que [[El Sobreviviente]] sería el último de ellos.\n\n# Lo que es seguro\nNada. Para casi toda la Orden Escarlata, la Hermandad del Sello es una leyenda que se cuenta para asustar a los aspirantes. Los que la han visto de verdad no hablan."
+  },
+  {
+    "id": "e-circulo",
+    "title": "El Círculo",
+    "type": "faction",
+    "content": "# Qué es\nUna de las tradiciones religiosas más antiguas de Avelir — animista, del este: espíritus, árboles, animales, y visiones que se dice provienen del Velo. Se calcula que tiene cerca de diez mil años de continuidad ininterrumpida, lo que la vuelve más vieja que cualquier imperio vivo.\n\n# Sus creencias\nQue el mundo está lleno de presencias, y que el Velo que separa lo vivo de lo que hay más allá es delgado en ciertos lugares y ciertas personas. Sus guías buscan esas delgadeces — en el bosque, en el sueño, en la sangre — para leer lo que se avecina.\n\n# Su lugar en el mundo\nNo es un imperio ni una iglesia de Estado: es una corriente que sobrevive por debajo de todas las demás, respetada por unos, temida por otros. Aparece en las historias más viejas de Avelir, a veces al lado de nombres que casi nadie recuerda ya. Hoy opera por voluntad de sus propios miembros, sin una cabeza única visible."
+  },
+  {
+    "id": "e-siembra",
+    "title": "La Siembra",
+    "type": "concept",
+    "content": "# Qué es\nLa institución colectivista-teocrática emergente de la [[Teocracia de Cherán]] — el bando que quiere trasladar el poder real de la persona del [[Palan'Nur]] a una estructura colectiva.\n\n# Qué controla\nLos graneros, buena parte de la administración minera, la logística y la propaganda. En un imperio que vive de la movilización y la expansión, quien controla el grano y las rutas controla mucho.\n\n# Su doctrina\nVe al Palan'Nur como el símbolo sagrado necesario — pero cree que el poder real debe residir en la estructura, no en un solo hombre. Su cúpula ejecutiva es **La Dirección**, o **El Primer Surco**: tres a cinco personas que toman las decisiones del día a día.\n\n# Su tensión\nChoca de frente con [[Los de la Raíz]], que quieren exactamente lo contrario, y con [[Temürel]], que no acepta que el Ungido se vuelva un adorno."
+  },
+  {
+    "id": "e-raiz",
+    "title": "Los de la Raíz",
+    "type": "concept",
+    "content": "# Qué son\nLa reacción religiosa dentro de la [[Teocracia de Cherán]] contra [[La Siembra]]. Su nombre lo dice: quieren volver a la raíz.\n\n# Su doctrina\nPredican que la verdadera voluntad de [[Engar Ab'Calen]] no puede residir en asambleas ni consejos — solo en el [[Palan'Nur]] como avatar viviente del dios. Apoyan activamente a [[An'Fahal]] y empujan una revolución cultural-religiosa a su favor.\n\n# Su lugar en la guerra\nSon el contrapeso de La Siembra. Donde La Siembra ve estructura, ellos ven persona sagrada; donde La Siembra ve administración, ellos ven fe. Entre los dos, [[Temürel]] intenta que el imperio no se parta."
+  },
+  {
+    "id": "e-erindor",
+    "title": "Casa Erindor",
+    "type": "concept",
+    "content": "# Qué es\nUna de las casas heráldicas de [[Aetharion]] que se sumaron al proyecto de [[Alendi Galathas]]. Su familia creyó de verdad en el Jardín Eterno — no por conveniencia, sino por convicción.\n\n# Lo que se sabe\nComo muchas casas del Jardín, dio hijos a la causa. Uno de ellos, tocado por algo que la casa no supo nombrar, fue entregado a las autoridades del Jardín y, tras ser examinado, trasladado a la Orden Escarlata. La casa rara vez habla de él."
   }
 ]
 
