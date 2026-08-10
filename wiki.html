@@ -147,6 +147,53 @@ button{font-family:var(--sans);cursor:pointer}
   body{background:#fff}
 }
 
+/* ── los campos escribibles de la hoja ── */
+.sheet-edit{white-space:pre-wrap;word-wrap:break-word;border-radius:2px;padding:0 2px;transition:background-color .12s}
+.sheet-edit:focus{background-color:#FFFDF4;box-shadow:0 0 0 2px #E8DCB0}
+.sheet-edit:empty:before{content:attr(data-ph);color:#B9B4A8;font-style:italic}
+@media print{ .sheet-edit:focus{background:none;box-shadow:none} .sheet-edit:empty:before{content:''} }
+
+/* ── el simulador del compendio ── */
+.cmp-layout{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:34px;align-items:start}
+.sim{position:sticky;top:calc(var(--topbar) + 20px);font-family:var(--sans);
+  border:1px solid var(--line2);background:var(--card);padding:16px 17px}
+.sim-l{display:block;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink3);margin:11px 0 3px}
+.sim-l:first-of-type{margin-top:0}
+.sim-s{width:100%;font-family:var(--sans);font-size:13.5px;color:var(--ink);background:var(--paper);
+  border:1px solid var(--line2);border-radius:2px;padding:6px 8px;cursor:pointer}
+.sim-s:focus{outline:none;border-color:#B9A55C}
+.sim-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line);border:1px solid var(--line);margin:14px 0 12px}
+.sim-c{background:var(--card);padding:9px 10px}
+.sim-c span{display:block;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink3)}
+.sim-c b{font-family:var(--serif);font-size:21px;font-weight:500;line-height:1.2}
+.sim-d{font-family:var(--sans);font-size:11px;font-weight:500;margin-left:5px;vertical-align:2px}
+.sim-d.up{color:var(--green)} .sim-d.dn{color:var(--red)}
+.sim-b{font-size:12.5px;color:var(--ink2);line-height:1.5;padding:9px 0;border-top:1px solid var(--line)}
+.sim-k{display:block;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink3);margin-bottom:2px}
+.sim-f{font-size:11.5px;color:var(--ink3);font-style:italic;padding-top:10px;margin-top:4px;border-top:1px solid var(--line)}
+.sim-r{background:none;border:0;padding:0;font-size:11.5px;color:var(--ink2);text-decoration:underline;
+  text-underline-offset:2px;font-style:normal;font-family:var(--sans)}
+.sim-r:hover{color:var(--ink)}
+@media(max-width:1000px){
+  .cmp-layout{grid-template-columns:1fr;gap:0}
+  .sim{position:static;margin-bottom:26px;order:-1}
+}
+@media print{ .sim{display:none} .cmp-layout{grid-template-columns:1fr} }
+
+/* ── explicación de las marcas ── */
+.mk{border:1px solid var(--line);background:var(--card);margin:-30px 0 30px;font-family:var(--sans)}
+.mk-s{cursor:pointer;padding:12px 18px;font-size:13.5px;color:var(--ink2);list-style:none;display:flex;align-items:center;gap:8px}
+.mk-s::-webkit-details-marker{display:none}
+.mk-s:before{content:'?';flex:none;width:18px;height:18px;border-radius:10px;border:1px solid var(--notedge);
+  background:var(--note);color:#6B5A18;font-size:11px;display:inline-flex;align-items:center;justify-content:center;font-weight:600}
+.mk-s:hover{color:var(--ink)}
+.mk[open] .mk-s{border-bottom:1px solid var(--line)}
+.mk-b{padding:4px 18px 6px}
+.mk-r{font-size:13.5px;color:var(--ink2);line-height:1.6;padding:11px 0;border-bottom:1px solid var(--line)}
+.mk-k{display:block;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink3);margin-bottom:3px}
+.mk-u{margin:5px 0 0;padding-left:17px}
+.mk-u li{margin-bottom:4px}
+
 /* ══════ MAESTRÍAS — compartido entre index.html y creador-personaje.html ══════ */
 .mst{margin-top:26px}
 .mst-top{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:14px}
@@ -884,6 +931,116 @@ function notasImprimir(){ window.print() }
 
 
 /* ═══════════════════════════════════════════════════════════════════════
+   EL SIMULADOR
+   «¿Y si hubiera sido Monje?» — arma un héroe hipotético con lo que
+   elijas y te dice cómo quedaría. No toca tu personaje real: es un
+   banco de pruebas para leer el compendio con algo en las manos.
+   ═══════════════════════════════════════════════════════════════════════ */
+var SIM = null;   /* {classId, kitId, trunkId} */
+
+function simInit(){
+  if(SIM) return SIM;
+  var g = G();
+  SIM = {
+    classId: (HERO && HERO.classId) || (g ? g.classes[0].id : null),
+    kitId:   (HERO && HERO.kitId)   || (g ? g.kits[0].id   : null),
+    trunkId: (HERO && HERO.trunkId) || (g ? g.masteryTrunks[0].id : null)
+  };
+  return SIM;
+}
+function simSet(campo, valor){
+  simInit(); SIM[campo] = valor;
+  var el = document.getElementById('sim-panel');
+  if(el) el.innerHTML = simPanelInner();     /* solo el panel, sin repintar todo */
+}
+function simReset(){
+  SIM = null; simInit();
+  var el = document.getElementById('sim-panel');
+  if(el) el.innerHTML = simPanelInner();
+}
+
+function simPanelInner(){
+  var g = G(); if(!g) return '';
+  var s = simInit();
+  var c  = g.classes.find(function(x){ return x.id === s.classId }) || null;
+  var k  = g.kits.find(function(x){ return x.id === s.kitId })       || null;
+  var tk = g.masteryTrunks.find(function(x){ return x.id === s.trunkId }) || null;
+
+  var hp     = (g.rules.hpBase||10) + (k ? (k.hpBonus||0) : 0);
+  var echo   = (c ? ((c.echoBase)||(c.type==='Magic'?2:1)) : 1) + ((k&&k.aenBonus)?k.aenBonus:0);
+  var cargas = echo<=2?2:(echo<=4?3:4);
+
+  /* contra el héroe real, cuando existe */
+  var dif = null;
+  if(hasHero()){
+    var rc = gClass(), rk = gKit();
+    var rhp   = (g.rules.hpBase||10) + (rk ? (rk.hpBonus||0) : 0);
+    var recho = (rc ? ((rc.echoBase)||(rc.type==='Magic'?2:1)) : 1) + ((rk&&rk.aenBonus)?rk.aenBonus:0);
+    dif = { hp: hp - rhp, echo: echo - recho };
+  }
+  function delta(n){
+    if(dif === null || !n) return '';
+    return '<span class="sim-d ' + (n>0?'up':'dn') + '">' + (n>0?'+':'') + n + '</span>';
+  }
+  function sel(campo, lista, actual, etiqueta){
+    var h = '<label class="sim-l">' + etiqueta + '</label><select class="sim-s" ' +
+            'onchange="simSet(&quot;' + campo + '&quot;, this.value)">';
+    lista.forEach(function(o){
+      h += '<option value="' + esc(o.id) + '"' + (o.id===actual?' selected':'') + '>' + esc(o.name) +
+           (o.extra ? ' — ' + esc(o.extra) : '') + '</option>';
+    });
+    return h + '</select>';
+  }
+
+  var h = '<div class="eyebrow" style="margin-bottom:10px">Si fueras…</div>';
+  h += sel('classId', g.classes.map(function(x){ return {id:x.id,name:x.name,extra:x.role||x.type} }), s.classId, 'Clase');
+  h += sel('kitId',   g.kits.map(function(x){ return {id:x.id,name:x.name,extra:x.fantasy||''} }),     s.kitId,   'Kit');
+  h += sel('trunkId', g.masteryTrunks.map(function(x){ return {id:x.id,name:x.name,extra:x.sub||''} }), s.trunkId, 'Arma');
+
+  h += '<div class="sim-grid">' +
+       '<div class="sim-c"><span>Vitalidad</span><b>' + hp + delta(dif&&dif.hp) + '</b></div>' +
+       '<div class="sim-c"><span>Echo</span><b>+' + echo + delta(dif&&dif.echo) + '</b></div>' +
+       '<div class="sim-c"><span>Cargas</span><b>' + cargas + '</b></div>' +
+       '<div class="sim-c"><span>Aen / turno</span><b>+' + g.rules.aenPerTurn + '</b></div>' +
+       '</div>';
+
+  if(c) h += '<div class="sim-b"><span class="sim-k">Energía</span>' + esc(c.resource||'—') + '</div>';
+  if(tk) h += '<div class="sim-b"><span class="sim-k">Al nacer</span>' + esc(tk.root.name) +
+              ' — 2d12 con ' + esc(tk.sub||tk.name) + '</div>';
+  if(k && k.ability) h += '<div class="sim-b"><span class="sim-k">Del kit</span><b>' + esc(k.ability.name) +
+              '</b> · ' + esc(k.ability.cost||'') + '<br>' + esc(k.ability.desc||'') + '</div>';
+
+  if(tk){
+    h += '<div class="sim-b"><span class="sim-k">Ramas que abre</span>';
+    tk.branches.forEach(function(b){
+      h += '<div style="margin-top:3px">' + esc(b.name) + ' <span style="color:var(--ink3)">· ' +
+           esc(b.sub||'') + ' · firma ' + esc(b.die) + '</span></div>';
+    });
+    h += '</div>';
+  }
+  if(c && c.abilities && c.abilities.length){
+    h += '<div class="sim-b"><span class="sim-k">Sus ' + c.abilities.length + ' habilidades</span>' +
+         c.abilities.map(function(a){ return esc(a.name) }).join(' · ') + '</div>';
+  }
+  if(c && c.subclasses && c.subclasses.length){
+    h += '<div class="sim-b"><span class="sim-k">Sus caminos</span>' +
+         c.subclasses.map(function(x){ return esc(x.name) + (x.role?' <span style="color:var(--ink3)">('+esc(x.role)+')</span>':'') }).join(' · ') + '</div>';
+  }
+  var esMio = hasHero() && s.classId===HERO.classId && s.kitId===HERO.kitId && s.trunkId===HERO.trunkId;
+  h += '<div class="sim-f">' + (esMio
+        ? 'Este eres tú.'
+        : (hasHero() ? 'Comparado con ' + esc(HERO.name) + '. Nada de esto cambia tu héroe.'
+                     : 'Todavía no tienes héroe: esto es solo una prueba.')) +
+       (esMio ? '' : ' <button class="sim-r" onclick="simReset()">volver a mí</button>') + '</div>';
+  return h;
+}
+function simPanel(){
+  if(!G()) return '';
+  return '<aside class="sim"><div id="sim-panel">' + simPanelInner() + '</div></aside>';
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════
    TU PERSONAJE DENTRO DEL ARCHIVO
    Lee el héroe que creaste en creador-personaje.html. Los dos archivos
    viven en el mismo sitio, así que comparten el mismo almacén del
@@ -1015,8 +1172,9 @@ function viewChar(){
        st('Echo', '+'+echo, 'pruebas y empujes') +
        st('Cargas', cargas, 'vuelven al cerrar sesión') +
        st('Ataque base', dados, 'quédate con el mejor') +
-       st('Marcas libres', (d.total-d.spent)+' / '+d.total, '') +
+       st('Marcas libres', (d.total-d.spent)+' / '+d.total, 'de ' + d.total + ' ganadas') +
        '</div>';
+  h += marcasExplica(d);
 
   h += lqSigue(d, tr);
 
@@ -1034,6 +1192,43 @@ function viewChar(){
        '<input type="file" id="pc-file" class="pc-file" accept="application/json,.json" onchange="heroImportFile(this)">' +
        (PC_MSG ? '<div class="pc-msg">'+PC_MSG+'</div>' : '') + '</div>';
   return h;
+}
+
+/* ── qué es una marca ──
+   Cuidado aquí: data.js define qué COMPRA una marca, pero no de dónde
+   sale. Cuántas da una sesión sigue sin decidirse, así que el texto no
+   lo inventa: dice que las reparte el Story Master, y punto. */
+function marcasExplica(d){
+  var g = G(), libres = d.total - d.spent;
+  var h = '<details class="mk"><summary class="mk-s">' +
+          (libres > 0
+            ? 'Tienes <b>' + libres + '</b> marca' + (libres===1?'':'s') + ' sin gastar · ¿qué hago con ' + (libres===1?'ella':'ellas') + '?'
+            : 'No te quedan marcas libres · ¿cómo consigo más?') +
+          '</summary><div class="mk-b">';
+
+  h += '<div class="mk-r"><span class="mk-k">Qué es</span>' +
+       'Una marca es un punto de avance con tu arma. <b>Una marca compra un nodo</b> del árbol — uno solo, y para siempre. ' +
+       'No se gastan en combate ni se recuperan al descansar: son permanentes.</div>';
+
+  h += '<div class="mk-r"><span class="mk-k">De dónde salen</span>' +
+       'Naciste con <b>una</b>, gastada en la Raíz de tu arma. Las demás <b>te las da tu Story Master</b> conforme avanza la historia. ' +
+       'No hay una cuota fija por sesión: él decide cuándo y cuántas. Cuando te dé una, súbela con el <b>+</b> del árbol.</div>';
+
+  h += '<div class="mk-r"><span class="mk-k">Qué compran</span>';
+  var b = [];
+  b.push('la <b>Raíz</b> de un tronco te sube el ataque base de 1d12 a <b>2d12 quedándote con el mejor</b>');
+  b.push('el primer nodo de cualquier rama te regala su <b>firma de banda 1–4</b> gratis — algo que hacer cuando sacas mala tirada');
+  b.push('una <b>Maestría</b> te lleva a <b>3d12</b> con esa arma, y enciende tu dado de firma en el 12');
+  h += '<ul class="mk-u"><li>' + b.join('</li><li>') + '</li></ul></div>';
+
+  if(g && g.masteryRules){
+    h += '<div class="mk-r"><span class="mk-k">Cómo se abre el árbol</span>' +
+         esc(g.masteryRules.marks) + '</div>';
+  }
+  h += '<div class="mk-r" style="border-bottom:0">' +
+       'Si sueltas un nodo, la marca vuelve — y si algo dependía de él, también se suelta. Nada se pierde: puedes reacomodar.' +
+       '</div>';
+  return h + '</div></details>';
 }
 
 /* ── bloque: lo que sigue ── */
@@ -1192,6 +1387,7 @@ function viewRules(){
     });
     h += '</table></div>';
   }
+  h += '</div>' + simPanel() + '</div>';
   return h;
 }
 
@@ -1202,7 +1398,8 @@ function viewCompendium(){
   var h = '<div class="crumb"><a href="#inicio">Archivo</a> › Compendio</div>';
   h += '<h1 class="ptitle">Compendio</h1>';
   h += '<p style="color:var(--ink2);max-width:58ch;margin:-10px 0 26px">Todo lo que existe en Avelir para un héroe. ' +
-       'Lo tuyo aparece resaltado.</p>';
+       'Lo tuyo aparece resaltado — y a la derecha puedes armar un héroe hipotético para comparar.</p>';
+  h += '<div class="cmp-layout"><div>';
 
   h += '<div class="sechead"><div class="eyebrow">Clases · '+g.classes.length+'</div></div><div class="cmp">';
   g.classes.forEach(function(c){
@@ -1254,6 +1451,7 @@ function viewCompendium(){
     });
     h += '</div>';
   }
+  h += '</div>' + simPanel() + '</div>';   /* cierra la columna y cuelga el simulador */
   return h;
 }
 
@@ -1353,27 +1551,50 @@ function buildSheetHTML(){
       (k.ability?shCard('<div style="font-weight:bold;font-size:14px">🎒 '+esc(k.ability.name)+' <span style="font-weight:normal;font-size:11px;color:'+SH.ink3+'">'+esc(k.ability.cost||'')+'</span></div><div style="font-size:12.5px;color:'+SH.ink2+';margin-top:3px">'+esc(k.ability.desc||'')+(k.ability.drawback?'<br><em style="color:#b02828">Desventaja: '+esc(k.ability.drawback)+'</em>':'')+'</div>'):'')+
       '</div>';
   }
-  function blankSection(title,lines){
-    var s='<div style="margin-bottom:18px;page-break-inside:avoid;break-inside:avoid">'+shSec(title);
-    for(var i=0;i<lines;i++)s+='<div style="border-bottom:1px dotted '+SH.gold+';height:26px"></div>';
-    return s+'</div>';
+  /* Estas cuatro las escribe el jugador. Se guardan en su héroe, así que
+     viajan en el .json y se imprimen tal cual las dejó. */
+  function editSection(title, campo, minLineas){
+    var txt = (HERO.sheet && HERO.sheet[campo]) ? HERO.sheet[campo] : '';
+    var s = '<div style="margin-bottom:18px;page-break-inside:avoid;break-inside:avoid">' + shSec(title);
+    s += '<div class="sheet-edit" contenteditable="true" data-campo="' + campo + '" ' +
+         'data-ph="Escribe aquí…" style="min-height:' + (minLineas*26) + 'px;' +
+         'line-height:26px;font-size:13.5px;color:' + SH.ink + ';outline:none;' +
+         'background-image:repeating-linear-gradient(transparent,transparent 25px,' + SH.gold + ' 25px,' + SH.gold + ' 26px);' +
+         'background-attachment:local">' + esc(txt) + '</div>';
+    return s + '</div>';
   }
-  h+=blankSection('APARIENCIA Y PERSONALIDAD',4);
-  h+=blankSection('TRASFONDO / HISTORIA',5);
-  h+=blankSection('INVENTARIO',5);
-  h+=blankSection('NOTAS',5);
+  h+=editSection('APARIENCIA Y PERSONALIDAD','apariencia',4);
+  h+=editSection('TRASFONDO / HISTORIA','trasfondo',5);
+  h+=editSection('INVENTARIO','inventario',5);
+  h+=editSection('NOTAS','notas',5);
   h+='<div style="text-align:center;font-size:11px;color:'+SH.ink3+';margin-top:24px;border-top:1px solid '+SH.bd+';padding-top:8px">Creado con el Generador de Héroes · Epic Quest</div>';
   h+='</div>';
   return h;
 }
 
+/* Guarda lo escrito sin repintar la vista: repintar mataría el cursor. */
+function sheetBind(){
+  document.querySelectorAll('.sheet-edit').forEach(function(el){
+    if(el._bound) return; el._bound = true;
+    el.addEventListener('input', function(){
+      if(!HERO) return;
+      HERO.sheet = HERO.sheet || {};
+      HERO.sheet[this.getAttribute('data-campo')] = this.innerText;
+      heroSave();
+      var av = document.getElementById('sheet-aviso');
+      if(av){ av.textContent = 'Guardado'; clearTimeout(window._shT);
+        window._shT = setTimeout(function(){ av.textContent = '' }, 1400) }
+    });
+  });
+}
 function viewSheet(){
   if(!G()) return needData('Mi hoja');
   if(!hasHero()) return viewNoHero('Mi hoja');
   var h = '<div class="crumb"><a href="#inicio">Archivo</a> › Mi hoja</div>';
   h += '<div class="no-print" style="display:flex;gap:9px;flex-wrap:wrap;align-items:center;margin-bottom:20px">' +
        '<button class="pc-btn" onclick="window.print()">Imprimir o guardar en PDF</button>' +
-       '<span style="font-family:var(--sans);font-size:13px;color:var(--ink3)">Se imprime solo la ficha, sin menús.</span></div>';
+       '<span style="font-family:var(--sans);font-size:13px;color:var(--ink3)">Escribe directo en Apariencia, Trasfondo, Inventario y Notas — se guarda solo y viaja en tu .json.</span>' +
+       '<span id="sheet-aviso" style="font-family:var(--sans);font-size:12.5px;color:var(--green);margin-left:auto"></span></div>';
   h += '<div class="sheet-wrap">' + buildSheetHTML() + '</div>';
   return h;
 }
@@ -1743,6 +1964,7 @@ function route(){
     });
   });
   anclarNotasEnNodos();
+  if(typeof sheetBind==='function') sheetBind();
   if(anchor){var el=document.getElementById(anchor);if(el)el.scrollIntoView({behavior:'smooth',block:'start'})}
   else window.scrollTo(0,0);
 }
