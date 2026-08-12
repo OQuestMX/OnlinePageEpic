@@ -1007,6 +1007,9 @@ function simPanelInner(){
   if(c) h += '<div class="sim-b"><span class="sim-k">Energía</span>' + esc(c.resource||'—') + '</div>';
   if(tk) h += '<div class="sim-b"><span class="sim-k">Al nacer</span>' + esc(tk.root.name) +
               ' — 2d12 con ' + esc(tk.sub||tk.name) + '</div>';
+  var kAr = k && g.kitArchetypes ? g.kitArchetypes[k.arch] : null;
+  if(kAr) h += '<div class="sim-b"><span class="sim-k">Arquetipo</span><b>' + esc(kAr.name) +
+              '</b><br>' + esc(kAr.desc) + '</div>';
   if(k && k.ability) h += '<div class="sim-b"><span class="sim-k">Del kit</span><b>' + esc(k.ability.name) +
               '</b> · ' + esc(k.ability.cost||'') + '<br>' + esc(k.ability.desc||'') + '</div>';
 
@@ -1414,10 +1417,12 @@ function viewCompendium(){
   h += '<div class="sechead" style="margin-top:30px"><div class="eyebrow">Kits · '+g.kits.length+'</div></div><div class="cmp">';
   g.kits.forEach(function(k){
     var mine = HERO && k.id===HERO.kitId;
-    h += '<div class="cmp-c'+(mine?' mine':'')+'"><div class="r">'+esc(k.archetype||k.fantasy||'')+
+    var ka = g.kitArchetypes ? g.kitArchetypes[k.arch] : null;
+    h += '<div class="cmp-c'+(mine?' mine':'')+'"><div class="r">'+esc(ka?ka.name:(k.archetype||k.fantasy||''))+
          '<span style="float:right">'+noteBtn('kit:'+k.id,'Nota sobre '+k.name)+'</span></div>' +
          '<h4>'+esc(k.name)+'</h4><p>'+(k.ability?esc(k.ability.name):'')+
-         (k.hpBonus?' · +'+k.hpBonus+' Vitalidad':'')+(k.aenBonus?' · +'+k.aenBonus+' Aen':'')+'</p></div>';
+         (k.hpBonus?' · +'+k.hpBonus+' Vitalidad':'')+(k.aenBonus?' · +'+k.aenBonus+' Aen':'')+'</p>'+
+         (ka?'<p style="font-size:12px;opacity:.8">'+esc(ka.desc)+'</p>':'')+'</div>';
   });
   h += '</div>';
 
