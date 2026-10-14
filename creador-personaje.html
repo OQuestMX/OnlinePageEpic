@@ -655,7 +655,7 @@ function renderClassQ(qi){
     var sel=(state._classAns&&state._classAns[qi]===i)?' sel':'';
     h+='<button class="opt'+sel+'" onclick="pickClass('+qi+','+i+')">'+esc(o.t)+'</button>';
   });
-  var backStep=qi===0?4:(5+qi-1);
+  var backStep=qi===0?7:(8+qi-1);
   h+='<div class="btn-row"><button class="btn btn-ghost" onclick="go('+backStep+')">← Atrás</button></div>';
   return h;
 }
@@ -668,7 +668,7 @@ function pickClass(qi,oi){
     var q=Q_CLASS[k];var ans=state._classAns[k];
     if(q&&q.opts[ans])addScores(state.classScores,q.opts[ans].s);
   });
-  if(qi<3){go(5+qi+1)}
+  if(qi<3){go(8+qi+1)}
   else{
     // determinar clase ganadora
     state.classId=topScored(state.classScores);
@@ -717,7 +717,7 @@ function renderKitQ(qi){
     var sel=(state._kitAns&&state._kitAns[qi]===i)?' sel':'';
     h+='<button class="opt'+sel+'" onclick="pickKit('+qi+','+i+')">'+esc(o.t)+'</button>';
   });
-  var backStep=qi===0?9:(10+qi-1);
+  var backStep=qi===0?12:(13+qi-1);
   h+='<div class="btn-row"><button class="btn btn-ghost" onclick="go('+backStep+')">← Atrás</button></div>';
   return h;
 }
@@ -729,7 +729,7 @@ function pickKit(qi,oi){
     var q=Q_KIT[k];var ans=state._kitAns[k];
     if(q&&q.opts[ans])addScores(state.kitScores,q.opts[ans].s);
   });
-  if(qi<4){go(10+qi+1)}
+  if(qi<4){go(13+qi+1)}
   else{state.kitId=topScored(state.kitScores);go(18)}
 }
 function renderKitResult(){
