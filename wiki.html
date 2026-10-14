@@ -42,7 +42,7 @@ button{font-family:var(--sans);cursor:pointer}
 .pc-head{border:1px solid var(--line);background:var(--card);padding:22px 24px;margin-bottom:1px}
 .pc-name{font-size:clamp(28px,4vw,40px);font-weight:300;letter-spacing:-.02em;line-height:1.05;margin:0 0 6px}
 .pc-sub{font-family:var(--sans);font-size:13.5px;color:var(--ink2)}
-.pc-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:1px;background:var(--line);
+.pc-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(104px,1fr));gap:1px;background:var(--line);
   border:1px solid var(--line);border-top:0;margin-bottom:30px;font-family:var(--sans)}
 .pc-stat{background:var(--card);padding:13px 15px}
 .pc-stat b{display:block;font-size:25px;font-weight:500;font-family:var(--serif);line-height:1.15}
@@ -601,12 +601,12 @@ function homeHeroCard(){
   if(!G()) return '';
   if(!hasHero()) return '<a class="cell" href="#personaje" style="--c:#B9A55C;border:1px solid var(--line);margin-bottom:38px;display:block">' +
     '<div class="rule" style="background:#B9A55C"></div><h3>Crea tu héroe</h3>' +
-    '<p>Tu ficha, tu árbol de maestrías y todo lo que puedes llegar a hacer, aquí mismo.</p></a>';
+    '<p>Tu ficha, tu kit y todo lo que puedes llegar a hacer, aquí mismo.</p></a>';
   var d = deriveMastery(MSTH.get()), libres = d.total - d.spent;
   return '<a class="cell" href="#personaje" style="--c:#B9A55C;border:1px solid var(--line);margin-bottom:38px;display:block">' +
     '<div class="rule" style="background:#B9A55C"></div><h3>' + esc(HERO.name) + '</h3>' +
     '<p>' + (libres > 0
-      ? 'Tienes <b>' + libres + '</b> marca' + (libres===1?'':'s') + ' sin gastar — mira qué puedes tomar.'
+      ? 'Tienes <b>' + libres + '</b> Kit Point' + (libres===1?'':'s') + ' sin gastar — mira qué puedes tomar.'
       : 'Tu ficha, tu árbol y lo que sigue en tu camino.') + '</p></a>';
 }
 function viewHome(){
@@ -974,9 +974,10 @@ function simPanelInner(){
   var dif = null;
   if(hasHero()){
     var rc = gClass(), rk = gKit();
-    var rhp   = (g.rules.hpBase||10) + (rk ? (rk.hpBonus||0) : 0);
-    var recho = (rc ? ((rc.echoBase)||(rc.type==='Magic'?2:1)) : 1) + ((rk&&rk.aenBonus)?rk.aenBonus:0);
-    dif = { hp: hp - rhp, echo: echo - recho };
+    var ran   = ancTot();
+    var rhp   = (g.rules.hpBase||10) + (rk ? (rk.hpBonus||0) : 0) + ran.vit;
+    var recho = (rc ? ((rc.echoBase)||(rc.type==='Magic'?2:1)) : 1) + ((rk&&rk.aenBonus)?rk.aenBonus:0) + ran.echo;
+    dif = { hp: hp - rhp, echo: echo - recho, aen: aenTurno(k) - (aenTurno(rk)+ran.aen) };
   }
   function delta(n){
     if(dif === null || !n) return '';
@@ -1001,7 +1002,7 @@ function simPanelInner(){
        '<div class="sim-c"><span>Vitalidad</span><b>' + hp + delta(dif&&dif.hp) + '</b></div>' +
        '<div class="sim-c"><span>Echo</span><b>+' + echo + delta(dif&&dif.echo) + '</b></div>' +
        '<div class="sim-c"><span>Cargas</span><b>' + cargas + '</b></div>' +
-       '<div class="sim-c"><span>Aen / turno</span><b>+' + g.rules.aenPerTurn + '</b></div>' +
+       '<div class="sim-c"><span>Aen / turno</span><b>+' + aenTurno(k) + delta(dif&&dif.aen) + '</b></div>' +
        '</div>';
 
   if(c) h += '<div class="sim-b"><span class="sim-k">Energía</span>' + esc(c.resource||'—') + '</div>';
@@ -1050,6 +1051,12 @@ function simPanel(){
    navegador: lo que creas allá aparece aquí solo.
    ═══════════════════════════════════════════════════════════════════════ */
 var HERO_KEY = 'eq_hero_v1';
+function heroLevel(){ return HERO ? Math.max(1, Math.min(10, parseInt(HERO.level)||1)) : 1 }
+function lvlTot(){ var g=G(); var L=heroLevel(); return (g&&g.levelTotals)?g.levelTotals(L):{level:L,bands:0,aen:0,vit:0,kp:1} }
+function kpTotal(){ return lvlTot().kp + ((HERO&&parseInt(HERO.marksExtra))||0) }
+function armTot(){ try{ return mstArmorTotals(deriveMastery(MSTH.get())) }catch(e){ return {vit:0,red:0,aen:0,dmg:0,aenRefund:0,kitBands:false,mast:0,nodes:[]} } }
+function aenTurno(k){ var g=G(); return ((g&&g.rules.aenPerTurn)||2) + ((k&&k.aenBonus)?k.aenBonus:0) + lvlTot().aen }
+function ancTot(){ var g=G(); return (g&&g.ancestryTotals&&HERO?g.ancestryTotals(HERO.ancestry):null) || {vit:0,echo:0,aen:0,move:0,charges:0,socials:[],abilities:[],steps:[]} }
 var HERO = null;
 var PC_MSG = '';
 
@@ -1072,11 +1079,12 @@ function gTrunk(id){ var g=G(); if(!g)return null; return g.masteryTrunks.find(f
 var MSTH = {
   data:     function(){ return G() },
   esc:      function(s){ return esc(s) },
-  get:      function(){ return HERO ? {marks:HERO.marks||[], marksTotal:(HERO.marksTotal==null?1:HERO.marksTotal)} : {marks:[],marksTotal:0} },
+  get:      function(){ if(!HERO) return {marks:[],marksTotal:0}; HERO.marksTotal = kpTotal(); return {marks:HERO.marks||[], marksTotal:HERO.marksTotal, marksExtra:HERO.marksExtra||0, kitId:HERO.kitId, level:heroLevel()} },
   set:      function(pid, obj){
               if(!HERO) return;
               if(obj.marks !== undefined) HERO.marks = obj.marks;
-              if(obj.marksTotal !== undefined) HERO.marksTotal = obj.marksTotal;
+              if(obj.marksExtra !== undefined) HERO.marksExtra = obj.marksExtra;
+              HERO.marksTotal = kpTotal();
               heroSave();
             },
   rerender: function(){ route() }
@@ -1154,9 +1162,10 @@ function viewChar(){
   var c=gClass(), k=gKit(), fac=gFaction(), sub=gSub();
   var g=G();
   var d = deriveMastery(MSTH.get());
-  var hp = (g.rules.hpBase||10) + (k?(k.hpBonus||0):0);
-  var echo = (c?((c.echoBase)||(c.type==='Magic'?2:1)):1) + ((k&&k.aenBonus)?k.aenBonus:0);
-  var cargas = echo<=2?2:(echo<=4?3:4);
+  var an = ancTot();
+  var hp = (g.rules.hpBase||10) + (k?(k.hpBonus||0):0) + an.vit + lvlTot().vit + armTot().vit;
+  var echo = (c?((c.echoBase)||(c.type==='Magic'?2:1)):1) + ((k&&k.aenBonus)?k.aenBonus:0) + an.echo;
+  var cargas = (echo<=2?2:(echo<=4?3:4)) + an.charges;
   var tr = gTrunk(HERO.trunkId);
   var dados = tr ? (d.roots[tr.id] ? '2d12' : '1d12') : '1d12';
   var mejor = null;
@@ -1171,19 +1180,24 @@ function viewChar(){
   function st(kk,v,sub){ return '<div class="pc-stat"><span>'+kk+'</span><b>'+v+'</b>'+(sub?'<small>'+sub+'</small>':'')+'</div>' }
   h += '<div class="pc-stats">' +
        st('Vitalidad', hp, '') +
-       st('Aen / turno', '+'+g.rules.aenPerTurn, c?esc(c.resource):'') +
+       st('Aen / turno', '+'+(aenTurno(k)+an.aen), c?esc(c.resource):'') +
        st('Echo', '+'+echo, 'pruebas y empujes') +
        st('Cargas', cargas, 'vuelven al cerrar sesión') +
        st('Ataque base', dados, 'quédate con el mejor') +
-       st('Marcas libres', (d.total-d.spent)+' / '+d.total, 'de ' + d.total + ' ganadas') +
+       st('Nivel', heroLevel(), lvlTot().bands?'+'+lvlTot().bands+' a todas las bandas':'sin bono a bandas') +
+       st('Kit Points', (d.total-d.spent)+' / '+d.total, 'libres / ganados') +
        '</div>';
+  h += nivelPanel(d);
+  if(g.ancestryText && HERO.ancestry){ var at=g.ancestryText(HERO.ancestry); if(!at.vacio){
+    h += '<div class="sechead"><div class="eyebrow">Tu ancestría</div></div><div class="sim-b"><b>' + esc(at.linaje) + '</b><br>' + esc(at.bonos.concat(at.sociales).join(' · ')) +
+         at.habilidades.map(function(a){ return '<br><b>' + esc(a.name) + '</b> · 1 Aen · 1/encuentro · en tu turno — ' + esc(a.desc) }).join('') + '</div>'; } }
   h += marcasExplica(d);
 
   h += lqSigue(d, tr);
 
   /* el árbol — el motor trae sus propias pestañas de tronco */
-  h += '<div class="sechead"><div class="eyebrow">Tu árbol de maestrías</div></div>';
-  h += '<div class="mst-wrap">' + masteryTreeHtml('me', {showMarks:true}) + '</div>';
+  h += '<div class="sechead"><div class="eyebrow">Tu kit · arma y armadura</div></div>';
+  h += '<div class="mst-wrap">' + masteryTreeHtml('me', {showMarks:false}) + '</div>';
 
   h += '<div class="sechead" style="margin-top:34px"><div class="eyebrow">Tu personaje en otros lados</div></div>';
   h += '<div class="rg"><p style="font-size:14.5px">Tu héroe vive en este navegador. Para llevarlo a otro teléfono, ' +
@@ -1197,40 +1211,95 @@ function viewChar(){
   return h;
 }
 
+/* ── nivel: el jugador sube aquí ── */
+function heroSetLevel(L){
+  if(!HERO) return; L = Math.max(1, Math.min(10, parseInt(L)||1));
+  HERO.level = L; HERO.marksTotal = kpTotal();
+  /* si bajó, recorta las compras más recientes al presupuesto y deja caer lo que ya no se sostiene */
+  var marks = (HERO.marks||[]).slice();
+  while(marks.length > HERO.marksTotal && marks.length) marks.pop();
+  var guard = 0;
+  while(guard++ < 80){
+    var d = deriveMastery({marks:marks, marksTotal:HERO.marksTotal, kitId:HERO.kitId});
+    var drop = null;
+    mstAllTrunks({kitId:HERO.kitId}).forEach(function(tr){
+      if(!d.roots[tr.id]){ tr.branches.forEach(function(br){ br.tiers.forEach(function(ti){ ti.nodes.forEach(function(n){ if(d.own[n.id] && !drop) drop = n.id }) }) }); return }
+      tr.branches.forEach(function(br){ var st = d.branches[br.id]; br.tiers.forEach(function(ti, ix){ if(st.tiers[ix].unlocked) return; ti.nodes.forEach(function(n){ if(d.own[n.id] && !drop) drop = n.id }) }) });
+    });
+    if(!drop) break;
+    marks.splice(marks.indexOf(drop), 1);
+  }
+  HERO.marks = marks;
+  if(L < 6) HERO.improvedBase = null;
+  heroSave(); route();
+}
+function heroPickSub(id){ if(!HERO) return; HERO.subclassId = id || null; heroSave(); route() }
+function heroPickImproved(name){ if(!HERO) return; HERO.improvedBase = name || null; heroSave(); route() }
+function legendariaDe(d, tr){
+  if(!tr) return null; var hit = null;
+  tr.branches.forEach(function(br){ var st = d.branches[br.id]; if(!st || !st.mastery || hit) return;
+    br.tiers.forEach(function(ti){ ti.nodes.forEach(function(n){ if(n.legend && !hit) hit = {n:n, br:br} }) }) });
+  return hit;
+}
+function nivelPanel(d){
+  var g = G(), L = heroLevel(), c = gClass(), sub = gSub(), tr = gTrunk(HERO.trunkId);
+  var P = g.progression || {};
+  var h = '<div class="sechead"><div class="eyebrow">Tu nivel</div></div><div class="rg">';
+  h += '<div style="display:flex;gap:9px;flex-wrap:wrap;align-items:center;margin-bottom:8px">' +
+       '<button class="pc-btn ghost" onclick="heroSetLevel('+(L-1)+')"'+(L<=1?' disabled':'')+'>− Bajar</button>' +
+       '<b style="font-size:22px">Nivel '+L+'</b>' +
+       '<button class="pc-btn" onclick="heroSetLevel('+(L+1)+')"'+(L>=10?' disabled':'')+'>Subir a '+Math.min(10,L+1)+' →</button>' +
+       '<span style="font-size:12.5px;color:var(--ink3)">'+esc(g.levelText ? g.levelText(L) : '')+'</span></div>';
+  /* decisiones pendientes de este nivel */
+  if(L >= 2 && c && c.subclasses && c.subclasses.length && !sub){
+    h += '<div class="sim-b"><b>Nivel 2: elige tu subclase.</b> Te da su habilidad Base ahora y su Heroica al nivel 4.<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px">' +
+         c.subclasses.map(function(s){ return '<button class="pc-btn ghost" onclick="heroPickSub(\''+s.id+'\')">'+esc(s.name)+'</button>' }).join('') + '</div></div>';
+  }
+  if(L >= 6 && c && !HERO.improvedBase){
+    var bases = (c.abilities||[]).filter(function(a){ return a.type==='Base' });
+    h += '<div class="sim-b"><b>Nivel 6: elige tu Base mejorada.</b> Esa habilidad suma +2 a todas sus bandas, para siempre.<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px">' +
+         bases.map(function(a){ return '<button class="pc-btn ghost" onclick="heroPickImproved(\''+esc(a.name).replace(/'/g,"\\'")+'\')">'+esc(a.name)+'</button>' }).join('') + '</div></div>';
+  }
+  /* lo que ya tienes por nivel */
+  var tengo = [];
+  if(sub && L >= 2) tengo.push('Subclase <b>'+esc(sub.name)+'</b>'+(L>=4?' (Base y Heroica)':' (su Base; la Heroica al 4)'));
+  if(HERO.improvedBase && L >= 6) tengo.push('Base mejorada: <b>'+esc(HERO.improvedBase)+'</b> +2 a todas las bandas');
+  if(L >= 8 && c){ var he = (c.abilities||[]).filter(function(a){ return a.type==='Heroica' && a.unleashed })[0]; if(he) tengo.push('Heroica desatada: <b>'+esc(he.name)+'</b>') }
+  if(L >= 10){ var lg = legendariaDe(d, tr); tengo.push(lg ? 'Legendaria: <b>'+esc(lg.n.name)+'</b> ('+esc(lg.br.name)+')' : 'Legendaria: <b>pendiente</b> — se desbloquea con la Maestría de una rama de tu arma') }
+  if(lvlTot().bands) tengo.push('<b>+'+lvlTot().bands+'</b> al número de daño de todas tus bandas');
+  if(lvlTot().aen) tengo.push('<b>+'+lvlTot().aen+'</b> Aen por turno');
+  if(tengo.length) h += '<div style="font-size:13.5px;margin:6px 0">'+tengo.join(' · ')+'</div>';
+  /* la escalera */
+  h += '<details class="mk" style="margin:10px 0 0"><summary class="mk-s">La escalera del 1 al 10</summary><div class="mk-b"><table class="rg-tb">';
+  for(var i=1;i<=10;i++){ h += '<tr'+(i===L?' class="hi"':'')+'><td class="k">'+i+'</td><td>'+esc(g.levelText ? g.levelText(i) : '')+'</td></tr>' }
+  h += '</table><p style="font-size:12.5px;color:var(--ink3)">Los pares dan verbos, los impares números. Los niveles dan; el kit elige. '+esc((g.rules&&g.rules.aenCarryRule)||'')+'</p></div></details>';
+  return h + '</div>';
+}
+
 /* ── qué es una marca ──
    Cuidado aquí: data.js define qué COMPRA una marca, pero no de dónde
    sale. Cuántas da una sesión sigue sin decidirse, así que el texto no
    lo inventa: dice que las reparte el Story Master, y punto. */
 function marcasExplica(d){
   var g = G(), libres = d.total - d.spent;
-  var h = '<details class="mk"><summary class="mk-s">' +
+  var h = '<details class="mk" style="margin-top:12px"><summary class="mk-s">' +
           (libres > 0
-            ? 'Tienes <b>' + libres + '</b> marca' + (libres===1?'':'s') + ' sin gastar · ¿qué hago con ' + (libres===1?'ella':'ellas') + '?'
-            : 'No te quedan marcas libres · ¿cómo consigo más?') +
+            ? 'Tienes <b>' + libres + '</b> Kit Point' + (libres===1?'':'s') + ' sin gastar · ¿qué hago con ' + (libres===1?'él':'ellos') + '?'
+            : 'No te quedan Kit Points libres · ¿cómo consigo más?') +
           '</summary><div class="mk-b">';
-
   h += '<div class="mk-r"><span class="mk-k">Qué es</span>' +
-       'Una marca es un punto de avance con tu arma. <b>Una marca compra un nodo</b> del árbol — uno solo, y para siempre. ' +
-       'No se gastan en combate ni se recuperan al descansar: son permanentes.</div>';
-
+       'Un Kit Point es un punto de crecimiento de tu kit. <b>Un Kit Point compra un nodo</b> — del árbol de tu arma o del árbol de tu armadura — uno solo, y para siempre. ' +
+       'No se gastan en combate ni se recuperan al descansar.</div>';
   h += '<div class="mk-r"><span class="mk-k">De dónde salen</span>' +
-       'Naciste con <b>una</b>, gastada en la Raíz de tu arma. Las demás <b>te las da tu Story Master</b> conforme avanza la historia. ' +
-       'No hay una cuota fija por sesión: él decide cuándo y cuántas. Cuando te dé una, súbela con el <b>+</b> del árbol.</div>';
-
+       'Naciste con <b>uno</b>, gastado en la Raíz de tu arma. Los demás <b>los dan los niveles</b>: 13 en total al nivel 10. Sube de nivel arriba, en «Tu nivel».</div>';
   h += '<div class="mk-r"><span class="mk-k">Qué compran</span>';
   var b = [];
-  b.push('la <b>Raíz</b> de un tronco te sube el ataque base de 1d12 a <b>2d12 quedándote con el mejor</b>');
-  b.push('el primer nodo de cualquier rama te regala su <b>firma de banda 1–4</b> gratis — algo que hacer cuando sacas mala tirada');
-  b.push('una <b>Maestría</b> te lleva a <b>3d12</b> con esa arma, y enciende tu dado de firma en el 12');
+  b.push('en el <b>arma</b>: la Raíz sube tu ataque base a <b>2d12 quedándote con el mejor</b>; el primer nodo de una rama regala su <b>firma de banda 1–4</b>; una <b>Maestría</b> te lleva a <b>3d12</b> y enciende el dado de firma en el 12');
+  b.push('en la <b>armadura</b> (tu kit): tres vertientes — <b>vida</b>, <b>Aen</b> y <b>daño</b> — de cuatro nodos. La raíz es gratis. Entrar a una vertiente no cierra las otras');
   h += '<ul class="mk-u"><li>' + b.join('</li><li>') + '</li></ul></div>';
-
-  if(g && g.masteryRules){
-    h += '<div class="mk-r"><span class="mk-k">Cómo se abre el árbol</span>' +
-         esc(g.masteryRules.marks) + '</div>';
-  }
-  h += '<div class="mk-r" style="border-bottom:0">' +
-       'Si sueltas un nodo, la marca vuelve — y si algo dependía de él, también se suelta. Nada se pierde: puedes reacomodar.' +
-       '</div>';
+  if(g && g.masteryRules){ h += '<div class="mk-r"><span class="mk-k">Cómo se abre el árbol</span>' + esc(g.masteryRules.marks) + '</div>' }
+  if(g && g.armorRules){ h += '<div class="mk-r"><span class="mk-k">Aen de armadura</span>' + esc(g.armorRules.aenRefund) + '</div>' }
+  h += '<div class="mk-r" style="border-bottom:0">Si sueltas un nodo, el Kit Point vuelve — y si algo dependía de él, también se suelta. Nada se pierde: puedes reacomodar.</div>';
   return h + '</div></details>';
 }
 
@@ -1242,13 +1311,13 @@ function lqSigue(d, tr){
   /* qué puede comprar ahora mismo */
   var listos = [];
   var miTronco = tr ? tr.id : null;
-  mstTrunks().forEach(function(t){
-    var mio = (t.id === miTronco);
-    if(!d.own[t.root.id]){ listos.push({n:t.root.name, br:t.name+' · Raíz', mio:mio, otro:!mio}); return }
+  mstAllTrunks(MSTH.get()).forEach(function(t){
+    var mio = (t.id === miTronco) || !!t.rootFree;
+    if(!d.roots[t.id]){ listos.push({n:t.root.name, br:t.name+' · Raíz', mio:mio, otro:!mio}); return }
     t.branches.forEach(function(b){
       b.tiers.forEach(function(ti, ix){
         if(!d.branches[b.id].tiers[ix].unlocked) return;
-        ti.nodes.forEach(function(n){ if(!d.own[n.id]) listos.push({n:n.name, br:t.name+' · '+b.name, mio:mio, otro:!mio}) });
+        ti.nodes.forEach(function(n){ if(!d.own[n.id]) listos.push({n:n.name, br:(t.rootFree?'Armadura · ':'')+t.name+' · '+b.name, mio:mio, otro:!mio}) });
       });
     });
   });
@@ -1256,7 +1325,7 @@ function lqSigue(d, tr){
   listos.sort(function(a,b){ return (a.mio===b.mio) ? 0 : (a.mio ? -1 : 1) });
   if(libres > 0 && listos.length){
     h += '<div style="font-size:13.5px;color:var(--ink2);margin-bottom:7px">Con '+libres+
-         (libres===1?' marca libre puedes tomar':' marcas libres puedes tomar')+':</div>';
+         (libres===1?' Kit Point libre puedes tomar':' Kit Points libres puedes tomar')+':</div>';
     var mostrados = listos.slice(0,8), yaOtro = false;
     mostrados.forEach(function(x){
       if(x.otro && !yaOtro){ yaOtro = true;
@@ -1266,9 +1335,9 @@ function lqSigue(d, tr){
     });
     if(listos.length>8) h += '<div class="nx-row" style="color:var(--ink3)">y '+(listos.length-8)+' más en el árbol</div>';
   } else if(libres > 0){
-    h += '<div class="nx-none">Tienes '+libres+' marca(s) libre(s), pero no hay nada abierto todavía.</div>';
+    h += '<div class="nx-none">Tienes '+libres+' Kit Point(s) libre(s), pero no hay nada abierto todavía.</div>';
   } else {
-    h += '<div class="nx-none">No tienes marcas libres. Tu Story Master te dará más al avanzar la historia.</div>';
+    h += '<div class="nx-none">No tienes Kit Points libres. El siguiente nivel te da más.</div>';
   }
 
   /* camino a la próxima Maestría */
@@ -1291,7 +1360,7 @@ function lqSigue(d, tr){
       h += '<div class="nx-t" style="margin-top:16px">Camino a tu próxima Maestría</div>';
       caminos.forEach(function(c){
         h += '<div class="nx-row"><b>'+esc(c.n)+'</b>' +
-             '<span class="nx-cost">'+c.faltan+' marca'+(c.faltan===1?'':'s')+'</span>' +
+             '<span class="nx-cost">'+c.faltan+' Kit Point'+(c.faltan===1?'':'s')+'</span>' +
              '<span class="br">'+esc(c.b)+' · 3d12 · firma '+esc(c.die)+'</span></div>';
       });
     }
@@ -1308,6 +1377,8 @@ function abilHtml(a, clave){
           (a.cost?'<span class="ab-cost">'+esc(a.cost)+'</span>':'') +
           (clave?noteBtn(clave,'Nota sobre '+a.name):'') + '</div>';
   if(a.desc) h += '<div class="ab-d">'+esc(a.desc)+'</div>';
+  if(a.unleashed){ var _L = heroLevel(); h += '<div class="ab-d" style="'+(_L>=8?'border-left:3px solid var(--ink);padding-left:8px':'opacity:.6')+'"><b>'+(_L>=8?'Desatada':'Al nivel 8 se desata')+':</b> '+esc(a.unleashed)+'</div>' }
+  if(HERO && HERO.improvedBase && a.name===HERO.improvedBase && a.type==='Base' && heroLevel()>=6) h += '<div class="ab-d"><b>Base mejorada (nivel 6):</b> +2 al daño de todas sus bandas.</div>';
   if(a.drawback) h += '<div class="ab-d" style="color:var(--red)"><em>Desventaja: '+esc(a.drawback)+'</em></div>';
   if(a.bandas){
     h += '<table class="ab-tb">';
@@ -1326,13 +1397,17 @@ function viewAbil(){
   var c=gClass(), sub=gSub(), k=gKit();
   var h = '<div class="crumb"><a href="#inicio">Archivo</a> › Mis habilidades</div>';
   h += '<h1 class="ptitle">Mis habilidades</h1>';
+  if(lvlTot().bands || lvlTot().aen) h += '<div class="sim-b"><b>Nivel '+heroLevel()+':</b> '+(lvlTot().bands?'suma <b>+'+lvlTot().bands+'</b> al número de daño de cada banda de tus habilidades (no al d12)':'')+(lvlTot().bands&&lvlTot().aen?' · ':'')+(lvlTot().aen?'<b>+'+lvlTot().aen+'</b> Aen por turno':'')+'.</div>';
   if(c){
     h += '<div class="sechead"><div class="eyebrow">'+esc(c.name)+' · energía: '+esc(c.resource||'—')+'</div></div>';
     (c.abilities||[]).forEach(function(a){ h += abilHtml(a, 'hab:'+a.name) });
   }
   if(sub && sub.abilities && sub.abilities.length){
-    h += '<div class="sechead" style="margin-top:30px"><div class="eyebrow">Subclase · '+esc(sub.name)+'</div></div>';
-    sub.abilities.forEach(function(a){ h += abilHtml(a, 'hab:'+a.name) });
+    var _L = heroLevel();
+    h += '<div class="sechead" style="margin-top:30px"><div class="eyebrow">Subclase · '+esc(sub.name)+(_L<2?' · se abre al nivel 2':'')+'</div></div>';
+    sub.abilities.forEach(function(a){ var need = (a.type==='Heroica') ? 4 : 2; if(_L >= need) h += abilHtml(a, 'hab:'+a.name); else h += '<div style="opacity:.55">'+abilHtml(a, null)+'<div class="ab-note" style="margin:-6px 0 12px">Se abre al nivel '+need+'.</div></div>' });
+  } else if(c && c.subclasses && c.subclasses.length && heroLevel()>=2){
+    h += '<div class="sim-b">Nivel 2: todavía no eliges subclase. Hazlo en «Mi personaje».</div>';
   }
   if(k && k.ability){
     h += '<div class="sechead" style="margin-top:30px"><div class="eyebrow">Kit · '+esc(k.name)+'</div></div>';
@@ -1371,6 +1446,25 @@ function viewRules(){
       mr.interplane.forEach(function(s){ h += '<p>'+esc(s)+'</p>' });
     }
     h += '</div>';
+  }
+  if(g.progression){
+    h += '<div class="sechead" style="margin-top:30px"><div class="eyebrow">Niveles · 1 al 10</div></div><div class="rg">';
+    if(g.rules.levelRule) h += '<p>'+esc(g.rules.levelRule)+'</p>';
+    h += '<table class="rg-tb"><tr><th>Nivel</th><th>Qué da</th></tr>';
+    for(var li=1; li<=10; li++) h += '<tr><td class="k">'+li+'</td><td>'+esc(g.levelText ? g.levelText(li) : '')+'</td></tr>';
+    h += '</table>';
+    if(g.rules.kitPointsRule) h += '<p>'+esc(g.rules.kitPointsRule)+'</p>';
+    if(g.armorRules){ h += '<p>'+esc(g.armorRules.root)+' '+esc(g.armorRules.aenRefund)+' '+esc(g.armorRules.mastery)+'</p>' }
+    if(g.rules.aenCarryRule) h += '<p><b>Aen.</b> '+esc(g.rules.aenCarryRule)+'</p>';
+    if(g.monsterScale) h += '<p><b>Monstruos por nivel.</b> El bestiario es de nivel 1. Para un grupo de nivel N, cada criatura tiene Vitalidad × (1 + '+g.monsterScale.hpPerLevel+' × (N−1)) y daño × (1 + '+g.monsterScale.dmgPerLevel+' × (N−1)), redondeando; una criatura de 1 de Vitalidad se queda en 1. Sus habilidades no cambian.</p>';
+    h += '</div>';
+  }
+  if(g.summons && g.summons.length){
+    h += '<div class="sechead" style="margin-top:30px"><div class="eyebrow">Invocaciones · '+g.summons.length+'</div></div><div class="rg">';
+    if(g.rules.summonRule) h += '<p>'+esc(g.rules.summonRule)+'</p>';
+    h += '<table class="rg-tb"><tr><th>Invocación</th><th>Ficha</th></tr>';
+    g.summons.forEach(function(s){ h += '<tr><td class="k">'+esc(s.name||s.id)+'</td><td>'+esc(Object.keys(s).filter(function(k){ return k!=='name'&&k!=='id' }).map(function(k){ return k+': '+(typeof s[k]==='object'?JSON.stringify(s[k]):s[k]) }).join(' · '))+'</td></tr>' });
+    h += '</table></div>';
   }
   if(g.pushBands && g.pushBands.length){
     h += '<div class="sechead" style="margin-top:30px"><div class="eyebrow">Empujar con Echo</div></div>';
@@ -1414,6 +1508,20 @@ function viewCompendium(){
   });
   h += '</div>';
 
+  if(g.ancestries){ var E=g.ancestryEs||{names:{},socials:{}}; var mineA=HERO&&HERO.ancestry?HERO.ancestry:null;
+    function bt(b){ if(!b) return ''; var o=[]; if(b.vit)o.push('+'+b.vit+' Vitalidad'); if(b.echo)o.push('+'+b.echo+' Echo'); if(b.aen)o.push('+'+b.aen+' Aen/turno'); if(b.move)o.push('+'+b.move+' Movimiento'); if(b.charges)o.push('+'+b.charges+' Carga');
+      if(b.social)o.push('Ventaja en '+(E.socials[b.social]||b.social)); if(b.ability)o.push(b.ability.name+' — '+b.ability.desc); return o.join(' · ') }
+    h += '<div class="sechead" style="margin-top:30px"><div class="eyebrow">Ancestrías · '+g.ancestries.length+'</div></div>'+
+         '<p style="font-size:13px;color:var(--ink2);margin:6px 0 10px">Tres pasos al crear al héroe: raza primordial, luego dos generaciones que refuerzan la línea o la mezclan. Los bonuses se suman. Las habilidades de la tercera generación cuestan 1 Aen, una vez por encuentro, en tu turno.</p><div class="cmp">';
+    g.ancestries.forEach(function(a){
+      var mine = mineA && (mineA.p===a.id || mineA.s===a.id || mineA.t===a.id);
+      var gen = a.gen===1?'Primordial · paso 1':(a.gen===2?'Segunda generación · paso 2':'Tercera generación · paso 3');
+      h += '<div class="cmp-c'+(mine?' mine':'')+'"><div class="r">'+gen+'</div><h4>'+esc(E.names[a.id]||a.name)+'</h4><p style="font-size:12px;opacity:.8">'+esc(a.flavor||'')+'</p>'+
+           (a.primordial?'<p><b>Paso 1:</b> '+esc(bt(a.primordial))+'</p>':'')+
+           (a.pick2?'<p><b>Paso 2:</b> '+esc(bt(a.pick2))+'</p>':'')+(a.reinforce2?'<p><b>Paso 2 (refuerzo):</b> '+esc(bt(a.reinforce2))+'</p>':'')+
+           (a.pick3?'<p><b>Paso 3:</b> '+esc(bt(a.pick3))+'</p>':'')+(a.reinforce3?'<p><b>Paso 3 (refuerzo):</b> '+esc(bt(a.reinforce3))+'</p>':'')+'</div>';
+    });
+    h += '</div>'; }
   h += '<div class="sechead" style="margin-top:30px"><div class="eyebrow">Kits · '+g.kits.length+'</div></div><div class="cmp">';
   g.kits.forEach(function(k){
     var mine = HERO && k.id===HERO.kitId;
@@ -1421,8 +1529,9 @@ function viewCompendium(){
     h += '<div class="cmp-c'+(mine?' mine':'')+'"><div class="r">'+esc(ka?ka.name:(k.archetype||k.fantasy||''))+
          '<span style="float:right">'+noteBtn('kit:'+k.id,'Nota sobre '+k.name)+'</span></div>' +
          '<h4>'+esc(k.name)+'</h4><p>'+(k.ability?esc(k.ability.name):'')+
-         (k.hpBonus?' · +'+k.hpBonus+' Vitalidad':'')+(k.aenBonus?' · +'+k.aenBonus+' Aen':'')+'</p>'+
-         (ka?'<p style="font-size:12px;opacity:.8">'+esc(ka.desc)+'</p>':'')+'</div>';
+         (k.hpBonus?' · +'+k.hpBonus+' Vitalidad':'')+(k.aenBonus?' · +'+k.aenBonus+' Echo y +'+k.aenBonus+' Aen/turno':'')+'</p>'+
+         (ka?'<p style="font-size:12px;opacity:.8">'+esc(ka.desc)+'</p>':'')+
+         (function(){ var a = g.armorTreeFor ? g.armorTreeFor(k.id) : null; if(!a) return ''; return '<details><summary style="font-size:12px;cursor:pointer">Armadura: '+a.branches.map(function(b){ return esc(b.name)+' ('+esc(b.sub)+')' }).join(' · ')+'</summary>'+a.branches.map(function(b){ return '<div style="font-size:12px;margin-top:6px"><b>'+esc(b.name)+'</b> · '+esc(b.sub)+'<br>'+b.tiers.map(function(ti){ return ti.nodes.map(function(n){ return '◆ <b>'+esc(n.name)+'</b> '+esc(n.eff) }).join('<br>') }).join('<br>')+'</div>' }).join('')+'</details>' })()+'</div>';
   });
   h += '</div>';
 
@@ -1493,10 +1602,11 @@ function buildSheetHTML(){
   if(!G()||!hasHero()) return '';
   var fac=gFaction(), c=gClass(), k=gKit();
   var ft=(fac&&fac.feats&&HERO.featChosen!=null)?fac.feats[HERO.featChosen]:null;
-  var totalHP=(GAMEDATA.rules.hpBase||10)+(k?(k.hpBonus||0):0);
+  var _an=ancTot();
+  var totalHP=(GAMEDATA.rules.hpBase||10)+(k?(k.hpBonus||0):0)+_an.vit;
   var _d=deriveMastery(MSTH.get());
   var tk=gTrunk(HERO.trunkId);
-  var _em=(c?((c.echoBase)||(c.type==='Magic'?2:1)):1)+((k&&k.aenBonus)?k.aenBonus:0);var _cm=_em<=2?2:(_em<=4?3:4);
+  var _em=(c?((c.echoBase)||(c.type==='Magic'?2:1)):1)+((k&&k.aenBonus)?k.aenBonus:0)+_an.echo;var _cm=(_em<=2?2:(_em<=4?3:4))+_an.charges;
   var h='<div style="font-family:Georgia,serif;color:'+SH.ink+';max-width:720px;margin:0 auto;padding:24px">';
   h+='<div style="text-align:center;border-bottom:3px double '+SH.gold+';padding-bottom:14px;margin-bottom:18px">'+
      '<div style="font-size:12px;letter-spacing:4px;color:'+SH.gink+'">EPIC QUEST · AVELIR</div>'+
@@ -1506,7 +1616,7 @@ function buildSheetHTML(){
   function stat(kk,v,sub){return '<div style="flex:1;border:1.5px solid '+SH.gold+';background:'+SH.pale+';border-radius:8px;padding:10px 6px;text-align:center"><div style="font-size:10px;color:'+SH.gink+';letter-spacing:1px;font-weight:bold">'+kk+'</div><div style="font-size:28px;font-weight:bold;margin-top:2px">'+v+'</div>'+(sub?'<div style="font-size:8.5px;color:'+SH.ink3+';margin-top:2px">'+sub+'</div>':'')+'</div>'}
   h+='<div style="display:flex;gap:10px;margin-bottom:18px">'+
      stat('HP',totalHP,'')+
-     stat('AEN / TURNO','+'+GAMEDATA.rules.aenPerTurn,(c?'tu clase lo llama '+esc(c.resource):''))+
+     stat('AEN / TURNO','+'+(aenTurno(k)+_an.aen),(c?'tu clase lo llama '+esc(c.resource):''))+
      stat('ECHO','+'+_em,'skill checks y empujes')+
      stat('CARGAS',_cm,'vuelven al cerrar sesión')+
      stat('ATAQUE BASE',(tk&&_d.roots[tk.id]?'2d12':'1d12'),(tk&&_d.roots[tk.id]?'quédate con el mejor':'sin especializar'))+
@@ -1536,13 +1646,16 @@ function buildSheetHTML(){
         })});
       });
     });
-    bl+='<div style="font-size:10.5px;color:'+SH.ink3+';margin:8px 0 5px">Ramas de '+esc(tk.name)+' — se abren con marcas:</div><table style="width:100%;border-collapse:collapse;font-size:11px">';
+    bl+='<div style="font-size:10.5px;color:'+SH.ink3+';margin:8px 0 5px">Ramas de '+esc(tk.name)+' — se abren con Kit Points:</div><table style="width:100%;border-collapse:collapse;font-size:11px">';
     tk.branches.forEach(function(b){
       bl+='<tr><td style="border:1px solid '+SH.bd+';padding:4px 7px;font-weight:bold;width:100px;background:'+SH.pale+'">'+esc(b.name)+'</td><td style="border:1px solid '+SH.bd+';padding:4px 7px;color:'+SH.ink2+'">'+esc(b.sub||'')+' · firma '+esc(b.die)+'</td></tr>';
     });
     bl+='</table>';
     h+='<div style="margin-bottom:18px;page-break-inside:avoid;break-inside:avoid">'+shSec('ESPECIALIZACIÓN — '+esc(tk.name).toUpperCase()+(es.t?' · '+esc(es.t).toUpperCase():''))+bl+'</div>';
   }
+  if(GAMEDATA.ancestryText&&HERO&&HERO.ancestry){var _at=GAMEDATA.ancestryText(HERO.ancestry);if(!_at.vacio){
+    var _ab='';_at.habilidades.forEach(function(a){_ab+=shCard('<div style="font-weight:bold;font-size:13.5px">◇ '+esc(a.name)+' <span style="font-weight:normal;font-size:11px;color:'+SH.ink3+'">1 Aen · 1/encuentro · en tu turno</span></div><div style="font-size:11.5px;color:'+SH.ink2+'">'+esc(a.desc)+'</div>')});
+    h+='<div style="margin-bottom:18px;page-break-inside:avoid;break-inside:avoid">'+shSec('ANCESTRÍA')+shCard('<div style="font-weight:bold;font-size:14px">'+esc(_at.linaje)+'</div><div style="font-size:11.5px;color:'+SH.ink2+'">'+esc(_at.bonos.concat(_at.sociales).join(' · '))+'</div>',true)+_ab+'</div>';}}
   if(ft){h+='<div style="margin-bottom:18px;page-break-inside:avoid;break-inside:avoid">'+shSec('FEAT DE FACCIÓN')+shCard('<div style="font-weight:bold;font-size:14px">✨ '+esc(ft.name)+' <span style="font-weight:normal;font-size:11px;color:'+SH.ink3+'">('+esc(ft.attr)+')</span></div><div style="font-size:12.5px;color:'+SH.ink2+';margin-top:3px">'+esc(ft.desc)+'</div>')+'</div>';}
   if(c&&c.abilities&&c.abilities.length){
     h+='<div style="margin-bottom:18px">'+shSec('HABILIDADES DE CLASE — '+esc(c.name).toUpperCase()+' · ENERGÍA: '+esc(c.resource))+
@@ -1617,6 +1730,11 @@ var MST_TRUNK = {};
 var MST_PLANE = {avelir:'AVELIR', veil:'VELO', hold:'CUENCO', inter:'INTERPLANO'};
 
 function mstTrunks(){ var g = MSTH.data(); return (g && g.masteryTrunks) ? g.masteryTrunks : [] }
+function mstArmorTrunk(rec){ var g = MSTH.data(); if(!g || !g.armorTreeFor || !rec || !rec.kitId) return null; return g.armorTreeFor(rec.kitId) }
+function mstAllTrunks(rec){ var a = mstArmorTrunk(rec); return a ? mstTrunks().concat([a]) : mstTrunks() }
+function mstArmorTotals(d){ var o = {vit:0, red:0, aen:0, dmg:0, kitBands:false, mast:0, nodes:[]}; var g = MSTH.data(); var cap = (g && g.armorRules && g.armorRules.aenCap) || 2;
+  mstAllTrunks(d.rec).forEach(function(tr){ if(!tr.rootFree) return; tr.branches.forEach(function(br){ br.tiers.forEach(function(ti){ ti.nodes.forEach(function(n){ if(!d.own[n.id]) return; o.nodes.push(n); o.vit += n.vit||0; o.red += n.red||0; o.aen += n.aen||0; o.dmg += n.dmg||0; if(n.kitBands) o.kitBands = true; if(n.mast) o.mast++ }) }) }) });
+  o.aenRefund = Math.min(cap, o.aen); return o }
 function mstEsc(s){ return MSTH.esc(s) }
 
 /* ── puertas ── */
@@ -1634,9 +1752,9 @@ function gateLabel(tier){
 }
 
 /* ── localizar un nodo por id ── */
-function mstFind(nodeId){
+function mstFind(nodeId, rec){
   var hit = null;
-  mstTrunks().forEach(function(tr){
+  mstAllTrunks(rec).forEach(function(tr){
     if(tr.root.id === nodeId){ hit = {tr:tr, root:1}; return }
     tr.branches.forEach(function(br){
       br.tiers.forEach(function(ti, ix){
@@ -1714,12 +1832,14 @@ function mstBaseTable(d, tr){
 function deriveMastery(rec){
   rec = rec || {};
   var own = {};
-  (rec.marks || []).forEach(function(id){ own[id] = 1 });
-  var out = { own:own, spent:Object.keys(own).length,
+  var known = {};
+  mstAllTrunks(rec).forEach(function(tr){ known[tr.root.id] = 1; tr.branches.forEach(function(br){ br.tiers.forEach(function(ti){ ti.nodes.forEach(function(n){ known[n.id] = 1 }) }) }) });
+  (rec.marks || []).forEach(function(id){ if(known[id]) own[id] = 1 });
+  var out = { own:own, spent:Object.keys(own).length, rec:rec,
               total:(rec.marksTotal == null ? 0 : rec.marksTotal),
               roots:{}, branches:{}, dice:{}, lows:[], reacts:[], legends:[], actives:[] };
-  mstTrunks().forEach(function(tr){
-    var rootOn = !!own[tr.root.id];
+  mstAllTrunks(rec).forEach(function(tr){
+    var rootOn = !!own[tr.root.id] || !!tr.rootFree;
     if(rootOn) out.roots[tr.id] = 1;
     tr.branches.forEach(function(br){
       var st = { open:rootOn, owned:0, tiers:[], mastery:0, die:br.die, low:null };
@@ -1737,9 +1857,10 @@ function deriveMastery(rec){
         st.tiers.push({ unlocked:unlocked, done:gateOk(ti, own) });
         prevOk = unlocked && gateOk(ti, own);
       });
-      if(st.owned > 0){ st.low = br.low; out.lows.push({b:br.name, low:br.low, die:br.die}) }
+      if(st.owned > 0 && br.low){ st.low = br.low; out.lows.push({b:br.name, low:br.low, die:br.die}) }
       out.branches[br.id] = st;
-      if(st.mastery)   out.dice[br.id] = '3d12';
+      if(tr.rootFree){ /* armadura: sin dados ni firmas */ }
+      else if(st.mastery)   out.dice[br.id] = '3d12';
       else if(rootOn)  out.dice[br.id] = '2d12';
     });
   });
@@ -1748,8 +1869,8 @@ function deriveMastery(rec){
 
 /* ── ¿comprable ahora? ── */
 function canBuy(d, tr, br, ix){
-  if(!br) return !d.own[tr.root.id];
-  if(!d.own[tr.root.id]) return false;
+  if(!br) return !tr.rootFree && !d.own[tr.root.id];
+  if(!d.roots[tr.id]) return false;
   return d.branches[br.id].tiers[ix].unlocked;
 }
 
@@ -1763,10 +1884,10 @@ function masteryToggle(pid, nodeId){
     marks.splice(i, 1);
     var guard = 0;
     while(guard++ < 60){
-      var d = deriveMastery({marks:marks, marksTotal:rec.marksTotal});
+      var d = deriveMastery({marks:marks, marksTotal:rec.marksTotal, kitId:rec.kitId});
       var drop = null;
-      mstTrunks().forEach(function(tr){
-        if(!d.own[tr.root.id]){
+      mstAllTrunks(rec).forEach(function(tr){
+        if(!d.roots[tr.id]){
           tr.branches.forEach(function(br){ br.tiers.forEach(function(ti){
             ti.nodes.forEach(function(n){ if(d.own[n.id] && !drop) drop = n.id }) }) });
         } else {
@@ -1785,11 +1906,13 @@ function masteryToggle(pid, nodeId){
   } else {
     var d0 = deriveMastery(rec);
     if(d0.total - d0.spent <= 0) return;
-    var f = mstFind(nodeId);
+    var f = mstFind(nodeId, rec);
     if(!f) return;
     if(!canBuy(d0, f.tr, f.br, f.ix)) return;
     marks.push(nodeId);
   }
+  var dK = deriveMastery({marks:marks, marksTotal:rec.marksTotal, kitId:rec.kitId});
+  marks = marks.filter(function(id){ return dK.own[id] });
   MSTH.set(pid, {marks:marks});
   MSTH.rerender();
 }
@@ -1798,7 +1921,7 @@ function adjustMarks(pid, delta){
   if(!rec) return;
   var t = Math.max(0, Math.min(60, (rec.marksTotal == null ? 0 : rec.marksTotal) + delta));
   if(delta < 0 && t < (rec.marks || []).length) return;
-  MSTH.set(pid, {marksTotal:t});
+  MSTH.set(pid, {marksExtra:(rec.marksExtra || 0) + delta, marksTotal:t});
   MSTH.rerender();
 }
 
@@ -1816,6 +1939,8 @@ function mstNodeHtml(pid, d, tr, br, ix, n, ro){
   if(n.react)  h += '<span class="mst-tag">REACCIÓN</span>';
   if(n.mast)   h += '<span class="mst-tag">MAESTRÍA</span>';
   if(n.legend) h += '<span class="mst-tag">LEGENDARIA</span>';
+  if(n.vit)    h += '<span class="mst-tag">+' + n.vit + ' VIT</span>';
+  if(n.kitBands) h += '<span class="mst-tag">A BANDAS</span>';
   h += '<span class="pl pl-' + n.plane + '">' + (MST_PLANE[n.plane] || n.plane) + '</span></div>';
   h += '<div class="mst-node-eff">' + mstEsc(n.eff) + '</div>';
   if(n.fire)   h += '<div class="mst-node-fire"><b>AL 12 · ' + mstEsc(n.die || '') + '</b><br>' + mstEsc(n.fire) + '</div>';
@@ -1834,22 +1959,25 @@ function masteryTreeHtml(pid, opts){
   if(!rec) return '';
   var ro  = !!opts.readonly;
   var d   = deriveMastery(rec);
-  var tid = opts.trunkId || MST_TRUNK[pid] || mstTrunks()[0].id;
-  var tr  = mstTrunks().filter(function(t){ return t.id === tid })[0] || mstTrunks()[0];
+  var all = mstAllTrunks(rec);
+  var tid = MST_TRUNK[pid] || opts.trunkId || all[0].id;
+  var tr  = all.filter(function(t){ return t.id === tid })[0] || all[0];
+  var armor = mstArmorTotals(d);
   var free = d.total - d.spent;
   var h = '';
 
   if(opts.showTabs !== false){
     h += '<div class="mst-top"><div class="mst-tabs">';
-    mstTrunks().forEach(function(t){
+    var tabTrunks = opts.trunkId ? all.filter(function(t){ return t.id === opts.trunkId || t.rootFree }) : all;
+    tabTrunks.forEach(function(t){
       var cnt = d.own[t.root.id] ? 1 : 0;
       t.branches.forEach(function(b){ cnt += d.branches[b.id].owned });
       h += '<div class="mst-tab' + (t.id === tr.id ? ' active' : '') + (cnt ? ' owned' : '') +
            '" data-action="mastery-trunk" data-id="' + pid + '" data-trunk="' + t.id + '">' +
-           mstEsc(t.name) + '<span class="n">' + (cnt || '') + '</span></div>';
+           (t.rootFree ? 'Armadura · ' : 'Arma · ') + mstEsc(t.name) + '<span class="n">' + (cnt || '') + '</span></div>';
     });
     h += '</div>';
-    h += '<div class="mst-marks"><span class="mst-marks-l">MARCAS LIBRES</span>' +
+    h += '<div class="mst-marks"><span class="mst-marks-l">KIT POINTS LIBRES</span>' +
          '<span class="mst-marks-v">' + free + '</span>';
     if(opts.showMarks){
       h += '<button class="mst-mbtn" data-action="sub-mark" data-id="' + pid + '">−</button>' +
@@ -1860,7 +1988,7 @@ function masteryTreeHtml(pid, opts){
     h += '</div></div>';
   }
 
-  h += mstBaseTable(d, tr);
+  if(!tr.rootFree) h += mstBaseTable(d, tr);
 
   /* resumen de lo que cambió en la mesa */
   if(d.spent){
@@ -1878,21 +2006,22 @@ function masteryTreeHtml(pid, opts){
       '<div><div class="mst-sum-k">FIRMAS DE BANDA 1-4</div><div class="mst-sum-v">' + (lows.length ? mstEsc(lows.join(' • ')) : '—') + '</div></div>' +
       '<div><div class="mst-sum-k">REACCIONES</div><div class="mst-sum-v">' + (d.reacts.length ? mstEsc(nm(d.reacts)) : '—') + '<small>una por ronda, gratis</small></div></div>' +
       '<div><div class="mst-sum-k">INTERPLANO</div><div class="mst-sum-v">' + (d.legends.length ? mstEsc(nm(d.legends)) : '—') + '<small>una por sesión</small></div></div>' +
+      (armor.nodes.length ? '<div><div class="mst-sum-k">ARMADURA</div><div class="mst-sum-v">' + [armor.vit ? '+' + armor.vit + ' Vit' : '', armor.red ? '−' + armor.red + ' por golpe' : '', armor.aenRefund ? armor.aenRefund + ' Aen devuelto' : '', armor.dmg ? '+' + armor.dmg + ' daño' : '', armor.kitBands ? 'kit a bandas' : '', armor.mast ? armor.mast + ' maestría' + (armor.mast > 1 ? 's' : '') : ''].filter(Boolean).join(' · ') + '<small>' + armor.nodes.length + ' nodo' + (armor.nodes.length === 1 ? '' : 's') + '</small></div></div>' : '') +
       '</div>';
   }
 
   /* raíz */
-  var rootOn = !!d.own[tr.root.id];
-  var rootCan = !ro && (rootOn || free > 0);
+  var rootOn = !!d.roots[tr.id];
+  var rootCan = !ro && !tr.rootFree && (rootOn || free > 0);
   h += '<div class="mst-root' + (rootOn ? ' on' : (rootCan ? ' can' : '')) + '"' +
        (rootCan ? ' data-action="mastery-toggle" data-id="' + pid + '" data-node="' + tr.root.id + '"' : '') + '>';
   h += '<span class="mst-tick" style="margin-top:3px">' + (rootOn ? '✓' : '') + '</span>';
   h += '<div class="mst-root-body"><div class="mst-root-name">' + mstEsc(tr.root.name) +
        ' <span class="pl pl-' + tr.root.plane + '">' + MST_PLANE[tr.root.plane] + '</span>' +
-       ' <span class="mst-tag">RAÍZ</span></div>';
+       ' <span class="mst-tag">' + (tr.rootFree ? 'RAÍZ · GRATIS' : 'RAÍZ') + '</span></div>';
   h += '<div class="mst-root-eff">' + mstEsc(tr.root.eff) + '</div></div>';
   h += '<div style="text-align:right;flex:none"><div class="mst-sum-k">' + mstEsc(tr.sub) + '</div>' +
-       '<div class="mst-sum-v">' + tr.root.dice + 'd12</div></div></div>';
+       '<div class="mst-sum-v">' + (tr.rootFree ? 'vida · Aen · daño' : tr.root.dice + 'd12') + '</div></div></div>';
 
   /* ramas */
   h += '<div class="mst-cols" style="grid-template-columns:repeat(' + tr.branches.length + ',1fr)">';
@@ -1902,8 +2031,9 @@ function masteryTreeHtml(pid, opts){
     h += '<div class="mst-col-head"><div class="mst-col-name">' + mstEsc(br.name) + '</div>' +
          '<div class="mst-col-sub">' + mstEsc(br.sub || '') + '</div>' +
          '<div class="mst-col-chips"><span class="mst-chip' + (st.owned ? ' gold' : '') + '">' + st.owned + ' nodos</span>' +
+         (tr.rootFree ? '<span class="mst-chip' + (st.mastery ? ' gold' : '') + '">' + (st.mastery ? 'maestría' : 'vertiente') + '</span>' :
          '<span class="mst-chip' + (st.mastery ? ' gold' : '') + '">' + (st.mastery ? '3d12' : (rootOn ? '2d12' : '1d12')) + '</span>' +
-         '<span class="mst-chip' + (st.owned ? ' gold' : '') + '">firma ' + mstEsc(br.die) + '</span></div></div>';
+         '<span class="mst-chip' + (st.owned ? ' gold' : '') + '">firma ' + mstEsc(br.die) + '</span>') + '</div></div>';
     if(st.owned && br.low)
       h += '<div class="mst-low"><b>BANDA 1-4 · GRATIS</b>' + mstEsc(br.low.name) + ' — ' + mstEsc(br.low.eff) + '</div>';
     br.tiers.forEach(function(ti, ix){

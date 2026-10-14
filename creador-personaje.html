@@ -241,13 +241,21 @@ GAMEDATA.rules = Object.assign({ hpBase:10, aenPerTurn:2, actionsPerTurn:2, move
 var state = {
   step: 0,
   name: '',
+  ancestry: null, subclassId: null,
   factionScores: {}, factionId: null, factionFeatIdx: null,
   classScores: {}, classId: null,
   kitScores: {}, kitId: null,
   trunkId: null, marks: [], marksTotal: 1,
+  level: 1, improvedBase: null, marksExtra: 0,
   _edit: null
 };
 var MARCAS_AL_NACER = 1;
+function ancTot(){ return (GAMEDATA.ancestryTotals?GAMEDATA.ancestryTotals(state.ancestry):null) || {vit:0,echo:0,aen:0,move:0,charges:0,socials:[],abilities:[],steps:[]} }
+function lvlTot(){ return GAMEDATA.levelTotals ? GAMEDATA.levelTotals(state.level||1) : {level:1,bands:0,aen:0,vit:0,kp:1} }
+function kpTotal(){ return lvlTot().kp + (state.marksExtra||0) }
+function armTot(){ try{ return mstArmorTotals(deriveMastery(MSTH.get())) }catch(e){ return {vit:0,red:0,aen:0,dmg:0,aenRefund:0,kitBands:false,mast:0,nodes:[]} } }
+function aenTurno(k){ return (GAMEDATA.rules.aenPerTurn||2) + ((k&&k.aenBonus)?k.aenBonus:0) + ancTot().aen + lvlTot().aen }
+function hpTotal(k){ return (GAMEDATA.rules.hpBase||10) + (k?(k.hpBonus||0):0) + ancTot().vit + lvlTot().vit + armTot().vit }
 
 /* ══════════ DEFINICIÓN DEL TEST ══════════ */
 // F1: qué guía a tu personaje → apunta a facción
@@ -452,12 +460,12 @@ function classAbilitiesHtml(c){
 /* ══════════ FLUJO DE PASOS ══════════ */
 // Pasos: 0=bienvenida 1=nombre 2=facción-q1 3=facción-feat 4=facción-result
 //        5..8=clase-q(4) 9=clase-result 10..12=kit-q(3) 13=kit-result 14=resumen
-var TOTAL_STEPS = 19;
+var TOTAL_STEPS = 22;
 
 function render(){
   var el=document.getElementById('app');
   var s=state.step;
-  if(s!==18)state._edit=null;
+  if(s!==21)state._edit=null;
   var bar=document.getElementById('progress').parentNode;
   var wrap=document.getElementById('wrap');
   var lineal=(typeof s==='number');
@@ -469,16 +477,19 @@ function render(){
   if(s==='tree'){el.innerHTML=renderPlayerTree();window.scrollTo(0,0);return}
   if(s===0) h=renderWelcome();
   else if(s===1) h=renderName();
-  else if(s===2) h=renderFactionQ1();
-  else if(s===3) h=renderFactionFeat();
-  else if(s===4) h=renderFactionResult();
-  else if(s>=5&&s<=8) h=renderClassQ(s-5);
-  else if(s===9) h=renderClassResult();
-  else if(s>=10&&s<=14) h=renderKitQ(s-10);
-  else if(s===15) h=renderKitResult();
-  else if(s===16) h=renderTrunkQ();
-  else if(s===17) h=renderTrunkResult();
-  else if(s===18) h=renderSummary();
+  else if(s===2) h=renderAnc1();
+  else if(s===3) h=renderAnc2();
+  else if(s===4) h=renderAnc3();
+  else if(s===5) h=renderFactionQ1();
+  else if(s===6) h=renderFactionFeat();
+  else if(s===7) h=renderFactionResult();
+  else if(s>=8&&s<=11) h=renderClassQ(s-8);
+  else if(s===12) h=renderClassResult();
+  else if(s>=13&&s<=17) h=renderKitQ(s-13);
+  else if(s===18) h=renderKitResult();
+  else if(s===19) h=renderTrunkQ();
+  else if(s===20) h=renderTrunkResult();
+  else if(s===21) h=renderSummary();
   el.innerHTML=h;
   window.scrollTo(0,0);
 }
@@ -486,6 +497,77 @@ function render(){
 function go(step){state.step=step;render()}
 function next(){go(state.step+1)}
 function back(){if(state.step>0)go(state.step-1)}
+
+
+/* ══════════ ANCESTRÍA · pasos 2, 3 y 4 ══════════ */
+var ANC_ES = (GAMEDATA.ancestryEs||{}).names||{};
+var ANC_SOC_ES = (GAMEDATA.ancestryEs||{}).socials||{};
+function ancList(){ return GAMEDATA.ancestries||[] }
+function ancById(id){ var r=null; ancList().forEach(function(a){ if(a.id===id) r=a }); return r }
+function ancName(id){ return ANC_ES[id]||(ancById(id)?ancById(id).name:id) }
+function ancSel(){ if(!state.ancestry) state.ancestry={p:null,s:null,t:null}; return state.ancestry }
+function ancLinea(){ var a=ancSel(); return (typeof a.s==='string')?a.s:a.p }   /* a quién refuerza el paso 4 */
+function bonoTxt(b){ if(!b) return ''; var o=[];
+  if(b.vit) o.push('+'+b.vit+' Vitalidad'); if(b.echo) o.push('+'+b.echo+' Echo'); if(b.aen) o.push('+'+b.aen+' Aen/turno');
+  if(b.move) o.push('+'+b.move+' Movimiento'); if(b.charges) o.push('+'+b.charges+' Carga de Echo');
+  if(b.social) o.push('Ventaja en '+(ANC_SOC_ES[b.social]||b.social)+' (2d20)');
+  if(b.ability) o.push(b.ability.name+' — '+b.ability.desc+' (1 Aen · 1/encuentro)');
+  return o.join(' · ') }
+function ancResumenHtml(){ var r=ancTot(); if(!r.steps.length) return '';
+  var o=[]; if(r.vit) o.push('+'+r.vit+' Vitalidad'); if(r.echo) o.push('+'+r.echo+' Echo'); if(r.aen) o.push('+'+r.aen+' Aen/turno');
+  if(r.move) o.push('+'+r.move+' Movimiento'); if(r.charges) o.push('+'+r.charges+' Carga'); r.socials.forEach(function(s){o.push('Ventaja en '+(ANC_SOC_ES[s]||s))});
+  r.abilities.forEach(function(a){o.push(a.name)});
+  return '<div class="concept"><strong>Tu linaje hasta ahora:</strong> '+esc(GAMEDATA.ancestryText?GAMEDATA.ancestryText(state.ancestry).linaje:r.steps.join(' → '))+'<br>'+esc(o.join(' · '))+'</div>' }
+function ancCard(id,label,sub,bono,sel,onclick){
+  return '<button class="opt'+(sel?' sel':'')+'" onclick="'+onclick+'"><strong>'+esc(label)+'</strong>'+(sub?' — '+esc(sub):'')+
+         '<span class="opt-sub">'+esc(bonoTxt(bono))+'</span></button>' }
+function renderAnc1(){
+  var a=ancSel();
+  var h='<div class="step-label">Paso 2 · Tu ancestría (1 de 3)</div><h2>¿De dónde vienes?</h2>'+
+    '<div class="teach">Tu héroe nace de una de las tres <strong>razas primordiales</strong>. Cada una da tres bonuses fijos. '+
+    'En los dos pasos siguientes decides si tu linaje se mantuvo puro o se mezcló con otras razas.</div>';
+  ancList().filter(function(r){return r.gen===1}).forEach(function(r){
+    h+=ancCard(r.id, ancName(r.id), r.flavor, r.primordial, a.p===r.id, "pickAnc1('"+r.id+"')") });
+  h+='<div class="btn-row"><button class="btn btn-ghost" onclick="back()">← Atrás</button></div>';
+  return h }
+function pickAnc1(id){ var a=ancSel(); if(a.p!==id){ a.p=id; a.s=null; a.t=null } go(3) }
+function renderAnc2(){
+  var a=ancSel(); var p=ancById(a.p); if(!p) return renderAnc1();
+  var h='<div class="step-label">Paso 2 · Tu ancestría (2 de 3)</div><h2>¿Qué pasó después?</h2>'+
+    '<div class="teach">Tu línea se mantuvo pura, o se mezcló con otra raza. <strong>Reforzar</strong> tu raza primordial la vuelve más marcada; '+
+    'una <strong>raza nueva</strong> suma su bonus y una ventaja social; y <strong>custom</strong> es para un linaje que las tablas no cubren.</div>'+ancResumenHtml();
+  h+=ancCard(p.id, ancName(p.id)+' (refuerzo)', 'tu línea se mantiene pura', p.reinforce2, a.s===p.id, "pickAnc2('"+p.id+"')");
+  ancList().filter(function(r){return r.gen===2}).forEach(function(r){
+    h+=ancCard(r.id, ancName(r.id), r.flavor, r.pick2, a.s===r.id, "pickAnc2('"+r.id+"')") });
+  var C=GAMEDATA.ancestryCustom, cu=(a.s&&a.s.custom)?a.s.custom:{};
+  h+='<div class="opt'+(a.s&&a.s.custom?' sel':'')+'" style="cursor:default"><strong>Custom</strong> — un linaje que las tablas no cubren'+
+     '<span class="opt-sub">Elige un atributo y una ventaja social:</span>'+
+     '<select id="anc2attr" style="margin:8px 8px 0 0">'+C.step2.attrs.map(function(x){return '<option value="'+x.id+'"'+(cu.attr===x.id?' selected':'')+'>'+esc(bonoTxt(x))+'</option>'}).join('')+'</select>'+
+     '<select id="anc2soc" style="margin-top:8px">'+C.step2.socials.map(function(s){return '<option value="'+s+'"'+(cu.social===s?' selected':'')+'>Ventaja en '+esc(ANC_SOC_ES[s]||s)+'</option>'}).join('')+'</select>'+
+     '<div style="margin-top:8px"><button class="btn" onclick="pickAnc2Custom()">Elegir custom →</button></div></div>';
+  h+='<div class="btn-row"><button class="btn btn-ghost" onclick="go(2)">← Cambiar raza primordial</button></div>';
+  return h }
+function pickAnc2(id){ var a=ancSel(); if(a.s!==id){ a.s=id; a.t=null } go(4) }
+function pickAnc2Custom(){ var a=ancSel(); a.s={custom:{attr:document.getElementById('anc2attr').value, social:document.getElementById('anc2soc').value}}; a.t=null; go(4) }
+function renderAnc3(){
+  var a=ancSel(); if(!a.p) return renderAnc1(); if(!a.s) return renderAnc2();
+  var lin=ancById(ancLinea());
+  var h='<div class="step-label">Paso 2 · Tu ancestría (3 de 3)</div><h2>¿Y luego?</h2>'+
+    '<div class="teach">Una mezcla más lejana en tu árbol. Lo que ganas aquí es una <strong>habilidad</strong>: cuesta 1 Aen, se usa una vez por encuentro, en tu turno.</div>'+ancResumenHtml();
+  if(lin&&lin.reinforce3) h+=ancCard(lin.id, ancName(lin.id)+' (refuerzo)', 'tu línea se mantiene', lin.reinforce3, a.t===lin.id, "pickAnc3('"+lin.id+"')");
+  ancList().filter(function(r){return r.gen===3}).forEach(function(r){
+    h+=ancCard(r.id, ancName(r.id), r.flavor, r.pick3, a.t===r.id, "pickAnc3('"+r.id+"')") });
+  var C=GAMEDATA.ancestryCustom, cu=(a.t&&a.t.custom)?a.t.custom:{};
+  h+='<div class="opt'+(a.t&&a.t.custom?' sel':'')+'" style="cursor:default"><strong>Custom</strong> — una habilidad con tu propio nombre'+
+     '<span class="opt-sub">Elige qué hace y cómo se llama:</span>'+
+     '<select id="anc3tpl" style="margin:8px 0 0 0;display:block">'+C.step3.abilities.map(function(x){return '<option value="'+x.id+'"'+(cu.tpl===x.id?' selected':'')+'>'+esc(x.label)+'</option>'}).join('')+'</select>'+
+     '<input type="text" id="anc3name" placeholder="Nombre de la habilidad" value="'+esc(cu.name||'')+'" style="margin-top:8px">'+
+     '<div style="margin-top:8px"><button class="btn" onclick="pickAnc3Custom()">Elegir custom →</button></div></div>';
+  h+='<div class="btn-row"><button class="btn btn-ghost" onclick="go(3)">← Atrás</button></div>';
+  return h }
+function pickAnc3(id){ ancSel().t=id; saveHero(); go(5) }
+function pickAnc3Custom(){ var nm=(document.getElementById('anc3name').value||'').trim(); if(!nm){ alert('Ponle nombre a tu habilidad.'); return }
+  ancSel().t={custom:{tpl:document.getElementById('anc3tpl').value, name:nm}}; saveHero(); go(5) }
 
 /* ══════════ RENDER DE PASOS ══════════ */
 function renderWelcome(){
@@ -503,7 +585,7 @@ function renderName(){
 }
 
 function renderFactionQ1(){
-  var h='<div class="step-label">Paso 2 · Tu facción</div><h2>'+esc(Q_FACTION1.q)+'</h2>'+
+  var h='<div class="step-label">Paso 3 · Tu facción</div><h2>'+esc(Q_FACTION1.q)+'</h2>'+
     '<p class="lead">Tu facción es el grupo o causa a la que perteneces. Define quién eres y en qué crees.</p>';
   Q_FACTION1.opts.forEach(function(o,i){
     var sel=state._f1===i?' sel':'';
@@ -522,7 +604,7 @@ function pickFaction1(i){
 function renderFactionFeat(){
   var fac=getFaction(state.factionId);
   if(!fac)return '<p>Error: facción no encontrada</p>';
-  var h='<div class="step-label">Paso 2 · Tu facción</div>'+
+  var h='<div class="step-label">Paso 3 · Tu facción</div>'+
     '<h2>'+esc(fac.icon)+' '+esc(fac.name)+'</h2>'+
     '<div class="teach"><strong>'+esc(fac.declaration)+'</strong></div>'+
     '<p class="lead">Tu facción te hace una pregunta. Tu respuesta define tu <strong>feat</strong> (un rasgo especial). Elige la que sientas más tuya:</p>'+
@@ -532,7 +614,7 @@ function renderFactionFeat(){
     h+='<button class="opt'+sel+'" onclick="pickFeat('+i+')">'+esc(ft.response)+
       '<span class="opt-sub">'+esc(ft.name)+' ('+esc(ft.attr)+') — '+esc(ft.desc)+'</span></button>';
   });
-  h+='<div class="btn-row"><button class="btn btn-ghost" onclick="go(2)">← Cambiar facción</button></div>';
+  h+='<div class="btn-row"><button class="btn btn-ghost" onclick="go(5)">← Cambiar facción</button></div>';
   return h;
 }
 function pickFeat(i){state.factionFeatIdx=i;next()}
@@ -540,7 +622,7 @@ function pickFeat(i){state.factionFeatIdx=i;next()}
 function renderFactionResult(){
   var fac=getFaction(state.factionId);
   var ft=fac.feats[state.factionFeatIdx];
-  var h='<div class="step-label">Paso 2 · ¡Listo!</div>'+
+  var h='<div class="step-label">Paso 3 · ¡Listo!</div>'+
     '<div class="result"><div class="result-icon">'+esc(fac.icon)+'</div>'+
     '<div class="result-name">'+esc(fac.name)+'</div>'+
     '<div class="result-desc">'+esc(fac.declaration)+'</div>'+
@@ -552,13 +634,13 @@ function renderFactionResult(){
     h+='<div class="explore-item'+cur+'" onclick="switchFaction(\''+f.id+'\')"><div class="explore-item-name">'+esc(f.icon)+' '+esc(f.name)+(f.id===state.factionId?'<span class="tag">tu elección</span>':'')+'</div><div class="explore-item-desc">'+esc(f.declaration)+'</div></div>';
   });
   h+='</details>'+
-    '<div class="btn-row"><button class="btn btn-ghost" onclick="go(2)">← Rehacer</button><button class="btn" onclick="go(5)">Ahora tu clase →</button></div>';
+    '<div class="btn-row"><button class="btn btn-ghost" onclick="go(5)">← Rehacer</button><button class="btn" onclick="go(8)">Ahora tu clase →</button></div>';
   return h;
 }
 function switchFaction(id){
   if(id===state.factionId){return}
   state.factionId=id;state.factionFeatIdx=null;
-  go(3); // reelegir feat de la nueva facción
+  go(6); // reelegir feat de la nueva facción
 }
 
 /* ══════════ CLASE ══════════ */
@@ -568,7 +650,7 @@ function renderClassQ(qi){
   if(qi===0){
     teach='<div class="teach">Antes de empezar: en una pelea, tu <strong>turno</strong> es 1 movimiento + 2 acciones. Cada acción puede ser un ataque o una <strong>habilidad</strong> (tu movida especial). Tu clase decide qué habilidades geniales tienes. Elige según el estilo que te llame.</div>';
   }
-  var h='<div class="step-label">Paso 3 · Tu clase ('+(qi+1)+' de 4)</div><h2>'+esc(Q.q)+'</h2>'+teach;
+  var h='<div class="step-label">Paso 4 · Tu clase ('+(qi+1)+' de 4)</div><h2>'+esc(Q.q)+'</h2>'+teach;
   Q.opts.forEach(function(o,i){
     var sel=(state._classAns&&state._classAns[qi]===i)?' sel':'';
     h+='<button class="opt'+sel+'" onclick="pickClass('+qi+','+i+')">'+esc(o.t)+'</button>';
@@ -590,18 +672,18 @@ function pickClass(qi,oi){
   else{
     // determinar clase ganadora
     state.classId=topScored(state.classScores);
-    go(9);
+    go(12);
   }
 }
 function renderClassResult(){
   var c=getClass(state.classId);
-  var h='<div class="step-label">Paso 3 · ¡Tu clase!</div>'+
+  var h='<div class="step-label">Paso 4 · ¡Tu clase!</div>'+
     '<div class="result">'+classArt(c,'cart-lg')+
     '<div class="result-name" style="margin-top:12px">'+esc(c.name)+'</div>'+
     '<div class="result-desc">'+esc(CLASS_DESC[c.id]||'')+'</div>'+
     '<div class="result-meta">Tu energía de combate se llama <strong>'+esc(c.resource)+'</strong></div>'+
     '</div>'+
-    '<div class="teach">Todas las clases usan <strong>Aen</strong> (energía de combate). Al inicio de cada turno recuperas <strong>'+GAMEDATA.rules.aenPerTurn+' Aen</strong>. Cada clase le da su propio nombre — la tuya la llama <strong>'+esc(c.resource)+'</strong>, pero funciona igual.</div>';
+    '<div class="teach">Todas las clases usan <strong>Aen</strong> (energía de combate). Al inicio de cada turno recuperas <strong>'+GAMEDATA.rules.aenPerTurn+' Aen</strong> (tu kit puede subirlo). Cada clase le da su propio nombre — la tuya la llama <strong>'+esc(c.resource)+'</strong>, pero funciona igual.</div>';
   // Notas pedagógicas — primera vez que aparecen las habilidades
   h+='<h2 style="margin-top:24px">Tus habilidades</h2>'+
     '<div class="concept">Cada habilidad cuesta <strong>Aen</strong>. Las <strong>Base</strong> son tu día a día; la <strong>Heroica</strong> es tu golpe grande y cuesta más.</div>'+
@@ -618,7 +700,7 @@ function renderClassResult(){
       '</div>';
   });
   h+='</details>'+
-    '<div class="btn-row"><button class="btn btn-ghost" onclick="go(5)">← Rehacer test</button><button class="btn" onclick="go(10)">Ahora tu kit →</button></div>';
+    '<div class="btn-row"><button class="btn btn-ghost" onclick="go(8)">← Rehacer test</button><button class="btn" onclick="go(13)">Ahora tu kit →</button></div>';
   return h;
 }
 function switchClass(id){state.classId=id;render()}
@@ -630,7 +712,7 @@ function renderKitQ(qi){
   if(qi===0){
     teach='<div class="teach">Tu <strong>Kit</strong> es tu paquete de equipo y estilo. Te da <strong>vida extra (HP)</strong> y una habilidad propia. Piensa en él como tu fantasía visual: ¿vikingo? ¿ninja? ¿pirata? No tiene que combinar con tu clase — ¡experimenta!</div>';
   }
-  var h='<div class="step-label">Paso 4 · Tu kit ('+(qi+1)+' de 5)</div><h2>'+esc(Q.q)+'</h2>'+teach;
+  var h='<div class="step-label">Paso 5 · Tu kit · armadura ('+(qi+1)+' de 5)</div><h2>'+esc(Q.q)+'</h2>'+teach;
   Q.opts.forEach(function(o,i){
     var sel=(state._kitAns&&state._kitAns[qi]===i)?' sel':'';
     h+='<button class="opt'+sel+'" onclick="pickKit('+qi+','+i+')">'+esc(o.t)+'</button>';
@@ -648,17 +730,18 @@ function pickKit(qi,oi){
     if(q&&q.opts[ans])addScores(state.kitScores,q.opts[ans].s);
   });
   if(qi<4){go(10+qi+1)}
-  else{state.kitId=topScored(state.kitScores);go(15)}
+  else{state.kitId=topScored(state.kitScores);go(18)}
 }
 function renderKitResult(){
   var k=getKit(state.kitId);
-  var h='<div class="step-label">Paso 4 · ¡Tu kit!</div>'+
+  var h='<div class="step-label">Paso 5 · ¡Tu armadura!</div>'+
     '<div class="result"><div class="result-icon">🎒</div>'+
     '<div class="result-name">'+esc(k.name)+'</div>'+
     '<div class="result-desc">'+esc(k.fantasy||'')+' · '+esc(k.archetype||'')+'</div>'+
-    '<div class="result-meta">+'+(k.hpBonus||0)+' HP</div>'+
+    '<div class="result-meta">+'+(k.hpBonus||0)+' HP'+(k.aenBonus?' · +'+k.aenBonus+' Aen':'')+'</div>'+
     '</div>'+
     kitArt(k)+
+    armorTreeTeach(k)+
     '<div class="concept">Además de vida extra, tu kit te da <strong>una habilidad propia</strong> con una <strong>desventaja</strong> (un costo o riesgo que la hace una decisión, no un regalo gratis).</div>'+
     kitAbilHtml(k)+
     '<details class="explore"><summary>Ver los otros kits (ordenados por afinidad)</summary>';
@@ -672,20 +755,25 @@ function renderKitResult(){
       '</div>';
   });
   h+='</details>'+
-    '<div class="btn-row"><button class="btn btn-ghost" onclick="go(10)">← Rehacer test</button><button class="btn" onclick="go(16)">Cómo peleas →</button></div>';
+    '<div class="btn-row"><button class="btn btn-ghost" onclick="go(13)">← Rehacer test</button><button class="btn" onclick="go(19)">Cómo peleas →</button></div>';
   return h;
 }
-function switchKit(id){state.kitId=id;render()}
+function switchKit(id){ if(id!==state.kitId){ state.kitId=id; state.marks=state.marks.filter(function(m){ return !(GAMEDATA.armorTrees||[]).some(function(a){ return a.root.id===m||a.branches.some(function(b){ return b.tiers.some(function(ti){ return ti.nodes.some(function(n){ return n.id===m }) }) }) }) }) } render() }
+function armorTreeTeach(k){
+  var a = (k && GAMEDATA.armorTreeFor) ? GAMEDATA.armorTreeFor(k.id) : null; if(!a) return '';
+  return '<div class="teach"><strong>Tu kit también es tu armadura.</strong> Crece con Kit Points en tres vertientes: '+a.branches.map(function(b){ return '<strong>'+esc(b.name)+'</strong> ('+esc(b.sub)+')' }).join(' · ')+'. Entrar a una no cierra las otras. La raíz es gratis: es lo que el kit ya te da.</div>';
+}
 
 
 /* ══════════ PUENTE PARA EL MOTOR COMPARTIDO ══════════ */
 var MSTH = {
   data:     function(){ return GAMEDATA },
   esc:      function(s){ return esc(s) },
-  get:      function(){ return {marks:state.marks, marksTotal:state.marksTotal} },
+  get:      function(){ state.marksTotal = kpTotal(); return {marks:state.marks, marksTotal:state.marksTotal, marksExtra:state.marksExtra||0, kitId:state.kitId, level:state.level||1} },
   set:      function(pid, obj){
               if(obj.marks !== undefined) state.marks = obj.marks;
-              if(obj.marksTotal !== undefined) state.marksTotal = obj.marksTotal;
+              if(obj.marksExtra !== undefined) state.marksExtra = obj.marksExtra;
+              state.marksTotal = kpTotal();
               saveHero();
             },
   rerender: function(){ render() }
@@ -704,6 +792,11 @@ var MST_TRUNK = {};
 var MST_PLANE = {avelir:'AVELIR', veil:'VELO', hold:'CUENCO', inter:'INTERPLANO'};
 
 function mstTrunks(){ var g = MSTH.data(); return (g && g.masteryTrunks) ? g.masteryTrunks : [] }
+function mstArmorTrunk(rec){ var g = MSTH.data(); if(!g || !g.armorTreeFor || !rec || !rec.kitId) return null; return g.armorTreeFor(rec.kitId) }
+function mstAllTrunks(rec){ var a = mstArmorTrunk(rec); return a ? mstTrunks().concat([a]) : mstTrunks() }
+function mstArmorTotals(d){ var o = {vit:0, red:0, aen:0, dmg:0, kitBands:false, mast:0, nodes:[]}; var g = MSTH.data(); var cap = (g && g.armorRules && g.armorRules.aenCap) || 2;
+  mstAllTrunks(d.rec).forEach(function(tr){ if(!tr.rootFree) return; tr.branches.forEach(function(br){ br.tiers.forEach(function(ti){ ti.nodes.forEach(function(n){ if(!d.own[n.id]) return; o.nodes.push(n); o.vit += n.vit||0; o.red += n.red||0; o.aen += n.aen||0; o.dmg += n.dmg||0; if(n.kitBands) o.kitBands = true; if(n.mast) o.mast++ }) }) }) });
+  o.aenRefund = Math.min(cap, o.aen); return o }
 function mstEsc(s){ return MSTH.esc(s) }
 
 /* ── puertas ── */
@@ -721,9 +814,9 @@ function gateLabel(tier){
 }
 
 /* ── localizar un nodo por id ── */
-function mstFind(nodeId){
+function mstFind(nodeId, rec){
   var hit = null;
-  mstTrunks().forEach(function(tr){
+  mstAllTrunks(rec).forEach(function(tr){
     if(tr.root.id === nodeId){ hit = {tr:tr, root:1}; return }
     tr.branches.forEach(function(br){
       br.tiers.forEach(function(ti, ix){
@@ -801,12 +894,14 @@ function mstBaseTable(d, tr){
 function deriveMastery(rec){
   rec = rec || {};
   var own = {};
-  (rec.marks || []).forEach(function(id){ own[id] = 1 });
-  var out = { own:own, spent:Object.keys(own).length,
+  var known = {};
+  mstAllTrunks(rec).forEach(function(tr){ known[tr.root.id] = 1; tr.branches.forEach(function(br){ br.tiers.forEach(function(ti){ ti.nodes.forEach(function(n){ known[n.id] = 1 }) }) }) });
+  (rec.marks || []).forEach(function(id){ if(known[id]) own[id] = 1 });
+  var out = { own:own, spent:Object.keys(own).length, rec:rec,
               total:(rec.marksTotal == null ? 0 : rec.marksTotal),
               roots:{}, branches:{}, dice:{}, lows:[], reacts:[], legends:[], actives:[] };
-  mstTrunks().forEach(function(tr){
-    var rootOn = !!own[tr.root.id];
+  mstAllTrunks(rec).forEach(function(tr){
+    var rootOn = !!own[tr.root.id] || !!tr.rootFree;
     if(rootOn) out.roots[tr.id] = 1;
     tr.branches.forEach(function(br){
       var st = { open:rootOn, owned:0, tiers:[], mastery:0, die:br.die, low:null };
@@ -824,9 +919,10 @@ function deriveMastery(rec){
         st.tiers.push({ unlocked:unlocked, done:gateOk(ti, own) });
         prevOk = unlocked && gateOk(ti, own);
       });
-      if(st.owned > 0){ st.low = br.low; out.lows.push({b:br.name, low:br.low, die:br.die}) }
+      if(st.owned > 0 && br.low){ st.low = br.low; out.lows.push({b:br.name, low:br.low, die:br.die}) }
       out.branches[br.id] = st;
-      if(st.mastery)   out.dice[br.id] = '3d12';
+      if(tr.rootFree){ /* armadura: sin dados ni firmas */ }
+      else if(st.mastery)   out.dice[br.id] = '3d12';
       else if(rootOn)  out.dice[br.id] = '2d12';
     });
   });
@@ -835,8 +931,8 @@ function deriveMastery(rec){
 
 /* ── ¿comprable ahora? ── */
 function canBuy(d, tr, br, ix){
-  if(!br) return !d.own[tr.root.id];
-  if(!d.own[tr.root.id]) return false;
+  if(!br) return !tr.rootFree && !d.own[tr.root.id];
+  if(!d.roots[tr.id]) return false;
   return d.branches[br.id].tiers[ix].unlocked;
 }
 
@@ -850,10 +946,10 @@ function masteryToggle(pid, nodeId){
     marks.splice(i, 1);
     var guard = 0;
     while(guard++ < 60){
-      var d = deriveMastery({marks:marks, marksTotal:rec.marksTotal});
+      var d = deriveMastery({marks:marks, marksTotal:rec.marksTotal, kitId:rec.kitId});
       var drop = null;
-      mstTrunks().forEach(function(tr){
-        if(!d.own[tr.root.id]){
+      mstAllTrunks(rec).forEach(function(tr){
+        if(!d.roots[tr.id]){
           tr.branches.forEach(function(br){ br.tiers.forEach(function(ti){
             ti.nodes.forEach(function(n){ if(d.own[n.id] && !drop) drop = n.id }) }) });
         } else {
@@ -872,11 +968,13 @@ function masteryToggle(pid, nodeId){
   } else {
     var d0 = deriveMastery(rec);
     if(d0.total - d0.spent <= 0) return;
-    var f = mstFind(nodeId);
+    var f = mstFind(nodeId, rec);
     if(!f) return;
     if(!canBuy(d0, f.tr, f.br, f.ix)) return;
     marks.push(nodeId);
   }
+  var dK = deriveMastery({marks:marks, marksTotal:rec.marksTotal, kitId:rec.kitId});
+  marks = marks.filter(function(id){ return dK.own[id] });
   MSTH.set(pid, {marks:marks});
   MSTH.rerender();
 }
@@ -885,7 +983,7 @@ function adjustMarks(pid, delta){
   if(!rec) return;
   var t = Math.max(0, Math.min(60, (rec.marksTotal == null ? 0 : rec.marksTotal) + delta));
   if(delta < 0 && t < (rec.marks || []).length) return;
-  MSTH.set(pid, {marksTotal:t});
+  MSTH.set(pid, {marksExtra:(rec.marksExtra || 0) + delta, marksTotal:t});
   MSTH.rerender();
 }
 
@@ -903,6 +1001,8 @@ function mstNodeHtml(pid, d, tr, br, ix, n, ro){
   if(n.react)  h += '<span class="mst-tag">REACCIÓN</span>';
   if(n.mast)   h += '<span class="mst-tag">MAESTRÍA</span>';
   if(n.legend) h += '<span class="mst-tag">LEGENDARIA</span>';
+  if(n.vit)    h += '<span class="mst-tag">+' + n.vit + ' VIT</span>';
+  if(n.kitBands) h += '<span class="mst-tag">A BANDAS</span>';
   h += '<span class="pl pl-' + n.plane + '">' + (MST_PLANE[n.plane] || n.plane) + '</span></div>';
   h += '<div class="mst-node-eff">' + mstEsc(n.eff) + '</div>';
   if(n.fire)   h += '<div class="mst-node-fire"><b>AL 12 · ' + mstEsc(n.die || '') + '</b><br>' + mstEsc(n.fire) + '</div>';
@@ -921,22 +1021,25 @@ function masteryTreeHtml(pid, opts){
   if(!rec) return '';
   var ro  = !!opts.readonly;
   var d   = deriveMastery(rec);
-  var tid = opts.trunkId || MST_TRUNK[pid] || mstTrunks()[0].id;
-  var tr  = mstTrunks().filter(function(t){ return t.id === tid })[0] || mstTrunks()[0];
+  var all = mstAllTrunks(rec);
+  var tid = MST_TRUNK[pid] || opts.trunkId || all[0].id;
+  var tr  = all.filter(function(t){ return t.id === tid })[0] || all[0];
+  var armor = mstArmorTotals(d);
   var free = d.total - d.spent;
   var h = '';
 
   if(opts.showTabs !== false){
     h += '<div class="mst-top"><div class="mst-tabs">';
-    mstTrunks().forEach(function(t){
+    var tabTrunks = opts.trunkId ? all.filter(function(t){ return t.id === opts.trunkId || t.rootFree }) : all;
+    tabTrunks.forEach(function(t){
       var cnt = d.own[t.root.id] ? 1 : 0;
       t.branches.forEach(function(b){ cnt += d.branches[b.id].owned });
       h += '<div class="mst-tab' + (t.id === tr.id ? ' active' : '') + (cnt ? ' owned' : '') +
            '" data-action="mastery-trunk" data-id="' + pid + '" data-trunk="' + t.id + '">' +
-           mstEsc(t.name) + '<span class="n">' + (cnt || '') + '</span></div>';
+           (t.rootFree ? 'Armadura · ' : 'Arma · ') + mstEsc(t.name) + '<span class="n">' + (cnt || '') + '</span></div>';
     });
     h += '</div>';
-    h += '<div class="mst-marks"><span class="mst-marks-l">MARCAS LIBRES</span>' +
+    h += '<div class="mst-marks"><span class="mst-marks-l">KIT POINTS LIBRES</span>' +
          '<span class="mst-marks-v">' + free + '</span>';
     if(opts.showMarks){
       h += '<button class="mst-mbtn" data-action="sub-mark" data-id="' + pid + '">−</button>' +
@@ -947,7 +1050,7 @@ function masteryTreeHtml(pid, opts){
     h += '</div></div>';
   }
 
-  h += mstBaseTable(d, tr);
+  if(!tr.rootFree) h += mstBaseTable(d, tr);
 
   /* resumen de lo que cambió en la mesa */
   if(d.spent){
@@ -965,21 +1068,22 @@ function masteryTreeHtml(pid, opts){
       '<div><div class="mst-sum-k">FIRMAS DE BANDA 1-4</div><div class="mst-sum-v">' + (lows.length ? mstEsc(lows.join(' • ')) : '—') + '</div></div>' +
       '<div><div class="mst-sum-k">REACCIONES</div><div class="mst-sum-v">' + (d.reacts.length ? mstEsc(nm(d.reacts)) : '—') + '<small>una por ronda, gratis</small></div></div>' +
       '<div><div class="mst-sum-k">INTERPLANO</div><div class="mst-sum-v">' + (d.legends.length ? mstEsc(nm(d.legends)) : '—') + '<small>una por sesión</small></div></div>' +
+      (armor.nodes.length ? '<div><div class="mst-sum-k">ARMADURA</div><div class="mst-sum-v">' + [armor.vit ? '+' + armor.vit + ' Vit' : '', armor.red ? '−' + armor.red + ' por golpe' : '', armor.aenRefund ? armor.aenRefund + ' Aen devuelto' : '', armor.dmg ? '+' + armor.dmg + ' daño' : '', armor.kitBands ? 'kit a bandas' : '', armor.mast ? armor.mast + ' maestría' + (armor.mast > 1 ? 's' : '') : ''].filter(Boolean).join(' · ') + '<small>' + armor.nodes.length + ' nodo' + (armor.nodes.length === 1 ? '' : 's') + '</small></div></div>' : '') +
       '</div>';
   }
 
   /* raíz */
-  var rootOn = !!d.own[tr.root.id];
-  var rootCan = !ro && (rootOn || free > 0);
+  var rootOn = !!d.roots[tr.id];
+  var rootCan = !ro && !tr.rootFree && (rootOn || free > 0);
   h += '<div class="mst-root' + (rootOn ? ' on' : (rootCan ? ' can' : '')) + '"' +
        (rootCan ? ' data-action="mastery-toggle" data-id="' + pid + '" data-node="' + tr.root.id + '"' : '') + '>';
   h += '<span class="mst-tick" style="margin-top:3px">' + (rootOn ? '✓' : '') + '</span>';
   h += '<div class="mst-root-body"><div class="mst-root-name">' + mstEsc(tr.root.name) +
        ' <span class="pl pl-' + tr.root.plane + '">' + MST_PLANE[tr.root.plane] + '</span>' +
-       ' <span class="mst-tag">RAÍZ</span></div>';
+       ' <span class="mst-tag">' + (tr.rootFree ? 'RAÍZ · GRATIS' : 'RAÍZ') + '</span></div>';
   h += '<div class="mst-root-eff">' + mstEsc(tr.root.eff) + '</div></div>';
   h += '<div style="text-align:right;flex:none"><div class="mst-sum-k">' + mstEsc(tr.sub) + '</div>' +
-       '<div class="mst-sum-v">' + tr.root.dice + 'd12</div></div></div>';
+       '<div class="mst-sum-v">' + (tr.rootFree ? 'vida · Aen · daño' : tr.root.dice + 'd12') + '</div></div></div>';
 
   /* ramas */
   h += '<div class="mst-cols" style="grid-template-columns:repeat(' + tr.branches.length + ',1fr)">';
@@ -989,8 +1093,9 @@ function masteryTreeHtml(pid, opts){
     h += '<div class="mst-col-head"><div class="mst-col-name">' + mstEsc(br.name) + '</div>' +
          '<div class="mst-col-sub">' + mstEsc(br.sub || '') + '</div>' +
          '<div class="mst-col-chips"><span class="mst-chip' + (st.owned ? ' gold' : '') + '">' + st.owned + ' nodos</span>' +
+         (tr.rootFree ? '<span class="mst-chip' + (st.mastery ? ' gold' : '') + '">' + (st.mastery ? 'maestría' : 'vertiente') + '</span>' :
          '<span class="mst-chip' + (st.mastery ? ' gold' : '') + '">' + (st.mastery ? '3d12' : (rootOn ? '2d12' : '1d12')) + '</span>' +
-         '<span class="mst-chip' + (st.owned ? ' gold' : '') + '">firma ' + mstEsc(br.die) + '</span></div></div>';
+         '<span class="mst-chip' + (st.owned ? ' gold' : '') + '">firma ' + mstEsc(br.die) + '</span>') + '</div></div>';
     if(st.owned && br.low)
       h += '<div class="mst-low"><b>BANDA 1-4 · GRATIS</b>' + mstEsc(br.low.name) + ' — ' + mstEsc(br.low.eff) + '</div>';
     br.tiers.forEach(function(ti, ix){
@@ -1027,8 +1132,10 @@ document.addEventListener('click', function(e){
 var HERO_KEY = 'eq_hero_v1';
 function heroPayload(){
   return { v:1, name:state.name||'', factionId:state.factionId, featChosen:state.factionFeatIdx,
-           classId:state.classId, kitId:state.kitId, trunkId:state.trunkId,
-           marks:state.marks.slice(), marksTotal:state.marksTotal };
+           classId:state.classId, subclassId:state.subclassId||null, kitId:state.kitId, trunkId:state.trunkId,
+           ancestry:state.ancestry||null,
+           marks:state.marks.slice(), marksTotal:kpTotal(), marksExtra:state.marksExtra||0,
+           level:state.level||1, improvedBase:state.improvedBase||null };
 }
 function saveHero(){ try{ localStorage.setItem(HERO_KEY, JSON.stringify(heroPayload())) }catch(e){} }
 function loadHero(){ try{ var s=localStorage.getItem(HERO_KEY); return s?JSON.parse(s):null }catch(e){ return null } }
@@ -1037,14 +1144,15 @@ function applyHero(o){
   state.name = o.name||''; state.factionId = o.factionId||null;
   state.factionFeatIdx = (o.featChosen==null?null:o.featChosen);
   state.classId = o.classId||null; state.kitId = o.kitId||null; state.trunkId = o.trunkId||null;
-  state.marks = o.marks||[]; state.marksTotal = (o.marksTotal==null?MARCAS_AL_NACER:o.marksTotal);
+  state.marks = o.marks||[]; state.level = parseInt(o.level)||1; state.improvedBase = o.improvedBase||null; state.marksExtra = parseInt(o.marksExtra)||0; state.marksTotal = kpTotal();
+  state.ancestry = o.ancestry||null; state.subclassId = o.subclassId||null;
   return true;
 }
 function nuevoHeroe(){
   if(!confirm('Esto borra a ' + (state.name||'tu héroe') + ' de este navegador. ¿Descargaste tu .json?')) return;
   try{ localStorage.removeItem(HERO_KEY) }catch(e){}
   state.name=''; state.factionId=null; state.factionFeatIdx=null; state.classId=null; state.kitId=null;
-  state.trunkId=null; state.marks=[]; state.marksTotal=MARCAS_AL_NACER;
+  state.trunkId=null; state.marks=[]; state.level=1; state.improvedBase=null; state.marksExtra=0; state.marksTotal=kpTotal(); state.ancestry=null; state.subclassId=null;
   state.factionScores={}; state.classScores={}; state.kitScores={};
   state._classAns=null; state._kitAns=null;
   go(0);
@@ -1089,11 +1197,11 @@ function nodosComprados(){
 
 function renderTrunkQ(){
   var sug = suggestedTrunk();
-  var h = '<div class="step-label">Paso 5 · Cómo peleas</div><h2>¿Qué llevas en las manos?</h2>'+
+  var h = '<div class="step-label">Paso 6 · Tu kit · arma</div><h2>¿Qué llevas en las manos?</h2>'+
     '<div class="teach">Tu héroe ya tiene un <strong>ataque base gratis</strong>: no cuesta Aen, no falla nunca. Tiras <strong>1d12</strong> y lees la banda. '+
     'Especializarte cambia ese dado a <strong>2d12 quedándote con el mejor</strong>, para siempre. '+
-    'Es la única decisión de maestría que tomas hoy: naces con <strong>1 marca</strong> y se va entera en el tronco. '+
-    'Las ramas se abren jugando.</div>';
+    'Naces con <strong>1 Kit Point</strong> y se va entero en el tronco de tu arma. '+
+    'Los niveles dan más (13 al nivel 10): se gastan aquí o en la armadura de tu kit.</div>';
   mstTrunks().forEach(function(t){
     var es = TRUNK_ES[t.id]||{t:t.sub,d:''};
     var ramas = t.branches.map(function(b){return b.name}).join(' · ');
@@ -1101,13 +1209,13 @@ function renderTrunkQ(){
          (t.id===sug?' <span class="tag">te queda</span>':'')+
          '<span class="opt-sub">'+esc(es.d)+'<br><span style="color:var(--gold-ink);font-weight:600">Ramas: '+esc(ramas)+'</span></span></button>';
   });
-  h += '<div class="btn-row"><button class="btn btn-ghost" onclick="go(15)">← Atrás</button></div>';
+  h += '<div class="btn-row"><button class="btn btn-ghost" onclick="go(18)">← Atrás</button></div>';
   return h;
 }
 function pickTrunk(id){
   var t = getTrunk(id); if(!t) return;
-  state.trunkId = id; state.marks = [t.root.id]; state.marksTotal = MARCAS_AL_NACER;
-  go(17);
+  state.trunkId = id; state.marks = [t.root.id]; state.marksTotal = kpTotal();
+  go(20);
 }
 
 function branchCardHtml(br){
@@ -1133,15 +1241,15 @@ function renderTrunkResult(){
   var t = getTrunk(state.trunkId);
   if(!t){ state.trunkId = suggestedTrunk(); t = getTrunk(state.trunkId); state.marks=[t.root.id] }
   var es = TRUNK_ES[t.id]||{t:t.sub,d:''};
-  var h = '<div class="step-label">Paso 5 · ¡Tu tronco!</div>'+
+  var h = '<div class="step-label">Paso 6 · ¡Tu arma!</div>'+
     '<div class="result"><div class="result-icon">⚔️</div>'+
     '<div class="result-name">'+esc(t.root.name)+'</div>'+
     '<div class="result-desc">'+esc(t.name)+' — '+esc(es.t)+'</div>'+
     '<div class="result-meta">Ataque base: 2d12, te quedas con el mejor</div></div>'+
-    '<div class="concept"><strong>Ahí se fue tu única marca.</strong> Un héroe nuevo empieza con 1. '+
-    'Las demás las da tu Story Master en la mesa, y con ellas se compran los nodos de las ramas.</div>'+
+    '<div class="concept"><strong>Ahí se fue tu único Kit Point.</strong> Un héroe nuevo empieza con 1. '+
+    'Los demás los dan los niveles; con ellos compras nodos aquí o en la armadura de tu kit.</div>'+
     '<h2 style="margin-top:24px">El camino que tienes enfrente</h2>'+
-    '<p class="lead">Todavía no eliges rama. Esto es lo que se abre cuando tengas más marcas.</p>';
+    '<p class="lead">Todavía no eliges rama. Esto es lo que se abre cuando tengas más Kit Points.</p>';
   t.branches.forEach(function(br){ h += branchCardHtml(br) });
   h += '<details class="explore"><summary>Ver los otros troncos</summary>';
   mstTrunks().forEach(function(o){
@@ -1152,8 +1260,8 @@ function renderTrunkResult(){
          '<div class="abil-mini">Ramas: '+esc(o.branches.map(function(b){return b.name}).join(' · '))+'</div>'+
          '<button class="btn btn-ghost" style="margin-top:8px;width:100%" onclick="pickTrunk(\''+o.id+'\')">Elegir '+esc(o.name)+'</button></div>';
   });
-  h += '</details><div class="btn-row"><button class="btn btn-ghost" onclick="go(16)">← Cambiar tronco</button>'+
-       '<button class="btn" onclick="go(18)">Ver mi héroe →</button></div>';
+  h += '</details><div class="btn-row"><button class="btn btn-ghost" onclick="go(19)">← Cambiar tronco</button>'+
+       '<button class="btn" onclick="go(21)">Ver mi héroe →</button></div>';
   return h;
 }
 function switchTrunk(id){ pickTrunk(id); state.step=18; render() }
@@ -1162,24 +1270,25 @@ function switchTrunk(id){ pickTrunk(id); state.step=18; render() }
 function renderHome(){
   var c = getClass(state.classId), k = getKit(state.kitId), fac = getFaction(state.factionId), t = getTrunk(state.trunkId);
   var d = deriveMastery(MSTH.get());
-  var totalHP = (GAMEDATA.rules.hpBase||10) + (k?(k.hpBonus||0):0);
+  var totalHP = hpTotal(k);
   var h = '<div class="home-card"><div class="home-name">'+esc(state.name||'Tu héroe')+'</div>'+
     '<div class="home-sub">'+(c?esc(c.name):'—')+(k?' · '+esc(k.name):'')+(fac?' · '+esc(fac.icon)+' '+esc(fac.name):'')+'</div>'+
     '<div class="home-stats">'+
       '<div class="home-stat"><div class="k">HP</div><div class="v">'+totalHP+'</div></div>'+
-      '<div class="home-stat"><div class="k">AEN</div><div class="v">+'+GAMEDATA.rules.aenPerTurn+'</div></div>'+
+      '<div class="home-stat"><div class="k">AEN</div><div class="v">+'+aenTurno(k)+'</div></div>'+
       '<div class="home-stat"><div class="k">ATAQUE BASE</div><div class="v">'+(t?'2d12':'1d12')+'</div></div>'+
-      '<div class="home-stat"><div class="k">MARCAS LIBRES</div><div class="v">'+(d.total-d.spent)+'</div></div>'+
+      '<div class="home-stat"><div class="k">NIVEL</div><div class="v">'+(state.level||1)+'</div></div>'+
+      '<div class="home-stat"><div class="k">KIT POINTS</div><div class="v">'+(d.total-d.spent)+'</div></div>'+
     '</div></div>';
   if(t){
     h += '<div class="teach"><strong>'+esc(t.name)+' · '+esc(t.root.name)+'</strong><br>'+esc(t.root.eff)+'</div>';
   }
   if(d.total - d.spent > 0){
-    h += '<div class="concept"><strong>Tienes '+(d.total-d.spent)+' marca(s) sin gastar.</strong> Entra a tu árbol y compra lo que se te abrió.</div>';
+    h += '<div class="concept"><strong>Tienes '+(d.total-d.spent)+' Kit Point(s) sin gastar.</strong> Entra a tu kit y compra lo que se te abrió: arma o armadura.</div>';
   }
   h += '<div class="btn-row">'+
-       '<button class="btn" onclick="go(\'tree\')">🌳 Mi árbol</button>'+
-       '<button class="btn btn-ghost" onclick="go(18)">📋 Mi hoja</button></div>'+
+       '<button class="btn" onclick="go(\'tree\')">🌳 Mi kit</button>'+
+       '<button class="btn btn-ghost" onclick="go(21)">📋 Mi hoja</button></div>'+
        '<div class="btn-row"><button class="btn btn-ghost" onclick="descargarHeroe()">⬇ Descargar .json</button>'+
        '<button class="btn btn-ghost" onclick="nuevoHeroe()">↺ Otro héroe</button></div>'+
        '<p class="hint" style="margin-top:14px">Tu héroe vive en este navegador. Si cambias de aparato, descarga el .json y ábrelo desde allá — o mándaselo a tu Story Master.</p>';
@@ -1188,10 +1297,10 @@ function renderHome(){
 function renderPlayerTree(){
   var t = getTrunk(state.trunkId);
   var d = deriveMastery(MSTH.get());
-  var h = '<div class="step-label">Tu árbol</div><h2>'+esc(state.name||'Tu héroe')+'</h2>'+
-    '<p class="lead">Cuando tu Story Master te dé marcas nuevas, súbelas con el <strong>+</strong> y gástalas aquí. '+
+  var h = '<div class="step-label">Tu kit · nivel '+(state.level||1)+'</div><h2>'+esc(state.name||'Tu héroe')+'</h2>'+
+    '<p class="lead">Los Kit Points los dan los niveles (subes de nivel en tu wiki). Gástalos aquí, en el arma o en la armadura. '+
     'Puedes soltar un nodo con otro clic — lo que dependía de él se suelta también.</p>'+
-    masteryTreeHtml('me', {showMarks:true, trunkId:state.trunkId||undefined})+
+    masteryTreeHtml('me', {showMarks:false, trunkId:state.trunkId||undefined})+
     '<div class="btn-row"><button class="btn btn-ghost" onclick="go(\'home\')">← Volver</button>'+
     '<button class="btn btn-ghost" onclick="descargarHeroe()">⬇ Descargar .json</button></div>';
   return h;
@@ -1201,13 +1310,21 @@ function renderPlayerTree(){
 function renderSummary(){
   var fac=getFaction(state.factionId), c=getClass(state.classId), k=getKit(state.kitId);
   var ft=fac?fac.feats[state.factionFeatIdx]:null;
-  var totalHP=(GAMEDATA.rules.hpBase||10)+(k?(k.hpBonus||0):0);
+  var totalHP=hpTotal(k);
   var ed=state._edit||null;
   var h='<div class="step-label">¡Terminaste!</div><h1>🎉 '+esc(state.name||'Tu héroe')+'</h1>'+
     (c?'<div style="text-align:center;margin:6px 0 4px">'+classArt(c,'cart-md')+'</div>':'')+
     '<p class="lead">Revisa a tu héroe. Puedes <strong>cambiar cualquier parte aquí mismo</strong> antes de imprimir.</p>'+
     '<div class="summary-card">';
 
+  // ── Ancestría (editable) ──
+  (function(){ var r=ancTot(); if(!r.steps.length) return;
+    var o=[]; if(r.vit)o.push('+'+r.vit+' Vitalidad'); if(r.echo)o.push('+'+r.echo+' Echo'); if(r.aen)o.push('+'+r.aen+' Aen/turno'); if(r.move)o.push('+'+r.move+' Movimiento'); if(r.charges)o.push('+'+r.charges+' Carga');
+    r.socials.forEach(function(s){o.push('Ventaja en '+(ANC_SOC_ES[s]||s)+' (2d20)')});
+    h+='<div class="summary-row"><div class="summary-key">Ancestría</div><div class="summary-val"><strong>'+esc(GAMEDATA.ancestryText?GAMEDATA.ancestryText(state.ancestry).linaje:r.steps.join(' → '))+'</strong><br>'+esc(o.join(' · '))+
+       (r.abilities.length?'<br>'+r.abilities.map(function(a){return '<em>'+esc(a.name)+'</em> — '+esc(a.desc)+' (1 Aen · 1/encuentro)'}).join('<br>'):'')+
+       '<button class="edit-btn" onclick="go(2)">Cambiar</button></div></div>';
+  })();
   // ── Facción (editable) ──
   h+=editRow('Facción', (fac?esc(fac.icon)+' '+esc(fac.name):'—'), 'faction');
   if(ed==='faction'){
@@ -1264,8 +1381,10 @@ function renderSummary(){
     h+='<button class="btn btn-ghost" style="width:100%;margin-top:8px" onclick="toggleEdit(\'trunk\')">Listo</button></div>';
   }
   h+=row('Maestrías', _nc.length?_nc.map(function(x){return esc(x.n.name)+' <span class="hint">'+esc(x.br.name)+'</span>'}).join(', '):'solo la Raíz');
-  h+=row('HP total', totalHP+' <span class="hint">('+(GAMEDATA.rules.hpBase||10)+' base + '+(k?k.hpBonus||0:0)+' del kit)</span>')+
-    row('Aen por turno', GAMEDATA.rules.aenPerTurn+' <span class="hint">(igual para todas las clases · se llama '+esc(c?c.resource:'Aen')+')</span>')+
+  h+=row('Nivel', (state.level||1)+' <span class="hint">(+'+lvlTot().bands+' a bandas · se sube en la wiki)</span>');
+  h+=row('Armadura', armTot().nodes.length?armTot().nodes.map(function(n){return esc(n.name)}).join(', '):'solo la raíz (lo que da el kit)');
+  h+=row('HP total', totalHP+' <span class="hint">('+(GAMEDATA.rules.hpBase||10)+' base + '+(k?k.hpBonus||0:0)+' del kit'+(ancTot().vit?' + '+ancTot().vit+' de ancestría':'')+(lvlTot().vit?' + '+lvlTot().vit+' de nivel':'')+(armTot().vit?' + '+armTot().vit+' de armadura':'')+')</span>')+
+    row('Aen por turno', aenTurno(k)+' <span class="hint">('+GAMEDATA.rules.aenPerTurn+' base + '+(k?k.aenBonus||0:0)+' del kit'+(ancTot().aen?' + '+ancTot().aen+' de ancestría':'')+(lvlTot().aen?' + '+lvlTot().aen+' de nivel':'')+' · se llama '+esc(c?c.resource:'Aen')+')</span>')+
     '</div>';
 
   // ── Todas las habilidades (completas, con bandas d12) ──
@@ -1327,9 +1446,9 @@ function sheetAbil(a){
 function buildSheet(){
   var fac=getFaction(state.factionId), c=getClass(state.classId), k=getKit(state.kitId);
   var ft=fac?fac.feats[state.factionFeatIdx]:null;
-  var totalHP=(GAMEDATA.rules.hpBase||10)+(k?(k.hpBonus||0):0);
+  var totalHP=hpTotal(k);
   var tk=getTrunk(state.trunkId);
-  var _em=(c?((c.echoBase)||(c.type==='Magic'?2:1)):1)+((k&&k.aenBonus)?k.aenBonus:0);var _cm=_em<=2?2:(_em<=4?3:4);
+  var _em=(c?((c.echoBase)||(c.type==='Magic'?2:1)):1)+((k&&k.aenBonus)?k.aenBonus:0)+ancTot().echo;var _cm=(_em<=2?2:(_em<=4?3:4))+ancTot().charges;
   var h='<div style="font-family:Georgia,serif;color:'+SH.ink+';max-width:720px;margin:0 auto;padding:24px">';
   h+='<div style="text-align:center;border-bottom:3px double '+SH.gold+';padding-bottom:14px;margin-bottom:18px">'+
      '<div style="font-size:12px;letter-spacing:4px;color:'+SH.gink+'">EPIC QUEST · AVELIR</div>'+
@@ -1339,10 +1458,11 @@ function buildSheet(){
   function stat(kk,v,sub){return '<div style="flex:1;border:1.5px solid '+SH.gold+';background:'+SH.pale+';border-radius:8px;padding:10px 6px;text-align:center"><div style="font-size:10px;color:'+SH.gink+';letter-spacing:1px;font-weight:bold">'+kk+'</div><div style="font-size:28px;font-weight:bold;margin-top:2px">'+v+'</div>'+(sub?'<div style="font-size:8.5px;color:'+SH.ink3+';margin-top:2px">'+sub+'</div>':'')+'</div>'}
   h+='<div style="display:flex;gap:10px;margin-bottom:18px">'+
      stat('HP',totalHP,'')+
-     stat('AEN / TURNO','+'+GAMEDATA.rules.aenPerTurn,(c?'tu clase lo llama '+esc(c.resource):''))+
+     stat('AEN / TURNO','+'+aenTurno(k),(c?'tu clase lo llama '+esc(c.resource):''))+
      stat('ECHO','+'+_em,'skill checks y empujes')+
      stat('CARGAS',_cm,'vuelven al cerrar sesión')+
      stat('ATAQUE BASE',(tk?'2d12':'1d12'),(tk?'quédate con el mejor':'sin especializar'))+
+     stat('NIVEL',(state.level||1),(lvlTot().bands?'+'+lvlTot().bands+' a todas las bandas':'sin bono a bandas'))+
      '</div>';
   var BA=GAMEDATA.baseAttack;
   if(BA&&BA.bands){
@@ -1369,13 +1489,21 @@ function buildSheet(){
         })});
       });
     });
-    bl+='<div style="font-size:10.5px;color:'+SH.ink3+';margin:8px 0 5px">Ramas de '+esc(tk.name)+' — se abren con marcas:</div><table style="width:100%;border-collapse:collapse;font-size:11px">';
+    bl+='<div style="font-size:10.5px;color:'+SH.ink3+';margin:8px 0 5px">Ramas de '+esc(tk.name)+' — se abren con Kit Points:</div><table style="width:100%;border-collapse:collapse;font-size:11px">';
     tk.branches.forEach(function(b){
       bl+='<tr><td style="border:1px solid '+SH.bd+';padding:4px 7px;font-weight:bold;width:100px;background:'+SH.pale+'">'+esc(b.name)+'</td><td style="border:1px solid '+SH.bd+';padding:4px 7px;color:'+SH.ink2+'">'+esc(b.sub||'')+' · firma '+esc(b.die)+'</td></tr>';
     });
     bl+='</table>';
     h+='<div style="margin-bottom:18px;page-break-inside:avoid;break-inside:avoid">'+shSec('ESPECIALIZACIÓN — '+esc(tk.name).toUpperCase()+(es.t?' · '+esc(es.t).toUpperCase():''))+bl+'</div>';
   }
+  (function(){ var at=armTot(); var ak=GAMEDATA.armorTreeFor?GAMEDATA.armorTreeFor(state.kitId):null; if(!ak) return; var al='';
+    at.nodes.forEach(function(n){ al+=shCard('<div style="font-weight:bold;font-size:13.5px">◆ '+esc(n.name)+' <span style="font-weight:normal;font-size:11px;color:'+SH.ink3+'">'+(n.react?'REACCIÓN · ':'')+(n.mast?'MAESTRÍA · ':'')+'armadura</span></div><div style="font-size:12px;color:'+SH.ink2+'">'+esc(n.eff)+'</div>') });
+    if(!at.nodes.length) al+=shCard('<div style="font-size:11.5px;color:'+SH.ink2+'">Solo la raíz: '+esc(ak.root.eff)+'</div>');
+    al+='<div style="font-size:10.5px;color:'+SH.ink3+';margin:8px 0 5px">Vertientes de '+esc(ak.name)+': '+ak.branches.map(function(b){ return esc(b.name)+' ('+esc(b.sub)+')' }).join(' · ')+'</div>';
+    h+='<div style="margin-bottom:18px;page-break-inside:avoid;break-inside:avoid">'+shSec('ARMADURA — '+esc(ak.name).toUpperCase()+(at.vit||at.red||at.dmg?' · '+[at.vit?'+'+at.vit+' VIT':'',at.red?'−'+at.red+' POR GOLPE':'',at.dmg?'+'+at.dmg+' DAÑO':''].filter(Boolean).join(' · '):''))+al+'</div>' })();
+  if(GAMEDATA.ancestryText&&state.ancestry){var _at=GAMEDATA.ancestryText(state.ancestry);if(!_at.vacio){
+    var _ab='';_at.habilidades.forEach(function(a){_ab+=shCard('<div style="font-weight:bold;font-size:13.5px">◇ '+esc(a.name)+' <span style="font-weight:normal;font-size:11px;color:'+SH.ink3+'">1 Aen · 1/encuentro · en tu turno</span></div><div style="font-size:11.5px;color:'+SH.ink2+'">'+esc(a.desc)+'</div>')});
+    h+='<div style="margin-bottom:18px;page-break-inside:avoid;break-inside:avoid">'+shSec('ANCESTRÍA')+shCard('<div style="font-weight:bold;font-size:14px">'+esc(_at.linaje)+'</div><div style="font-size:11.5px;color:'+SH.ink2+'">'+esc(_at.bonos.concat(_at.sociales).join(' · '))+'</div>',true)+_ab+'</div>';}}
   if(ft){h+='<div style="margin-bottom:18px;page-break-inside:avoid;break-inside:avoid">'+shSec('FEAT DE FACCIÓN')+shCard('<div style="font-weight:bold;font-size:14px">✨ '+esc(ft.name)+' <span style="font-weight:normal;font-size:11px;color:'+SH.ink3+'">('+esc(ft.attr)+')</span></div><div style="font-size:12.5px;color:'+SH.ink2+';margin-top:3px">'+esc(ft.desc)+'</div>')+'</div>';}
   if(c&&c.abilities&&c.abilities.length){
     h+='<div style="margin-bottom:18px">'+shSec('HABILIDADES DE CLASE — '+esc(c.name).toUpperCase()+' · ENERGÍA: '+esc(c.resource))+
