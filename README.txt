@@ -26,7 +26,9 @@ Qué trae esta versión
      nunca sube el Aen por turno.
   5. Las 10 Heroicas de clase tienen su efecto desatado (campo unleashed), activo desde el nivel 8.
   6. Regla: el Aen no se acumula entre turnos (rules.aenCarryRule).
-  7. Monstruos por nivel (GAMEDATA.monsterScale / scaleMonster): el bestiario es nivel 1; a nivel N,
+  7. Corrección: el creador se quedaba en bucle entre la facción y la primera pregunta de clase
+     (los pasos de clase y kit tenían números fijos de antes de la ancestría). Afectaba también a version-2026-10-09.
+  8. Monstruos por nivel (GAMEDATA.monsterScale / scaleMonster): el bestiario es nivel 1; a nivel N,
      Vitalidad × (1 + 0.20·(N−1)) y daño × (1 + 0.15·(N−1)); 1 de Vitalidad se queda en 1.
      En el index, "Nivel del grupo" (auto = el jugador de mayor nivel, o fijo) escala fichas, listas y el tracker.
 
